@@ -1,0 +1,31 @@
+import req from "../../common/req.js"
+
+export const list = (token,orderStatus) =>req.post(
+	'/order/list', {
+		token,orderStatus
+	}
+)
+
+export const add = (token,orderPrice,goodsJson,addressId,remark,orderType,cartIds,memberCouponId) =>req.post(
+	'/order/add', {
+		token,orderPrice,goodsJson,addressId,remark,orderType,cartIds,memberCouponId
+	}
+)
+
+export const statusCount = (token) =>req.post(
+	'/order/statusCount', {
+		token
+	}
+)
+
+export const  deleteOrder= (token,id) =>req.post(
+	'/order/delete', {
+		token,id
+	}
+)
+
+export const cancelOrder= (token,id) =>req.post(
+	'/order/cancelOrder', {
+		token,id
+	}
+)

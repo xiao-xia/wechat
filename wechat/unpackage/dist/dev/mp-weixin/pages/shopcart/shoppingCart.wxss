@@ -1,0 +1,204 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.cart {
+  background-color: #f6f6f6;
+}
+.title {
+  text-indent: 40rpx;
+  color: #f86500;
+  background-color: #f9f1c8;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.card {
+  padding: 0 20rpx;
+  margin-top: 20rpx;
+}
+.card .goods {
+  background-color: #fff;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.card .goods .yuan {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+.card .goods .photo {
+  width: 250rpx;
+  height: 250rpx;
+  margin-left: 20rpx;
+}
+.card .goods .photo image {
+  width: 100%;
+  height: 100%;
+}
+.card .goods .photo .replenishment {
+  width: 250rpx;
+  height: 250rpx;
+  background-color: #cccccc;
+  top: 20rpx;
+  opacity: 0.8;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.card .goods .photo .replenishment .progressMent {
+  color: #ffffff;
+  background-color: #000000;
+  border-radius: 50rpx;
+  display: flex;
+  justify-content: center;
+  width: 240rpx;
+}
+.card .goods .name {
+  width: 300rpx;
+  margin-left: 40rpx;
+}
+.card .goods .name .Maskname {
+  width: 290rpx;
+  font-size: 12px;
+  color: #999999;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.card .goods .moneyButton {
+  display: flex;
+  margin-top: 20rpx;
+  justify-content: space-between;
+}
+.card .goods .moneyButton .button {
+  display: flex;
+  justify-content: center;
+}
+.card .goods .moneyButton .button .change {
+  display: flex;
+  width: 100rpx;
+  height: 50rpx;
+  justify-content: center;
+  line-height: 50rpx;
+  position: relative;
+  margin-right: 20rpx;
+}
+.card .goods .moneyButton .button .change image {
+  width: 100%;
+  height: 100%;
+}
+.card .goods .moneyButton .button .change .sub {
+  top: 0;
+  left: -20rpx;
+  position: absolute;
+  width: 50rpx;
+  height: 50rpx;
+}
+.card .goods .moneyButton .button .change .add {
+  top: 0;
+  right: -20rpx;
+  width: 50rpx;
+  height: 50rpx;
+  position: absolute;
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-left: 30rpx;
+  background-color: #ffffff;
+}
+.bottom .left {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bottom .suan {
+  border-radius: 50rpx;
+  height: 70rpx;
+  background-color: #f86500;
+  width: 25%;
+  line-height: 70rpx;
+  text-align: center;
+  margin: 10rpx 20rpx 10rpx 0;
+}
+.box {
+  height: 100rpx;
+}
+checkbox-group {
+  width: 60rpx;
+}
+.quanxuan {
+  width: 150rpx;
+}
+checkbox .wx-checkbox-input {
+  border-radius: 50% !important;
+  color: #ffffff !important;
+}
+.empty {
+  width: 200rpx;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  color: red;
+  background-color: #fff;
+  margin: 20rpx auto;
+}
+.addGoodButton {
+  width: 200rpx;
+  height: 60rpx;
+  border-radius: 40rpx;
+  border: 1px solid #008cff;
+  text-align: center;
+  line-height: 60rpx;
+  color: #008cff;
+  margin-top: 30rpx;
+}
+.addGoodItem {
+  width: 340rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: center;
+}
+.addGoodItem image {
+  width: 100%;
+}
+.add {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+

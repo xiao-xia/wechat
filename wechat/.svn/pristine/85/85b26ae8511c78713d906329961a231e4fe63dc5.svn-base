@@ -1,0 +1,483 @@
+<template>
+	<view class="seckillcont" v-if="pageShow">
+		<view class="contentbanner">
+			<swiper class="swiper" indicator-dots  circular>
+					<swiper-item class="swiperitem" v-for="(item,index) in mainPhoto" :key='index'>
+						<image :src="item" mode="widthFix"></image>
+					</swiper-item>
+			</swiper>
+
+			<view class="contentdetail">
+				<view class="productdetail">
+					{{goodsObj.goodsName}}
+				</view>
+				<view class="">
+					规格：{{goodsObj.goodsSpecification}}
+				</view>
+				<view class="detailmoney">
+					￥{{goodsObj.goodsSuggestedRetailPrice}}
+				</view>
+				<view class="share">
+					<text class="cuIcon-share lg"></text>
+					<text>分享</text>
+					<button open-type="share"></button>
+				</view>
+			</view>
+		</view>
+		<view class="heng">
+			
+		</view>
+		<view class="detail">
+			<view class="words">
+				商品详情
+			</view>
+			<view class="photo" v-for="(item,index) in detailPhoto" :key='index'>
+				<image :src="item" mode="widthFix"></image>
+			</view>
+		</view>
+		<view class="detailbottom">
+			<view class="detailState">
+				<view class="orderBlock" @click="goHome">
+					<text class="cuIcon-home lg"></text>
+					<view style="font-size: 24rpx;text-align: center;color: #bbb;margin-top: 10rpx;">
+						首页
+					</view>
+				</view>
+			    <view class="orderBlock" @click="goCart">
+					<text class="cuIcon-cart lg"></text>
+					<view style="font-size: 24rpx;text-align: center;color: #bbb;margin-top: 10rpx;">
+						购物车
+					</view>
+					<view class="badge" v-if="flag">
+						{{num}}
+					</view>
+				</view>
+			</view>
+			<view class="orderbutton">
+				<view  class="orderleft"  @click="toCart" v-show="false">
+					加入购物车
+				</view>
+				<view class="orderright" @click="this.isShow=true" v-show="false">
+					立即购买
+				</view>
+			</view>
+		</view>
+	
+	    <view class="payNow" v-if="isShow==true">
+			<view class="goods">
+				<text class="cuIcon-roundclose guan" @click="closeBtn"></text>
+				<view class="up">
+					<image :src="mainPhoto[0]" mode=""></image>
+					<view class="right">
+						<view class="">
+							{{goodsObj.goodsName}}
+						</view>
+						<view class="" style="color: #f86500;">
+							￥{{goodsObj.goodsSuggestedRetailPrice}}
+						</view>
+					</view>
+				</view>
+				<view class="down">
+					<view class="payNum">
+						<view class="">
+							购买数量
+						</view>
+						<view class="button" style="text-align: center;">
+							<view class="change">
+								<view class="sub" @click="subNum">
+									<image src="../../static/mine/jian.png" mode="" ></image>
+								</view>
+								<text>{{payNum}}</text>
+								<view class="add" @click="addNum">
+									<image src="../../static/mine/jia.png" mode=""></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				    <view class="payBtn" @click="payNow">
+				    	确定
+				    </view>
+				</view>
+			</view>
+	    </view>
+	</view>
+</template>
+
+<script>
+    import {
+    	mapState,
+    	mapGetters,
+    	mapMutations,
+    	mapActions
+    } from 'vuex';
+	import {
+		addNum
+	} from '../../API/classificationArr/index';
+	import {getDetail} from  '../../API/goodsDetail/index.js';
+	import {
+		totalNum
+	} from '../../API/classificationArr/index';
+	export default{
+		data(){
+			return{
+				pageShow:false,
+				goodsObj:{},
+				mainPhoto:[],
+				detailPhoto:[],
+				count:'',
+				goodsId:'',
+				num:'',
+				flag:false,
+				isShow:false,
+				payNum:1
+			}
+		},
+		onLoad(options){
+			console.log(options)
+			this.getData(options.id);
+			this.goodsId=options.id;
+			this.count=Number(options.count);
+			console.log(this.count)
+		},
+		onShow(){
+			this.getCart()
+		},
+		computed: {
+			...mapState(['unfoin','token','userInfo']),
+		},
+		methods:{
+		async getData(id){
+			uni.showLoading({
+				title:'加载中'
+			})
+			const res=await getDetail(this.token,id);
+			console.log(res);
+			if(res){
+				uni.hideLoading()
+				this.goodsObj=res.data;
+				this.mainPhoto=res.data.mainList;
+				this.detailPhoto=res.data.detailList;
+				this.pageShow=true
+			}
+			},
+		async toCart(){
+			    uni.showToast({
+			    	title:'加入成功',
+					icon:'success',
+					mask:true
+			    })
+				console.log(typeof(this.count))
+				this.count++;
+				const res=await addNum(this.token,this.goodsId,this.count);
+				this.getCart();
+				console.log(res)
+			},
+			async getCart(){
+				const curAll=await totalNum(this.token);
+				console.log(curAll)
+				let cartNum = curAll.sum;  //通过后台接口获取
+				console.log(cartNum)
+				if(cartNum!==null) {
+					this.flag=true
+				   this.num=cartNum
+				}
+			},
+			goCart(){
+			uni.switchTab({
+				url:'../shopcart/shoppingCart'
+			})
+			},
+			goHome(){
+				uni.switchTab({
+					url:'../home/home'
+				})
+			},
+			closeBtn(){
+				this.isShow=false
+			},
+			addNum(){
+			   this.payNum++
+			},
+			subNum(){
+				this.payNum--
+			},
+			payNow(){
+				let data={}
+				data.goodsName=this.goodsObj.goodsName
+				data.id=this.goodsObj.goodsId
+				data.count=this.payNum
+				data.price=this.goodsObj.goodsSuggestedRetailPrice
+				data.totalPrice=this.goodsObj.goodsSuggestedRetailPrice*this.payNum
+				data.photo=this.mainPhoto[0]
+				uni.navigateTo({
+					//url:'../settle/settle?goodsItem='+JSON.stringify(data)
+					url:'../buyGoods/buyGoods?goodsItem='+JSON.stringify(data)
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		position: relative;
+		background-color: #fff;
+		.seckillcont {
+			width: 100%;
+			.contentbanner {
+				width: 100%;
+				.swiper{
+					width: 100vw;
+					height: 100vw;
+					.swiperitem {
+						width: 100%;
+						height: 100%;
+						 image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+		
+			}
+		
+		     .heng{
+				 height: 8rpx;
+				 background-color: #EEEEEE;
+			 }
+			 .detail{
+				 padding: 40rpx 20rpx 130rpx;
+				 .words{
+					 margin-bottom: 30rpx;
+				 }
+				 .photo{
+					 image{
+						 width: 100%;
+					 }
+				 }
+			 }
+			.contentdetail {
+				width: 100%;
+				padding: 30rpx 20rpx;
+				position: relative;
+				.productdetail {
+					width: 70%;
+					color: black;
+					display: flex;
+					justify-content: space-between;
+		
+					.datailimg {
+						width: 64rpx;
+						height: 62rpx;
+					}
+		
+					.productsname {
+						font-size: 26rpx;
+						width: calc(100% - 136rpx);
+					}
+		
+				}
+		
+				.detailmoney {
+					font-size: 40rpx;
+					padding: 10rpx 0 0 0;
+					color: #ff6600;
+				}
+			}
+		
+			.pleaseolder {
+				width: 100%;
+				padding: 10rpx 40rpx;
+				color: #ccc;
+				border-top: 4rpx solid #ccc;
+				border-bottom: 4rpx solid #ccc;
+			}
+		
+			.parameter {
+				width: 100%;
+				padding: 10rpx 40rpx;
+		
+				.productmeter {
+					
+					display: flex;
+					white-space: nowrap;
+					// overflow: hidden;
+					// flex-wrap: wrap;
+					// text-overflow: ellipsis;
+				}
+			}
+		}
+		.detailbottom {
+			width: 100%;
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			padding: 20rpx 40rpx;
+			position: fixed;
+			bottom: 0;
+			border-top: 1px solid #ddd;
+		
+			.detailState {
+				width: 30%;
+				display: flex;
+				justify-content: space-between;
+		
+				.orderBlock {
+					text-align: center;
+					font-size: 50rpx;
+					line-height: 40rpx;
+					position: relative;
+					.badge{
+						position: absolute;
+						background-color: red;
+						color: #fff;
+						width: 30rpx;
+						height: 30rpx;
+						border-radius: 50%;
+						top:0;
+						right: 0;
+						transform: translate(45%,-50%);
+						text-align: center;
+						line-height: 30rpx; 
+						font-size: 20rpx;
+					}
+				}
+			}
+		
+			.orderbutton {
+				display: flex;
+				
+				view{
+					width: 200rpx;
+					padding: 16rpx 20rpx;
+					text-align: center;
+					align-self: center;
+					color: #fff;
+				}
+				
+				.orderleft{
+					border-top-left-radius:40rpx;
+					border-bottom-left-radius:40rpx;
+					background-color: rgb(255,185,1);
+				}
+				.orderright{
+					border-top-right-radius:40rpx;
+					border-bottom-right-radius:40rpx;
+					background-color: rgb(255,24,60);
+				}
+			}
+		}
+	}
+	
+    .payNow{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		background-color: rgba(0,0,0,0.5);
+		height: 100%;
+		z-index: 999;
+		.goods{
+			position: fixed;
+			left: 0;
+			top:50%;
+			width: 100%;
+			height: 50%;
+			background-color: #fff;
+			.up{
+			    padding: 20rpx;
+				display: flex;
+				border-bottom: 1px solid #ccc;
+				image{
+					width: 100rpx;
+					height: 100rpx;
+				}
+				.right{
+				   margin-left: 20rpx;
+				}
+			}
+			.down{
+				padding: 20rpx 20rpx 0 20rpx;
+				height: 440rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				.payNum{
+					display: flex;
+					justify-content: space-between;
+				}
+				.payBtn{
+					height: 60rpx;
+					background-color: #0dc793;
+					text-align: center;
+					line-height: 60rpx;
+					color: #fff;
+					border-radius: 40rpx;
+				}
+			}
+		}
+	}
+
+    .button{
+		   display: flex;
+		   justify-content: flex-end;
+    .change{
+			display: flex;
+			width:100rpx;
+			height: 50rpx;
+			justify-content: center;
+			line-height: 50rpx;
+			background-color: #E7FFE6;
+			position: relative;
+			margin-right: 20rpx;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		   .sub{
+			   top:0;
+			   left: -20rpx;
+			   position: absolute;
+			   width: 50rpx;
+			   height: 50rpx;
+		   }
+		   .add{
+			   top:0;
+			   right: -20rpx;
+			   width: 50rpx;
+			   height: 50rpx;
+			   position: absolute;
+		   }
+    }
+    }
+	
+	.guan{
+		position: absolute;
+		top: 10rpx;
+		right: 10rpx;
+		font-size: 40rpx;
+	}
+	
+	.share{
+		position: absolute;
+		width: 120rpx;
+		height: 70rpx;
+		background-color: #eee;
+		color: #aaa;
+		bottom: 50rpx;
+		right: 0;
+		text-align: center;
+		border-top-left-radius: 30rpx;
+		border-bottom-left-radius: 30rpx;
+		line-height: 70rpx;
+		button{
+			position: absolute;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			
+		}
+	}
+</style>

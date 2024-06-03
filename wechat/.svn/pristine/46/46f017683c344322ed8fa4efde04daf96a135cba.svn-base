@@ -1,0 +1,203 @@
+<template>
+	<view class="offGoods">
+		<view class="search" @click="goSearch">
+			<text class="cuIcon-search lg left" ></text>
+			<view class="">
+				商品名称
+			</view>
+		</view>
+		<view class="title">
+			<view class="theme" v-for="(item,index) in navList" :key='index' :class="index==current?'active':''"
+			@click="tabEvent(index)">
+				{{item}}
+			</view>
+		</view>
+		<view class="noCoupon" v-if="goodsList.length==0">
+			<image src="../../static/noWelfare.png" mode="widthFix"></image>
+			<view class="" style="color: #aaa;">
+				暂无公益项目哦~
+			</view>
+		</view>
+		<view v-else class="card" @click="goDetail(item.id)" v-for="(item,index) in goodsList" :key="index">
+			<image :src="item.MainPicArr[0]" mode=""></image>
+			<view class="describle">
+				<view class="">
+					{{item.productName}}
+				</view>
+				<view class="" style="color: #f86500;">
+				      ¥{{item.productPrice}}
+				</view>
+			</view>
+			<view class="" style="display: flex;flex-direction: column;justify-content: flex-end;">
+				<view class="already" @click.stop="goPublish(item.id)">
+					重新发布
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>   
+import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+import {myList,more,rePublish} from '../../API/welfareArr/index.js'
+export default{
+     data(){
+		 return{
+			 current:0,
+			 navList:['医疗设备租赁','康复设备共享'],
+			 goodsList:[]
+		 }
+	 },
+	 async onReachBottom() {
+	 	console.log(this.goodsList.length)
+	 	if(this.goodsList.length==this.totalRow){
+	 		this.nomore=true
+	 		console.log('到底了')
+	 		return
+	 	}
+	 		this.pageIndex++
+	 		var type;
+	 		 if(this.current==0) {
+	 				type = '医疗设备租赁';
+	 			}else if(this.current==1) {
+	 				type = '医康设备共享';
+	 			}
+	 		const res = await more(type,this.pageIndex,this.pageSize);
+	 		this.goodsList=[...this.goodsList,...res.list]
+	 	},
+	 onShow() {
+	 	this.getList()
+	 },
+	 computed: {
+	 	...mapState(['userInfo','token','phoneNumber']),
+	 },
+	 methods:{
+		tabEvent(index){
+			this.current=index
+			this.getList()
+		},
+		async getList(){
+			this.pageIndex=1
+			if(this.current==0){
+				var type='医疗设备租赁'
+			}else{
+				var type='康复设备共享'
+			}
+				const res=await myList(type,this.token,this.pageIndex,this.pageSize,1)
+				console.log(res)
+				this.goodsList=res.list
+				this.goodsList.forEach(item=>{
+					item.MainPicArr=item.productMainPic.split(",")
+					item.DetailPicArr=item.productDetailPic.split(",")
+				})
+				this.totalRow=res.totalRow
+			},
+		goDetail(id){
+			uni.navigateTo({
+				url:'../welfareDetail/welfareDetail?id='+id
+			})
+		},
+		async goPublish(id){
+			const res=await rePublish(this.token,id)
+			console.log(res)
+			if(res){
+				uni.navigateBack({
+				})
+			}
+		},
+		goSearch(){
+			uni.navigateTo({
+				url:'../searchWelfare/searchWelfare'
+			})
+		}
+	 }
+}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+		height: 100%;
+	}
+	.offGoods{
+		padding: 20rpx;
+		position: relative;
+		height: 100%;
+		.noCoupon{
+			position: absolute;
+			width: 100%;
+			top:50%;
+			transform: translateY(-50%);
+			text-align: center;
+			image{
+				width: 300rpx;
+			}
+		}
+		.search{
+				background-color: #EDECF1;
+				border-radius: 40rpx;
+				padding-left: 70rpx;
+				height: 60rpx;
+				position: relative;
+				view{
+					width: 100%;
+					height: 100%;
+					line-height: 60rpx;
+				}
+				.left{
+					position: absolute;
+					left: 20rpx;
+					top:8rpx
+				} 
+			}
+	}
+
+    .title{
+		display: flex;
+		padding:20rpx 140rpx;
+		justify-content: space-between;
+		.active{
+			border-bottom: 2px solid #0DA98C;
+		}
+	}
+
+    .card{
+		display: flex;
+		image{
+			width: 100rpx;
+			height: 100rpx;
+		}
+	}
+	
+	.card{
+		padding: 20rpx;
+		border-bottom: 1px solid #ccc;
+		display: flex;
+		image{
+			width: 220rpx;
+			height: 200rpx;
+		}
+		.describle{
+			margin-left: 40rpx;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 280rpx;
+		}
+		.already{
+			width: 140rpx;
+			height: 50rpx;
+			text-align: center;
+			line-height: 50rpx;
+			background-color:  #06c35f;
+			color: #fff;
+			border-radius: 20rpx;
+			margin-left: 20rpx;
+		}
+	}
+</style>

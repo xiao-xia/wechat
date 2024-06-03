@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "抵用券",
+  "navigationBarBackgroundColor": "#fff",
+  "usingComponents": {
+    "coupon": "/components/coupon/coupon"
+  }
+}

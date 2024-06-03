@@ -1,0 +1,1617 @@
+<template>
+	<view class="">
+		<view class="noInternet" v-if="imgUrls.length==0">
+			 <image src="../../static/antenna.png" mode=""></image>
+			 <view class="">
+			 	当前请求失败,请检查您的网络状况
+			 </view>
+		</view>
+		<!--头部搜索-->
+	<view class="content" v-else>
+		<view class="contentTop">
+			<view class="search" @tap="searchPage()">
+				<image class="searchimg" src="../../static/homeimg/server.png"></image>
+				<view class="searchinp">请输入商品/服务等关键词</view>
+			</view>
+		</view>
+		
+		<!--轮播-->
+		<view class="contentbanner">
+			<swiper class="swipers" indicator-dots="true" autoplay="true" interval="3000" duration="1000" :circular="true">
+			  <block v-for="(order,index) in imgUrls" :key="index">
+			   <swiper-item>
+			      <image class="bannerimg" :src="order" mode="" width="355" height="135"/>
+			    </swiper-item>
+			  </block> 
+			</swiper>
+		</view>
+		
+		<!--菜单栏-->
+		<view class="contentItem" >
+			<view class="contentState">
+				<view class="contentBlock" v-for="(order,index) in contentState" :key="index" @tap="productfiation(order.state)">
+					<view class="contentWidth">
+						<view style="display: flex;justify-content: center;margin-bottom: 18rpx;">
+							<image style="width: 70rpx;height: 70rpx;" :src="order.url" mode=""></image>
+						</view>
+						<view style="font-size: 24rpx;text-align: center;">
+							{{order.state}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!--菜单栏-->
+		<view class="contentTimes">
+			<view class="contentkill">
+				限时秒杀
+			</view>
+			<view class="contentRush">
+				<view class="contentRushent">
+					<view class="seckilltent" v-for="(item,index) in seckillList" :key="index">
+						<view class="seckillstart">
+							{{item.seckillrush}}
+						</view>
+					</view>
+				</view>
+				<view class="seckTrademark">
+					<view class="registration">
+						<image class="registimg" src="../../static/home/trademark.png"></image>
+						<image class="registiimgs" src="../../static/home/purchase.png"></image>
+						<view class="Countmark">
+							<view class="Countimg">
+								<view class="end">秒杀倒计时:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+							</view>
+						</view>
+						<view class="register">
+							<view class="registerBrand">快速注册商标（15-30个）</view>
+							<view class="registerCase">
+								<view class="registerBox">
+									<view class="registerSize">￥800</view>
+									<view class="registerSizes">￥1500</view>
+								</view>
+								<view class="registerButton">
+									立即抢购
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="registration">
+						<image class="registimg" src="../../static/home/trademark.png"></image>
+						<image class="registiimgs" src="../../static/home/purchase.png"></image>
+						<view class="Countmark">
+							<view class="Countimg">
+								<view class="end">秒杀倒计时:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+							</view>
+						</view>
+						<view class="register">
+							<view class="registerBrand">快速注册商标（15-30个）</view>
+							<view class="registerCase">
+								<view class="registerBox">
+									<view class="registerSize">￥800</view>
+									<view class="registerSizes">￥1500</view>
+								</view>
+								<view class="registerButton">
+									立即抢购
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="registration">
+						<image class="registimg" src="../../static/home/trademark.png"></image>
+						<image class="registiimgs" src="../../static/home/purchase.png"></image>
+						<view class="Countmark">
+							<view class="Countimg">
+								<view class="end">秒杀倒计时:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+							</view>
+						</view>
+						<view class="register">
+							<view class="registerBrand">快速注册商标（15-30个）</view>
+							<view class="registerCase">
+								<view class="registerBox">
+									<view class="registerSize">￥800</view>
+									<view class="registerSizes">￥1500</view>
+								</view>
+								<view class="registerButton">
+									立即抢购
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="registration">
+						<image class="registimg" src="../../static/home/trademark.png"></image>
+						<image class="registiimgs" src="../../static/home/purchase.png"></image>
+						<view class="Countmark">
+							<view class="Countimg">
+								<view class="end">秒杀倒计时:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+							</view>
+						</view>
+						<view class="register">
+							<view class="registerBrand">快速注册商标（15-30个）</view>
+							<view class="registerCase">
+								<view class="registerBox">
+									<view class="registerSize">￥800</view>
+									<view class="registerSizes">￥1500</view>
+								</view>
+								<view class="registerButton">
+									立即抢购
+								</view>
+							</view>
+						</view>
+					</view>
+					
+				</view>
+			</view>
+		</view>
+		<!-- 代理记账 -->
+		<view class="aaccountsement"  @tap="pulicewei()">
+			<image class="aaccountmentimg" src="../../static/home/agent.png" mode=""></image>
+		</view>
+		
+		<view class="Business">
+			<view class="services">
+				工商服务
+			</view>	
+			<view class="servicesAll">
+				<text class="cuIcon-right lg text-gray "></text>
+			</view>	
+		</view>
+		
+		<view class="serviceMore">
+			<view class="serviceItem">
+				<view class="serviceBack">
+					<view class="serviceBox">
+						<view class="serviceCompany">
+							公司注册
+						</view>
+						<view class="serviceWold">
+							为您企业提供全方位的工商注册服务，为您企业提供全方位的工商注册服务
+						</view>
+						<view class="priceItem">
+							<view class="priceColor">
+								现价：￥800
+							</view>
+							<view class="priceoRiginal">
+								原价：￥1500
+							</view>
+							<view class="immediately">
+								立即办理
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="serviceItem">
+				<view class="serviceBack">
+					<view class="serviceBox">
+						<view class="serviceCompany">
+							公司注册
+						</view>
+						<view class="serviceWold">
+							为您企业提供全方位的工商注册服务，为您企业提供全方位的工商注册服务
+						</view>
+						<view class="priceItem">
+							<view class="priceColor">
+								现价：￥800
+							</view>
+							<view class="priceoRiginal">
+								原价：￥1500
+							</view>
+							<view class="immediately">
+								立即办理
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="serviceItem">
+				<view class="serviceBack">
+					<view class="serviceBox">
+						<view class="serviceCompany">
+							公司注册
+						</view>
+						<view class="serviceWold">
+							为您企业提供全方位的工商注册服务，为您企业提供全方位的工商注册服务
+						</view>
+						<view class="priceItem">
+							<view class="priceColor">
+								现价：￥800
+							</view>
+							<view class="priceoRiginal">
+								原价：￥1500
+							</view>
+							<view class="immediately">
+								立即办理
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="serviceItem">
+				<view class="serviceBack">
+					<view class="serviceBox">
+						<view class="serviceCompany">
+							公司注册
+						</view>
+						<view class="serviceWold">
+							为您企业提供全方位的工商注册服务，为您企业提供全方位的工商注册服务
+						</view>
+						<view class="priceItem">
+							<view class="priceColor">
+								现价：￥800
+							</view>
+							<view class="priceoRiginal">
+								原价：￥1500
+							</view>
+							<view class="immediately">
+								立即办理
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	
+		<view class="Financial">
+			<view class="FinanAudit">
+				财务审计
+			</view>	
+			<view class="FinanAll">
+				<text class="cuIcon-right lg text-gray "></text>
+			</view>	
+		</view>
+		
+		<view class="SpecialItem">
+			<view class="SpecialReview">
+				<view class="SpecialBack">
+					<view class="SpecialBox">
+						<view class="Specialreport">
+							专审报告
+						</view>
+						<view class="SpecialWold">
+							一站式的服务流程
+						</view>
+						<view class="reviewBox">
+							<view class="reportWord">
+								<view class="wordColor">
+									￥800
+								</view>
+								<view class="sizeColor">
+									￥1500
+								</view>
+							</view>
+							<view class="reportCircular">
+								抢
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="SpecialBack">
+					<view class="SpecialBox">
+						<view class="Specialreport">
+							专审报告
+						</view>
+						<view class="SpecialWold">
+							一站式的服务流程
+						</view>
+						<view class="reviewBox">
+							<view class="reportWord">
+								<view class="wordColor">
+									￥800
+								</view>
+								<view class="sizeColor">
+									￥1500
+								</view>
+							</view>
+							<view class="reportCircular">
+								抢
+							</view>
+						</view>
+					</view>
+				</view>
+				
+				<view class="SpecialBack">
+					<view class="SpecialBox">
+						<view class="Specialreport">
+							专审报告
+						</view>
+						<view class="SpecialWold">
+							一站式的服务流程
+						</view>
+						<view class="reviewBox">
+							<view class="reportWord">
+								<view class="wordColor">
+									￥800
+								</view>
+								<view class="sizeColor">
+									￥1500
+								</view>
+							</view>
+							<view class="reportCircular">
+								抢
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<view class="memberItem">
+			<view class="Opening">
+				<text class="cuIcon-close guanbi" @click="close"></text>
+			</view>
+			<view class="memberOpen">
+				<view class="openBox">
+					<image class="memberImg" src="../../static/home/crown.png"></image>
+					<view class="memberWold">开通企瑞宝会员</view>
+					<view class="memberButton">立即开通</view>
+				</view>
+			</view>
+			<view>
+			</view>
+		</view>
+		
+		<view class="informSide">
+			<view class="informtact">
+				<image class="informImg" src="../../static/home/information.png"></image>
+			</view>
+			<view class="informtact">
+				<image class="informImg" src="../../static/home/Telephone.png"></image>
+			</view>
+			<view class="informtact">
+				<image class="informImg" src="../../static/home/rocket.png"></image>
+			</view>
+		</view>	
+		
+	</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapMutations,
+	} from 'vuex';
+	import{
+		lunlist
+	} from '../../API/lunbo/index.js'
+	import{
+		getwriiting
+	}from '../../API/haowen/index.js'
+	import {
+		getListTile,
+		getListGoods
+	} from '../../API/skeillArr/index.js';
+	import {getMessage,getTime} from '../../API/home/index.js'
+	import {
+		totalNum,getClassifi
+	} from '../../API/classificationArr/index';
+	import {defaultAddress} from '../../API/defaultAddresss/index.js'
+	export default {
+		data() {
+			return {
+				//noInternet:false,
+				strings:'',
+				noticeList:[],
+				menuArr:[],
+				detailAddress:{},
+				finalTime:'',
+				seckillMsg:'',
+				showModal:false,
+				msg:'',
+				addressObj:{},
+				isShow:true,
+				la:'',
+				lo:'',
+				location:'',
+				address:'',
+				url: 'https://wwayi2.axshare.com/',
+				wridid:'',
+				wridetail:[],
+				coupons:false,
+				couclose:true,
+				timeHour: '00',
+				timeMinute: '00',
+				timeSecond: '00',
+				timer:'',
+				timerEndTime: '',
+				startsup:false,
+				loadstart:true,
+				imgUrls:[],
+				contentState:[
+					{state:'工商服务',url:'../../static/homeimg/ecg.png'},
+					{state:'代理记账',url:'../../static/homeimg/drugs.png'},
+					{state:'财务审计',url:'../../static/homeimg/case.png'},
+					{state:'金融咨询',url:'../../static/homeimg/love.png'},
+					{state:'法律服务',url:'../../static/homeimg/label.png'},
+					{state:'工商服务',url:'../../static/homeimg/ecg.png'},
+					{state:'代理记账',url:'../../static/homeimg/drugs.png'},
+					{state:'财务审计',url:'../../static/homeimg/case.png'},
+					{state:'金融咨询',url:'../../static/homeimg/love.png'},
+					{state:'法律服务',url:'../../static/homeimg/label.png'},
+				],
+				contentTime:[],
+				getthecouponList:[
+					{coumoney:'50',fullmoney:'200'},
+					{coumoney:'50',fullmoney:'200'},
+					{coumoney:'50',fullmoney:'200'},
+				],
+				seckillList:[
+					{seckillrush:'正在抢购'},
+					{seckillrush:'即将开抢'},
+				],
+				goodscontList:[],
+				miaoShaObj:{},
+				goodsEndTime:'',
+				number:0,
+				seckillId:'',
+				barList:[],
+				productlist:[],
+				timeId:''
+			}
+		},
+		computed: {
+			...mapState(['token'])
+		},
+		onLoad(options) {
+			//this.countDown();
+			//setInterval(this.countDown,1000);
+			uni.getLocation({
+			    type: 'gcj02', 
+			    success: res=> {
+					this.la=res.latitude;
+					this.lo=res.longitude;
+					this.location=[this.la,this.lo].join();
+			        console.log(this.location);
+					this.getAddress()
+			    }
+			});
+			console.log(options)
+		},
+		onShow() {
+			getApp().globalData.index=1
+			/*uni.showShareMenu({
+			withShareTicket:true,
+			menus:['shareAppMessage','shareTimeline']
+			})*/
+			var that=this;
+			this.getNum();
+			this.getlist();
+			//this.checkSession();
+			this.getLeftList();
+			this.getNotice();
+			this.getWriiting();
+			this.getSkeillTime();
+			this.getDefault();
+			if(this.msg==true){
+			setTimeout(function(){
+				//console.log(this)
+				console.log(that.msg)
+				that.msg=false
+			},5000)
+			}
+			uni.$on('notice', (data)=>{
+			    // data即为传过来的值
+				this.msg=data.state
+			});
+		},
+		onHide() {
+		},
+		methods: {
+			...mapMutations(['setClassCur']),
+		/*	open(types) {
+				plus.runtime.openURL(this.url, function(res) {  
+					//console.log(res);  
+				});  
+			},*/
+			async getDefault(){
+				const res= await defaultAddress(this.token);
+				console.log(res) 
+				this.addressObj=res.data
+				console.log(this.addressObj)
+			},
+			async getLeftList(){
+				console.log(115)
+				const res = await getClassifi();
+				console.log(res);
+				this.menuArr=res.data
+				var arr1=[]
+				this.menuArr.map(item=>{
+				    item.state=item.categoryName
+					if(item.categoryName=='保健品'){
+						item.url='../../static/homeimg/ecg.png'
+					}else if(item.categoryName=='药品'){
+						item.url='../../static/homeimg/drugs.png'
+					}else if(item.categoryName=='设备'){
+						item.url='../../static/homeimg/case.png'
+					}
+				})
+				// var arr2=[{state:'公益',url:'../../static/homeimg/love.png'},
+				// 	{state:'领劵',url:'../../static/homeimg/label.png'}]
+				// console.log(this.menuArr)
+				// this.contentState=this.menuArr.concat(arr2)
+			},
+
+			//轮播图
+			
+			async getlist() {
+				//this.noInternet=true
+				const res = await lunlist(0);
+				//this.noInternet=false
+				console.log(res)
+				this.imgUrls = res.data;
+					//console.log(this.imgUrls);
+			},
+			
+			//限时秒杀
+			async getSkeillTime() {
+	
+				const res = await getListTile(this.token,1);
+				if(res){
+				this.barList = res.data.seckillTime;//秒杀时间段
+				this.barList.map(item=>{
+					item.isActive=false
+				})
+				console.log(this.barList);
+				this.seckillId = res.data.seckillTitle.id;
+				var current=new Date()
+				console.log(current.getHours())
+				this.barList.forEach((item,i)=>{
+					let now=current.getHours();
+					let start=this.handleHour(item.startTime);
+					let end=this.handleHour(item.endTime);
+					//console.log('now:',now,' start:',start,' end:',end)
+					if(now<start){//当前时间小于开始时间
+					    console.log(111111)
+						item.seckillStatus='未开始'
+					}else if(now>=end){
+						item.seckillStatus='已结束'
+					}else if(start<=now<end){
+						console.log(1111)
+						item.seckillStatus='抢购中'
+					}
+				})
+				
+				
+				let bool=this.barList.some(item=>{
+						 return item.seckillStatus=='抢购中'
+					 })
+					 if(bool){
+						 let index = this.barList.findIndex(item => item.seckillStatus=='抢购中');
+						 this.seckillMsg='距结束'
+						 this.finalTime=this.barList[index].endTime
+						 this.setTimer()
+						 this.getSkeillgoods(this.seckillId,this.barList[index].id);
+					 }else if(this.barList.some((item)=>{
+						 return item.seckillStatus=='未开始'
+					 })){
+						let index = this.barList.findIndex(item => item.seckillStatus=='未开始');
+						this.seckillMsg='距开始'
+					this.finalTime=this.barList[index].startTime
+					//setInterval(this.countDown,1000);
+					this.setTimer()
+						this.getSkeillgoods(this.seckillId,this.barList[index].id);
+					 }else if(this.barList.every(item=>{
+						 return item.seckillStatus=='已结束'
+					 })){
+						 this.barList.map(item=>{
+						 	item.seckillStatus=='未开始'
+						 })
+						 let index = this.barList.findIndex(item => item.seckillStatus=='未开始');
+						 this.seckillMsg='距开始'
+						 this.finalTime=this.barList[index].startTime
+						 //setInterval(this.countDown,1000);
+						 this.setTimer()
+						 this.getSkeillgoods(this.seckillId,this.barList[index].id);
+						 }
+			
+			}
+			},
+			setTimer() {
+				clearInterval(this.timeId)
+				this.timeId= setInterval(this.countDown,1000)
+			},
+			handleHour(time){
+				if(time) {
+					var timeArr = time.replace(" ", ":").replace(/\:/g, "-").split("-");
+					if(timeArr[3]=='00'){
+						timeArr[3]='24'
+					}
+					return parseFloat(timeArr[3])
+				}
+			},
+			async getSkeillgoods(seckillId,id) {
+				const res = await getListGoods(this.token,seckillId,id);
+				if(res){
+				this.productlist = res.data;
+				this.skebur = res.seckillTimeId;
+				}
+			},
+			
+			countDown(){
+				var newFinalTime =this.finalTime.replace(/-/g,"/")
+				//console.log(newFinalTime)
+				var resultTime=new Date(newFinalTime); 
+				var resultHms=resultTime.getTime();
+				var curTime=new Date();
+				//console.log(curTime)
+				var curHms=curTime.getTime();
+				if(resultHms-curHms<0){
+					var cz=curHms-resultHms
+				}else{
+					var cz=resultHms-curHms
+				}
+				var h=Math.floor(cz/1000/60/60%24);
+				h=h<10?"0"+h:h;
+				this.timeHour=h;
+				var m=Math.floor(cz/1000/60%60);
+				m=m<10?"0"+m:m;
+				this.timeMinute=m;
+				var s=Math.floor(cz/1000%60);
+				s=s<10?"0"+s:s;
+				this.timeSecond=s;
+				},
+
+			async getNotice() {
+				const res = await getwriiting(this.token,'首页',2);
+				console.log(res)
+				if(res) {
+					this.noticeList = res.articleList;
+					
+					//console.log(this.goodscontList);
+				}
+			},	
+			//好文分享
+			async getWriiting() {
+				const res = await getwriiting(this.token,'首页',1);
+				console.log(res)
+				if(res) {
+					this.goodscontList = res.articleList;
+					this.wridetail = res.articleIds;
+					this.wridid =  res.articleList.id;
+					console.log(this.wridetail);
+					//console.log(this.goodscontList);
+				}
+			},
+			async getNum(){
+				const res=await totalNum(this.token)
+				if(res.msg=="ERROR TOKEN"){
+					var that=this
+				uni.showModal({
+					title:'提示',
+					content:'您的账号在另一台设备登录过,请重新登录',
+					cancelText:'取消',
+					confirmText:'确定',
+					success(res) {
+						if(res.confirm){
+							uni.navigateTo({
+								url:'../login/login'
+							})
+						}else if(res.cancel){
+							that.$store.commit('deleteToken')
+						}
+					}
+				})
+				}
+				let cartNum = res.sum;  //通过后台接口获取
+				console.log(cartNum)
+				 if (cartNum== 0||cartNum==undefined) {
+				   //移除角标
+				   uni.removeTabBarBadge({
+				     index: 2,
+				   })
+				 } else{
+				   uni.setTabBarBadge({
+				     index: 2,  //tabBar序号，从0开始计数
+				     text: cartNum+''
+				   })
+				 }
+			},
+
+			//限时秒杀
+			couclosewhere(){
+				this.coupons = false;
+				this.couclose = false;
+			},
+			close(){
+				this.isShow = false;
+			},
+			//跳转领劵中心
+			rollcenwhere(){
+				uni.navigateTo({
+					url:'../personal/coupon/rollCenter'
+				})
+			},
+			
+			pulicewei(){
+				uni.navigateTo({
+					url:'../welfare/welfare'
+				})
+			},
+			
+			//跳转
+			async getAddress(){
+				const res=await	uni.request({
+					url:'https://apis.map.qq.com/ws/geocoder/v1',
+					data:{
+						location:this.location,
+						key:'YPHBZ-ZFQRJ-ODQF6-KI5FR-ZGFUF-XOFG6',
+						}
+					})
+					/*success: res => {
+						this.address=res.data.result.address
+						console.log(110)
+						console.log(this.address)
+					}*/
+				console.log(res)
+				this.address=res[1].data.result.address
+				this.detailAddress=res[1].data.result.address_component
+				console.log(123,this.address)
+			},
+			async addressWhere(){
+				uni.navigateTo({
+					url:'../position/position?address='+this.address+'&la='+this.la+'&lo='+this.lo
+				})
+			},
+			searchPage(){
+				uni.navigateTo({
+					url:'../searchs/searchs'
+				})
+			},
+			
+			seckillPage(){
+				uni.navigateTo({
+					url:'../seckill/seckill?state='+this.seckillMsg
+				})
+			},
+			goodPage(){
+				uni.navigateTo({
+					url:'../goodwriiting/goodwriiting'
+				}) 
+			},
+			goodart(id){
+				uni.navigateTo({
+					url:'../goodwriiting/articledetail?id=' + id  + '&ids=' + JSON.stringify(this.wridetail)+'&type=好文'
+				})
+			},
+			showNotice(detail){
+				this.showModal=true
+				this.strings=detail
+			},
+			hideModal(){
+				this.showModal=false
+			},
+			goWelfare(){
+				uni.navigateTo({
+					url:'/pages/welfare/welfare'
+				})
+			},
+
+			detailshere(id,originalPrice,presentPrice){
+
+				uni.navigateTo({
+					url:'../rushPurchase/rushPurchase?id='+id+'&goodsFinalTime='+this.finalTime+'&originalPrice='+originalPrice+'&presentPrice='+presentPrice
+				})
+			},
+			productfiation(type,typeIndex){
+				console.log(type);
+				this.setClassCur(type)
+				if(type=='领劵'){
+					uni.navigateTo({
+						url:'../personal/coupon/rollCenter'
+					})
+				}else if(type=='公益'){
+					uni.navigateTo({
+						url:'../welfare/welfare'
+					})
+				}
+				else{
+					uni.switchTab({
+						url:'../classification/goodsClassify'
+					})
+				}
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		position: relative;
+		height: 100%;
+		.startup{
+			width: 100%;
+			height: 100%;
+			background-color: black;
+			background:rgba(0,0,0,0.6);
+			z-index: 1000;
+		}
+		.startup,.startupcenter{
+			position: fixed;
+			left: 0;
+			top:0;
+			bottom:0;
+			right: 0;
+			margin:auto;
+			
+			.startupcenter{
+				width: 60%;
+				height: 50%;
+				
+				.close{
+					//width: 80rpx;
+					//height: 80rpx;
+					// padding: 20rpx 28rpx;
+					display: block;
+					color: #fff;
+					margin:0 auto;
+					//border-radius: 50%;
+					
+					line-height: 50rpx;
+					text-align: center;
+					font-size: 60rpx;
+				}
+			}
+		}
+		.xuanfu{
+			position: fixed;
+			right:20rpx;
+			top:80%;
+		}
+		
+		
+		.oncig{
+			width: 100%;
+			padding: 10rpx 0;
+			text-align: center;
+			background-color: #fff;
+			margin-bottom: 20rpx;
+		}
+		.youhuiwhere{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			background-color: #fff;
+			background:rgba(255,255,255,0.6);
+			z-index: 999;
+		}
+		.youhuiwhere,.youhuicont{
+			left: 0;
+			top:0;
+			bottom:0;
+			right: 0;
+			margin:auto;
+			
+			.youhuicont{
+				position: absolute;
+				padding: 20rpx;
+				width: 100%;
+				height: 80%;
+				
+				.youhuitent,.moreyh{
+					font-size: 36rpx;
+					display: flex;
+					justify-content: space-between;
+				}
+				
+				.receivetent{
+					width: 100%;
+					height: 80%;
+					padding: 20rpx;
+					margin-top:20rpx;
+					border-radius:20rpx ;
+					position: relative;
+					background-color: rgb(242,242,242);
+					
+					.receiveitem{
+						font-size: 40rpx;
+						font-weight: bold;
+						text-align: center;
+					}
+					.getthecoupon{
+						width: 100%;
+						padding: 20rpx;
+						margin-bottom: 20rpx;
+						border-radius: 20rpx;
+						background-color: #fff;
+						display: flex;
+						justify-content: space-between;
+						
+						.gettheleft{
+							padding-left:60rpx ;
+							
+							.topgetthe{
+								
+								text{
+									font-weight: bold;
+								}
+							}
+							
+						}
+						
+						.quanpin{
+							width: calc(100% - 306rpx);
+							font-size: 30rpx;
+						}
+					}
+					
+					
+					.butcoupon{
+						width: 100%;
+						height: 150rpx;
+						border-bottom-right-radius:20rpx ;
+						border-bottom-left-radius:20rpx;
+						background-color: rgb(215,215,215);
+						position: absolute;
+						left:0;
+						bottom:0;
+						display: flex;
+						
+						.coupongetyou{
+							width: 70%;
+							padding: 10rpx 20rpx;
+							margin: 0 auto;
+							border-radius: 30rpx;
+							text-align: center;
+							align-self: center;
+							background-color: rgb(107,107,107);
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 16rpx 30rpx;
+		overflow: hidden;
+		background-color: #F6F6F6;
+	}
+	
+	.rightjian{
+		width: 34rpx;
+		height: 48rpx;
+	}
+	
+	.contentTop{
+		width: 100%;
+		height: 90rpx;
+		display: flex;
+		justify-content: space-between;
+		
+		.posit{
+				display: flex;
+				height: 60rpx;
+				line-height: 60rpx;
+				width: 300rpx;
+				position:relative;
+				.out{
+					position: absolute;
+					background-color: rgba(0,0,0,0.5);
+					color: #fff;
+					font-size: 20rpx;
+					top: 60rpx;
+					left: 10rpx;
+					width: 300rpx;
+					padding: 5rpx;
+					z-index: 999;
+					border-radius: 20rpx;
+				}
+				.positimg{
+					width: 40rpx;
+					height: 40rpx;
+					margin-top: 12rpx;
+				}
+				.city-text{
+					height: 60rpx;
+					font-size: 28rpx;
+					width: 250rpx;
+				}
+			}
+			.search{
+				width: calc(100% - 10rpx);
+			    height: 60rpx;
+				line-height: 60rpx;
+			    display: flex;
+			    flex-direction: row;
+				background:#EDEDF0;
+				
+				border-radius: 50rpx;
+				position: relative;
+				
+				.searchimg{
+					width: 40rpx;
+					height: 40rpx;
+					position: absolute;
+					left:20rpx;
+					top:10rpx;
+				}
+				
+				.searchinp{
+					width: 100%;
+					height: 60rpx;
+					line-height: 60rpx;
+					font-size: 28rpx;
+					color: #aaa; 
+					padding-left: 30rpx;
+					margin-left:40rpx;
+				} 
+		}
+	}
+	
+	.contentbanner{
+		width: 100%;
+		height: 270rpx;
+		
+		.swipers{
+			width: 100%;
+			height: 100%;
+		}
+		.bannerimg{
+			width: 100%;
+			height: 270rpx;
+			background: no-repeat;
+			background-size:cover ;
+			border-radius: 20rpx;
+		}
+		.uni-swiper .uni-swiper-dots-horizontal {
+			bottom: 20rpx;
+		}
+	}
+	
+	
+	//轮播和限时秒杀
+	.contentItem{
+		width: 100%;
+		margin-top: 10rpx;
+		display: flex;
+		flex-wrap: wrap;
+		.contentTime{
+			padding: 20rpx 0;
+			width: 200rpx;
+		}
+	}	
+		.contentState{
+			width: 100%;
+			display: flex;
+			padding: 20rpx 0;
+			flex-wrap: wrap;
+			.contentBlock {
+				flex: 1;
+				display: flex;
+				justify-content: center;
+				margin: 0 10rpx;
+				.contentWidth{
+					width: 100rpx;
+				}
+			}
+		}
+	.contentTimes{
+		width: 100%;
+		height: auto;
+		margin-bottom: 20px;
+		.contentkill{
+			width: 100%;
+			height: 60rpx;
+			background-color: #a4ccfd;
+			justify-content: center;
+			display: flex;
+			align-items: center;
+			color: #008afd;
+		}
+		.contentRush{
+			width: 100%;
+			height: auto;
+			background-color: #fff;
+			.contentRushent{
+				display: flex;
+				.seckilltent{
+					width: 50%;
+					text-align: center;
+				}
+			}
+			
+			.seckTrademark{
+				width: 100%;
+				height: auto;
+				display: flex;
+				justify-content: space-around;
+				flex-wrap: wrap;
+				.registration{
+					width: 320rpx;
+					margin-bottom: 20rpx;
+					.registimg{
+						width: 100%;
+						height: 310rpx;
+					}
+					.registiimgs{
+						width: 100rpx;
+						height: 100rpx;
+						position: absolute;
+						margin-top: -40rpx;
+						margin-left: -80rpx;
+					}
+				}
+				.Countmark{
+					position: relative;
+					background-color: #13506c;
+					top: -30px;
+					.Countimg{
+						text-align: center;
+						margin-left: 4rpx;
+						display: flex;
+						height: 60rpx;
+						justify-content: center;
+						align-content: center;
+						align-items: center;
+						.end{
+							font-weight: 400;
+							// margin-right: 20rpx;
+							color: #fff;
+							font-size: 12px;
+						}
+						.num{
+							width: 43rpx;
+							height: 43rpx;
+							border-radius: 10%;
+							background-color: #fff;
+						}
+						.symbol{
+							color: #fff;
+							margin: 0 5rpx;
+						}
+					}
+				}
+				.register{
+					width: 100%;
+					margin-top: -60rpx;
+					background-color: #eff4fa;
+					.registerBrand{
+						font-size: 14px;
+						overflow: hidden;
+						text-overflow:ellipsis;
+						white-space: nowrap;
+					}
+					.registerCase{
+						display: flex;
+						.registerBox{
+							.registerSize{
+								color: #f5595a;
+								font-size: 16px;
+							}
+							.registerSizes{
+								font-size: 12px;
+								color: #bbb;
+								text-decoration: line-through;
+								margin-top: -20rpx;
+							}
+						}
+						.registerButton{
+							border-radius: 10rpx;
+							color: #fff;
+							background-color: #f5542a;
+							text-align: center;
+							height: 50rpx;
+							width: 130rpx;
+							line-height: 50rpx;
+							margin-left: 90rpx;
+							margin-top: 10rpx;
+							font-size: 13px;
+						}
+					}
+					
+				}
+			}
+		}
+	}
+	
+	.aaccountsement{
+		width: 100%;
+		height: 200rpx;
+		margin: -20rpx 0;
+		.aaccountmentimg{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	
+	.Business{
+		width: 100%;
+		height: 60rpx;
+		background-color: #fcedd0;
+		display: flex;
+		margin: 20rpx 0 20rpx 0;
+
+		.services{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			color: #b97c46;
+		}
+		.servicesAll{
+			margin-right: 20rpx;
+			margin:10rpx 20rpx 10rpx 0;
+		}
+	}
+	
+	.serviceMore{
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
+		margin: -18rpx 0 20rpx 0;
+		.serviceItem{	
+			display: flex;
+			justify-content: center;
+			.serviceBack{
+				width: 640rpx;
+				background-color: #fff8f5;
+				border-radius: 20rpx;
+				margin: 10rpx 0 10rpx 0;
+				.serviceBox{
+					margin: 20rpx 20rpx 20rpx 20rpx;
+					.serviceCompany{
+						font-size: 14px;
+					}
+					.serviceWold{
+						font: 12px;
+						color: #dbd6d3;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					.priceItem{
+						width: 100%;
+						display: flex;
+						.priceColor{
+							color: #f77a76;
+							font-size: 16px;
+						}
+						.priceoRiginal{
+							color: #CCCCCC;
+							font-size: 12px;
+							text-decoration: line-through;
+							margin-top: 10rpx;
+							margin-left: 20rpx;
+						}
+						.immediately{
+							background-color: #f44d2b;
+							border-radius: 30rpx;
+							color: #fff;
+							height: 50rpx;
+							width: 130rpx;
+							line-height: 50rpx;
+							font-size: 13px;
+							text-align: center;
+							margin-left: 100rpx;
+						}
+					}
+				}
+			}
+			
+		}
+	}
+	
+	.Financial{
+		width: 100%;
+		height: 60rpx;
+		background-color: #c3efd4;
+		display: flex;
+		margin: 20rpx 0 20rpx 0;
+		.FinanAudit{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			color: #20b76a;
+		}
+		.FinanAll{
+			margin-right: 20rpx;
+			margin:10rpx 20rpx 10rpx 0;
+		}
+	}
+	
+	.SpecialItem{
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
+		margin: -18rpx 0 20rpx 0;
+		padding-bottom: 50rpx;
+		.SpecialReview{
+			display: flex;
+			// justify-content: center;
+			.SpecialBack{
+				width: 210rpx;
+				background-color: #f6fdf5;
+				border-radius: 20rpx;
+				margin: 10rpx 10rpx 10rpx 10rpx;
+				.SpecialBox{
+					margin: 20rpx 20rpx 20rpx 20rpx;
+					.Specialreport{
+						font-size: 14px;
+					}
+					.SpecialWold{
+						font-size: 10px;
+						color: #dbd6d3;
+					}
+					.reviewBox{
+						width: 100%;
+						display: flex;
+						.reportWord{
+							.wordColor{
+								color: #f77a76;
+								font-size: 16px;
+							}
+							.sizeColor{
+								color: #CCCCCC;
+								font-size: 13px;
+								text-decoration: line-through;
+							}
+						}
+						.reportCircular{
+							height: 50rpx;
+							width: 50rpx;
+							border-radius: 50%;
+							color: #fff;
+							background-color: #f47a25;
+							text-align: center;
+							margin: 20rpx 0 10rpx 30rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	.memberItem{
+		position: fixed;
+		width: 100%;
+		background-size:cover;
+		height: 110rpx;
+		padding: 0 20rpx;
+		margin-top: 20rpx;
+		bottom: -1rpx;
+		left: 0;
+		background-image: url(../../static/home/bottom.png);
+		.Opening{
+			color: #fff;
+			margin-left: 20rpx;
+		}
+		.memberOpen{
+			width: 100%;
+			margin-top: -10rpx;
+			.openBox{
+				display: flex;
+				margin-left: 100rpx;
+				.memberImg{
+					width: 50rpx;
+					height: 40rpx;
+				}
+				.memberWold{
+					color: #F0DCB9;
+					margin-left: 20rpx;
+				}
+				.memberButton{
+					height: 50rpx;
+					width: 130rpx;
+					line-height: 50rpx;
+					font-size: 13px;
+					text-align: center;
+					margin-left: 150rpx;
+					background-color: #F0DCB9;
+					border-radius: 30rpx;
+					color: #3E414F;
+				}
+			}
+		}
+	}
+	
+	.informSide{
+		position: fixed;
+		right:20rpx;
+		top:76%;
+		background-color: #fff;
+		.informtact{
+			width: 50rpx;
+			height: 50rpx;
+			.informImg{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+
+	
+	.advertisement{
+		width: 100%;
+		height: 200rpx;
+		margin: -20rpx 0;
+		.advertisementimg{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	
+	.tonggong{
+		width: 100%;
+		.notice{
+			width: 100%;
+			height: 60rpx;
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			padding: 6rpx 22rpx;
+			border-radius: 16rpx;
+			.noticecont{
+				
+				display: flex;
+				.noticeimg{
+					width: 44rpx;
+					height: 44rpx;
+					vertical-align:middle;  
+				}
+				.noticetext{
+					//font-size: 22rpx;
+					margin-left:15rpx;
+				}
+			}
+		}
+	}
+	
+	
+	.goodarticles{
+		width: 100%;
+		
+		.articlescont{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: space-between;
+			.checkAll{
+				margin-right: 20rpx;
+			}
+		}
+		
+		.goodscont{
+			width: 100%;
+			border-radius: 16rpx;
+			display: flex;
+			background: #fff;
+			padding: 34rpx 34rpx;
+			margin-bottom: 20rpx;
+			
+			.goodscontleft{
+				width: calc(100% - 200rpx);
+				//font-weight: bolder;
+				padding: 0 16rpx 0 0;
+				display: flex;
+				flex-wrap: wrap;
+				align-content: space-between;
+				.leftcont{
+					width: 100%;
+					font-size:30rpx ;
+					color: #666666;
+					// letter-spacing:2px
+				}
+				.leftbottom{
+					width: 100%;
+					margin-top:15rpx;
+					display: flex;
+					justify-content: space-between;
+					
+					.bottomtext{
+						font-size: 26rpx;
+						color: rgb(187,191,192);
+					}
+				}
+			}
+			
+			.goodscontright{
+				
+				.rightimg{
+					width: 200rpx;
+					height: 180rpx;
+					border-radius: 15rpx;
+				}
+			}
+		}
+		
+	}
+	
+	.logo {
+		height: 200rpx;
+		width: 200rpx;
+		margin-top: 200rpx;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 50rpx;
+	}
+
+	.text-area {
+		display: flex;
+		justify-content: center;
+	}
+
+	.title {
+		font-size: 36rpx;
+		color: #8f8f94;
+	}
+	.xuanfu button{
+		background-image: url('../../static/homeimg/service.png');
+		background-size: 100% 100%;
+		background-color: transparent;
+	}
+	button::after{
+	    border: none;  
+	}
+	.noInternet{
+		position: absolute;
+		width: 100%;
+		top:50%;
+		transform: translateY(-50%);
+		text-align: center;
+		image{
+			width: 500rpx;
+		}
+		.refresh{
+			margin-top: 20rpx;
+			width: 60rpx;
+		}
+	}
+	.cu-bar{
+		height: 70rpx !important;
+		min-height: 0;
+	}
+	.wrapList{
+		//display: flex;
+		//justify-content: space-between;
+		width:480rpx;
+		height: 50rpx;
+		overflow: hidden;
+		.wordScroll{
+			//display: flex;
+			//justify-content: space-between;
+			animation: 5s wordScroll linear infinite normal;
+		}
+	}
+	 @keyframes wordScroll{
+		0% {
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+		100% {
+			-webkit-transform: translate3d(0, -100rpx, 0);
+			transform: translate3d(0, -100rpx, 0);
+		}
+	}
+</style>

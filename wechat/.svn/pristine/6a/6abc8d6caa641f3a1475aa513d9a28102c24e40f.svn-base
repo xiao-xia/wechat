@@ -1,0 +1,481 @@
+<template>
+	<view class="fabutent">
+		<view class="noLoginItem" v-if="!token">
+			<!-- <image class="noLoginImg" src="" mode=""></image> -->
+			<view class="noLoginText">您还未登录哦，请先登录~</view>
+			<button class="loginButton" @tap="goLogin">立即登录</button>
+		</view>
+		<view class="publishWrap" v-else>
+		<view class="fabbucont">
+			<view class="fabuclose">
+				<!-- <text style="color:#ccc;">取消</text> -->
+				<view v-else class="botfabu" @tap="submit()"  v-if="change">
+					重新发布
+				</view>
+				<view class="botfabu" @tap="submit()" v-else>
+					发布
+				</view>
+			</view>
+			<view class="reinformation">
+				<textarea class="discrible" type="text" placeholder="请输入产品相关信息" v-model="productDescribe"/>
+			</view>
+			<view class="srcPublish">
+				<view class="selectedImg  srcBox" v-for="(item,index) in imgList" :key='index'>
+					<image :src="item" mode=""  @tap="previewImage"></image>
+					<text class="cuIcon-roundclosefill shanchu" @click="deleteImg(index)"></text>
+				</view>
+				<view class="selectedVideo srcBox" v-if="videoShow">
+					<video :src="videoPath" 
+					 show-center-play-btn='true'></video>
+					 <text class="cuIcon-roundclosefill shanchu" @click="deleteVideo"></text>
+				</view>
+				<view class="srcBox">
+					<view class="camera" @tap="chooseVideoImage">
+						<text class="cuIcon-cameraaddfill lg photo"></text>
+						<view class="words">
+							照片/视频
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="">
+				注：最多上传9张图片
+			</view>
+		</view>
+		<view class="messagecont">
+			<view class="tariff">
+				<view class="tariffitem">
+					<view class="">
+						<text style="color: #ff6600;">*</text>产品名称
+					</view>
+					<input style="text-align: right;" v-model="productName" type="text" placeholder="未填写" />
+				</view>
+			</view>
+			<view class="tariff">
+				<view class="tariffitem">
+					<view class="">
+						<text style="color: #ff6600;">*</text>价格
+					</view>
+					<input style="text-align: right;" v-model="productPrice" type="text" placeholder="未填写" />
+				</view>
+			</view>
+			<view class="functionBlcok">
+				<view class="functionB">
+					<view class="functionLeft">
+						<view class="functionText">
+							<text style="color: #ff6600;">*</text>姓名
+						</view>
+					</view>
+					<view class="myinput">
+						<input class="inputFrame" v-model="linkmanName" type="text" placeholder="未填写" />
+					</view>
+				</view>
+				
+				<view class="functionB">
+					<view class="functionLeft">
+						<view class="functionText">
+							<text style="color: #ff6600;">*</text>手机
+						</view>
+					</view>
+					<view class="myinput">
+						<input class="inputFrame" v-model="linkmanTel" type="text" placeholder="未填写" />
+					</view>
+				</view>
+					
+				<view class="functionB">
+					<view class="functionLeft">
+						<view class="functionText">
+							<text style="color: #ff6600;">*</text>发货地址
+						</view>
+					</view>
+					<view class="myinput">
+						<input class="inputFrame" v-model="linkmanAddress" type="text" placeholder="未填写" />
+					</view>
+				</view>
+				
+				<view class="functionB">
+					<view class=" uni-column">
+						<text style="color: #ff6600;">*</text><label>类型：</label>
+					</view>
+					<picker v-model="programType" @change="bindPickerChange" :range="array">
+						<text v-model="programType" class="Frametype">{{array[index]}}</text>
+					</picker>
+				</view>
+			</view>
+		</view>
+	    </view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import{
+		save,newSave
+	} from '../../API/welfareArr/index.js'
+	import {postServer} from '../../common/static-data.js'
+	export default {
+		data() {
+			return {
+				productDescribe:'',
+				productName:'',
+				productPrice:'',
+				linkmanName:'',
+				linkmanTel:'',
+				linkmanAddress:'',
+				array:['医疗设备租赁','康复设备共享'],
+				index: 0,
+				imgList:[],
+				videoPath:'',
+				videoShow:false,
+				imgServePath:'',
+				videoServePath:'',
+				imgPathStr:'',
+				//productObj:'',
+				change:'',
+				projectId:''
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad(options) {
+			//console.log(options)
+			if(options.project){
+				this.change=options.project
+				this.projectId=options.id
+				//console.log(JSON.parse(options.project))
+				let productObj=JSON.parse(options.project)
+				this.productName=productObj.productName
+				this.productPrice=productObj.productPrice
+				this.linkmanName=productObj.linkmanName
+				this.productDescribe=productObj.productDescribe
+				this.linkmanTel=productObj.linkmanTel
+				this.linkmanAddress=productObj.linkmanAddress
+			}
+		},
+		onShow() {
+			//console.log(postServer)
+		},
+		onHide() {
+		},
+		methods: {
+		    bindPickerChange(e){
+				 this.index = e.target.value
+			},
+			chooseVideoImage(){
+				uni.showActionSheet({
+					title:"选择上传类型",
+					itemList: ['图片','视频'],
+					success: (res) => {
+						console.log(res)
+						if(res.tapIndex == 0){
+							if(this.imgList.length>=9){
+								uni.showToast({
+									title:'图片超过限制张数',
+									icon:'none'
+								})
+								return
+							}
+							this.chooseImages()
+						} else {
+							this.chooseVideo()
+						}
+					}
+				})
+			},
+			chooseImages(){
+				// 上传图片
+				/*uni.showToast({
+					title:'最多选择9张图片',
+					icon:'none'
+				})*/
+				uni.chooseImage({
+					count: 9, //默认9
+					// sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album','camera'], //从相册选择
+					success:(res)=> {
+						this.imgList = this.imgList.concat(res.tempFilePaths);
+						}
+				});
+			},
+			previewImage: function(e) {
+				//预览图片
+				var current = e.target.dataset.src
+				uni.previewImage({
+					current: current,
+					urls: this.imgList
+				})
+			},
+		    chooseVideo(){
+				uni.chooseVideo({
+					maxDuration:60,
+					sourceType: ['album'],
+					success: (responent) => {
+						//console.log(responent.tempFilePath)
+						this.videoPath=responent.tempFilePath
+						this.videoShow=true
+					}
+				})
+			},
+			deleteImg(index){
+				 this.imgList.splice(index, 1)
+			},
+			deleteVideo(){
+				this.videoShow=false
+			},
+		async submit(){
+			if(this.productDescribe==''||this.productName==''||this.productPrice==''||this.linkmanName==''||
+			this.linkmanTel==''||this.linkmanAddress==''||this.linkmanAddress==''||this.imgList.length==0)
+			{uni.showToast({
+				title:'您还有信息未填写',
+				icon:'none'
+			})
+			return}
+			console.log(this.imgList)
+			for (var i = 0; i < this.imgList.length; i++) {   
+			const res=await  uni.uploadFile({
+					url: 'https://www.fjzhihui.cn'+'/flie/multipleFileUpload?token='+this.token, 
+					filePath: this.imgList[i],
+					name: 'file',
+				/*	success: (uploadFileRes) => {
+						console.log(uploadFileRes.data)
+						console.log(typeof(uploadFileRes.data));
+						this.imgServePath=JSON.parse(uploadFileRes.data) 
+						console.log(this.imgServePath)
+						console.log(this.imgServePath[0])
+					} */
+				});
+			 console.log(res)
+			 console.log(res[1].data)
+			 console.log(typeof(res[1].data))
+			 this.imgServePath=JSON.parse((res[1].data)).join()
+			  console.log(this.imgServePath)
+			  this.imgPathStr=this.imgPathStr+this.imgServePath+','
+			 console.log( this.imgPathStr)
+			}
+		const uploadFileRes=await uni.uploadFile({
+				url:'http://47.94.82.0:81'+'/flie/multipleFileUpload?token='+this.token, 
+				filePath: this.videoPath,
+				name: 'file',
+			/*	success: (uploadFileRes) => {
+					console.log(uploadFileRes.data);
+					this.videoServePath=JSON.parse(uploadFileRes.data)
+					console.log(this.videoServePath[0])
+				}*/
+			});
+		//console.log(this.imgServePath)
+		if(!this.change){
+			const res=await save(this.token,this.productName,this.array[this.index],this.productDescribe,(this.imgPathStr).slice(0,-1),
+			(this.imgPathStr).slice(0,-1),this.videoServePath[0],this.productPrice,this.linkmanName,this.linkmanTel,
+			 this.linkmanAddress)
+			 console.log(res) 
+		}else{
+			const newres=await newSave(this.token,this.productName,this.array[this.index],this.productDescribe,(this.imgPathStr).slice(0,-1),
+			(this.imgPathStr).slice(0,-1),this.videoServePath[0],this.productPrice,this.linkmanName,this.linkmanTel,
+			 this.linkmanAddress,this.projectId)
+			 console.log(newres)
+		}
+		  
+		 var upData={}
+		 upData.imgs=this.imgList
+		 upData.describle=this.productDescribe
+		 upData.name=this.productName
+		 upData.price=this.productPrice
+		 upData.people=this.linkmanName
+		 upData.phone=this.linkmanTel
+		 upData.address=this.linkmanAddress
+		 upData.type=this.array[this.index]
+		  uni.redirectTo({
+			url:'./examine?upData='+JSON.stringify(upData)
+		  })
+	}
+	}
+}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+	}
+	.fabutent{
+		width: 100%;
+		
+		/* 删除图片 */
+		.deleteimg{
+			width: 38upx; height: 38upx;
+			position: absolute;
+			top: 6upx;
+			right: 6upx;
+		}
+		.noLoginItem {
+			width: 100%;
+			padding: 150rpx 0 0;
+			text-align: center;
+			
+			.noLoginImg {
+				width: 250rpx;
+				height: 250rpx;
+				border-radius: 50%;
+			}
+			.noLoginText {
+				margin-top: 80rpx;
+				font-size: 28rpx;
+				color: #101010;
+				letter-spacing: 2rpx;
+			}
+			.loginButton {
+				margin-top: 50rpx;
+				width: 300rpx;
+				height: 80rpx;
+				border-radius: 50rpx;
+				background-color: var(--button);
+				color: #fff;
+				line-height: 80rpx;
+				
+			}
+		}
+		.fabbucont{
+			padding: 30rpx 20rpx;
+			background-color: #fff;
+			.fabuclose{
+				width: 100%;
+				padding: 0 0 20rpx 0;
+				font-size: 32rpx;
+				border-bottom: 2rpx solid #ccc;
+				display: flex;
+				justify-content: flex-end;
+				
+				.botfabu{
+					font-size: 32rpx;
+					padding: 0 40rpx;
+					color: #fff;
+					border-radius:30rpx ;
+					background-color: #06C35F;
+				}
+				.active{
+					background-color: #06C35F;
+				}
+			}
+			
+			.reinformation{
+				padding: 20rpx 0;
+				.discrible{
+					width: 100%;
+				}
+			}
+			.camera{
+				width: 120rpx;
+				height: 130rpx;
+				background-color: #EBEDEB;
+				border-radius: 20rpx;
+				text-align: center;
+				.photo{
+					font-size: 80rpx;
+					height: 80rpx;
+					line-height: 80rpx;
+					color: #999;
+				}
+				.words{
+					font-size: 24rpx;
+				}
+
+					.uploadvideo video{
+						width: 100%; height: 400upx; border-radius: 5upx;
+					}
+					.uploadvideo{
+						margin: 0 8px; border-radius: 5upx; position: relative;
+					}
+					.pause{
+						width: 50upx; height: 50upx; position: absolute; top: 6upx; right: 6upx;
+					}
+				}
+			}
+			
+		
+		.messagecont{
+			margin-top: 20rpx;
+			background-color: #fff;
+			
+			.tariff{
+				padding:30rpx 20rpx;
+				border-bottom: 1rpx solid #ccc;
+				.tariffitem{
+					display: flex;
+					justify-content: space-between;
+				}
+			}
+			
+			.functionBlcok{
+				
+				.functionB{
+					width: 100%;
+					padding: 30rpx 20rpx;
+					display: flex;
+					justify-content: space-between;
+					border-bottom: 1rpx solid #BBBBBB;
+				}
+				
+				.inputFrame{
+					text-align: right;
+				}
+				.Frametype{
+					text-align: right;
+					margin-left: 447rpx;
+				}
+				.example-body {
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: center;
+					padding: 0;
+					font-size: 14px;
+					background-color: #ffffff;
+				}
+				.result-box {
+					text-align: center;
+					padding: 20px 0px;
+					font-size: 16px;
+				}
+				
+				
+			}
+			.functionBlcok:nth-last-child(1){
+				border-bottom:none;
+			}
+		}
+	}
+
+    .srcPublish{
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	.srcBox{
+		width: 200rpx;
+		height: 200rpx;
+		margin:0 20rpx 10rpx 10rpx;
+		border: 1px solid #ccc;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		.shanchu{
+			position: absolute;
+			right: -20rpx;
+			top: -30rpx;
+			font-size: 40rpx;
+		}
+		image{
+			width: 100%;
+			height: 100%;
+		}
+		video{
+			width: 100%;
+			height: 100%;
+		}
+	}
+</style>

@@ -1,0 +1,262 @@
+<template>
+	<view class="container">
+		<view class="establishback">
+			<view class="estable">
+				<view class="establishName">
+					企业名称
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.companyName" type="text" placeholder="这是一个企业名称有限公司不能修改" />
+				</view>
+			</view>
+			
+			<view class="estable">
+				<view class="establishName">
+					营业执照
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.certificateNo" type="text" placeholder="请输入营业执照号码不能修改" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					法人姓名
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.companyOwner" type="text" placeholder="请输入法人姓名可以修改" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					联系人
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.companyContactName" type="text" placeholder="请输入联系人姓名可以修改" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					联系号码
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.companyMobile" type="text" placeholder="请输入联系号码可以修改" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					企业现居地
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.nowAddress" type="text" placeholder="请输入企业现居地可以修改" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					意见服务（可多选）
+				</view>
+				<view class="estableTab">
+					<!-- <view class="services" :class="select==index?'active':''"  v-for="(item,index) in TypeData" :key='index'  @tap="tagChange(index,item.classifyTag)"> -->
+					<view class="services" :class="{'active': classifyData.indexOf(index+1)!=-1}"  v-for="(item,index) in TypeData" :key='index'  @tap="tagChange(index,item)">
+						{{item.classifyName}}
+					</view>
+				</view>
+			</view>
+			<button class="buttonAdd"  @tap="updateEvent()">保存</button>
+		</view>
+	</view>
+	
+	
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import { updateCompany,serviceType } from '../../../API/eatablishment/index.js'
+	export default{
+		data(){
+			return{
+				select:0,
+				formList:{},
+				classifyData:[],
+				classData:[],
+				TypeData:[{
+					categoryName:'工商服务'
+				},{
+					categoryName:'代理记账'
+				},{
+					categoryName:'财务审计'
+				},{
+					categoryName:'工商服务'
+				},{
+					categoryName:'工商服务'
+				},{
+					categoryName:'工商服务'
+				},],
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad(option){
+			//解析json
+			var data = JSON.parse(option.data);
+			console.log(data)
+			this.formList = data;
+			console.log(this.formList)
+			this.classifyData = JSON.parse(data.serviceId)
+			console.log(this.classifyData)
+			console.log(typeof this.classifyData)
+			
+			this.id=this.formList.id
+		},
+		onShow() {
+			this.getserviceType()
+		},
+		methods:{
+			async getserviceType() {
+				const res = await serviceType(this.token);
+				console.log(res)
+				this.TypeData = res.data
+				console.log(this.TypeData)
+			},
+			
+			tagChange(index,res) {
+				// this.select=index;
+				// 多选
+				console.log(res)
+				this.classifyData.length = 0
+				var arr = [];
+				var obj={};
+				this.TypeData.forEach((item) => {     //数组才可以foreach
+					if(item.classifyName == res.classifyName) {    //选中的商品和item中一样时就选中
+						obj.classifyName = item.classifyName;
+						console.log(item.classifyName);
+						console.log(obj.classifyName);
+						this.classifyData.push(obj)
+						this.classifyData.push(obj)
+						console.log(this.classifyData)
+					} else {
+					this.classifyData.splice(this.classifyData.indexOf(index), 1); //取消选中
+					console.log(this.classifyData)
+				}
+				});
+				
+				
+				
+				// this.classifyData.length = 0
+				// if (this.classifyData.indexOf(index+1) == -1) {
+				// 	if(this.classifyData.length == 3){
+				// 		uni.showToast({
+				// 			title:'最多选择三项',
+				// 			icon:'none'
+				// 		})
+				// 	}else{
+				// 		console.log(item.classifyTag)
+				// 		this.classifyData.push(item.classifyTag);
+				// 		console.log(this.classifyData)
+				// 	}
+				// } 
+			},
+			
+			
+			async updateEvent() {
+				const res = await updateCompany(
+					this.token,
+					this.formList.companyName,
+					this.formList.certificateNo,
+					this.formList.companyOwner,
+					this.formList.companyContactName,
+					this.formList.companyMobile,
+					this.formList.nowAddress,
+					this.formList.classifyName,
+					this.formList.serviceId,
+				);
+				console.log(res)
+				if(res) {
+					uni.navigateBack({
+					})
+				}else {
+					uni.showToast({
+						title:'修改失败'
+					})
+				}
+				
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.container{
+		.establishback{
+			width: 100%;
+			height: 1200rpx;
+			background-color: #fff;
+			// margin-top: 10rpx;
+			.estable{
+				padding: 10rpx 0 10rpx 30rpx;
+				.establishName{
+					font-size: 14px;
+					color: #333333;
+				}
+				.inputClass{
+					background-color: #F1F1F1;
+					width: 94%;
+					height: 72rpx;
+					padding: 5rpx 8rpx 0 2rpx;
+					.inputFrame{
+						width: 100%;
+						height: 60rpx;
+						font-size: 14px;
+						padding: 0 20rpx;
+					}
+				}
+			}
+			.estableTab{
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				.services{
+					width: 130rpx;
+					height: 50rpx;
+					background-color: #F1F1F1;
+					border-radius: 10rpx;
+					font-size: 28rpx;
+					text-align: center;
+					color: #CCCCCC;
+					line-height: -40rpx;
+					margin: 20rpx 40rpx 0 0;
+				}
+				.active{
+					width: 130rpx;
+					height: 50rpx;
+					background-color: #008CFF;
+					border-radius: 10rpx;
+					font-size: 28rpx;
+					text-align: center;
+					color: #fff;
+					line-height: -40rpx;
+					margin: 20rpx 40rpx 0 0;
+				}
+			}
+			.buttonAdd{
+				background-image: linear-gradient(to right, #1093FE, #55AFF9);
+				text-align: center;
+				height: 80rpx;
+				line-height: 80rpx;
+				width:500rpx;
+				margin:0  auto;
+				color: #fff;
+				border-radius: 50rpx;
+				font-size: 32rpx;
+				margin-top: 50rpx;
+			}
+		}
+	}
+	
+</style>

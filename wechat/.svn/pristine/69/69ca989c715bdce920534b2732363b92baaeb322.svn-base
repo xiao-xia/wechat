@@ -1,0 +1,109 @@
+<template>
+	<view class="examine">
+		<view class="title">
+			审核中
+		</view>
+		<view class="main">
+			<view class="srcPublish">
+				<view class="srcBox" v-for="(item,index) in publishObj.imgs" :key='index'>
+					<image :src="item" mode=""></image>
+				</view>
+				<view class="srcBox" v-if="videoShow">
+					<video :src="videoPath" 
+					 show-center-play-btn='true'></video>
+				</view>
+			</view>
+			
+			<view class="">
+			   {{publishObj.describle}}
+			</view>
+			<view class="infoItem">
+				<text>产品名称</text>
+				<text>{{publishObj.name}}</text>
+			</view>
+			<view class="infoItem">
+				<text>价格</text>
+				<text>{{publishObj.price}}</text>
+			</view>
+			<view class="infoItem">
+				<text>姓名</text>
+				<text>{{publishObj.people}}</text>
+			</view>
+			<view class="infoItem">
+				<text>手机</text>
+				<text>{{publishObj.phone}}</text>
+			</view>
+			<view class="infoItem">
+				<text>发货地址</text>
+				<text>{{publishObj.address}}</text>
+			</view>
+			<view class="infoItem">
+				<text>类型</text>
+				<text>{{publishObj.type}}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+				publishObj:{}
+			}
+		},
+		onLoad(options) {
+			console.log(options)
+			this.publishObj=JSON.parse(options.upData)
+			console.log(this.publishObj)
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+	}
+	.title{
+		background:linear-gradient(left,#0dc793,#00ad87);
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		font-size: 32rpx;
+		color: #fff;
+	}
+
+    .main{
+		padding: 30rpx 20rpx;
+		.infoItem{
+			display: flex;
+			justify-content: space-between;
+			padding: 20rpx 0;
+			border-bottom: 1px solid #fff;
+		}
+		.srcBox{
+			width: 200rpx;
+			height: 200rpx;
+			margin:0 20rpx 10rpx 10rpx;
+			border: 1px solid #ccc;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			.shanchu{
+				position: absolute;
+				right: -20rpx;
+				top: -30rpx;
+				font-size: 40rpx;
+			}
+			image{
+				width: 100%;
+				height: 100%;
+			}
+			video{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+</style>

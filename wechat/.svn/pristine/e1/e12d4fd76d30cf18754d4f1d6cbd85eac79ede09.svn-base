@@ -1,0 +1,164 @@
+<template>
+	<view class="goodsManagement">
+		<view class="search">
+			<text class="cuIcon-search lg left" ></text>
+			<input type="text" value="" placeholder="商品名称"/>
+		</view>
+		<view class="title">
+			<view class="shang" v-for="(item,index) in navList" :class="TabCur==index?'active':''"
+			@click="tabSelect(index)">
+				{{item}}
+			</view>
+		</view>
+		<view class="card">
+			<view class="photo">
+				<view class="big">
+					<image src="../../static/goods.png" mode=""></image>
+				</view>
+				<view class="small">
+					<image src="../../static/goods.png" mode=""></image>
+					<image src="../../static/goods.png" mode=""></image>
+					<image src="../../static/goods.png" mode=""></image>
+				</view>
+			</view>
+			<view class="detail">
+				<view class="name">
+					钙维D软胶囊 1g*200粒 钙片 补钙 液 体钙
+				</view>
+				<text>参数</text>
+				<view class="describle">
+					<view class="type">
+						<view class="">
+							具体规格: 1g/粒*200粒
+						</view>
+						<view class="">
+							产品类型: 软胶囊
+						</view>
+						<view class="">
+							商品售价：¥150.00
+						</view>
+					</view>
+					<view class="handle">
+						<view class="but">
+							下架
+						</view>
+						<view class="but">
+							修改
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+				TabCur:0,
+				navList:['已上架','已下架']
+			}
+		},
+		methods:{
+			tabSelect(index){
+				this.TabCur=index
+			}
+		}
+		
+	}
+</script>
+
+<style lang="scss">
+	page{
+	    background-color: #fff;
+	  .goodsManagement{
+		padding: 20rpx;
+		.search{
+			background-color: #ccc;
+			border-radius: 40rpx;
+			padding-left: 70rpx;
+			height: 60rpx;
+			position: relative;
+			input{
+				width: 100%;
+				height: 100%;
+			}
+			.left{
+				position: absolute;
+				left: 20rpx;
+				top:8rpx
+			}
+		}
+	    .title{
+			padding: 20rpx 0;
+			display: flex;
+			.shang{
+				width: 50%;
+				text-align: center;
+			}
+		}
+			.active{
+				position: relative;
+			}
+			.active::after{
+				content:'';
+				position: absolute;
+				width: 65rpx;
+				height: 4rpx;
+				background-color: #0DB95D;
+				left:50%;
+				transform: translateX(-50%);
+				bottom: 0;
+			}
+	
+	    .card{
+			padding: 20rpx;
+			border-radius: 10rpx;
+			box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, .3);
+			display: flex;
+			.photo{
+				width: 200rpx;
+				.big{
+					width: 140rpx;
+					height: 140rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+		        .small{
+			         margin-top: 20rpx;
+				     image{
+					 width:50rpx;
+					 height: 50rpx;
+					 margin-right: 10rpx;
+				 }
+			  }
+			}
+		
+		    .detail{
+				width: calc(100% - 200rpx);
+				.describle{
+					display: flex;
+					justify-content: space-between;
+				   .handle{
+					   .but{
+						   width: 100rpx;
+						   height: 40rpx;
+						   background-color:#0DB95D;
+						   text-align: center;
+						   line-height: 40rpx;
+						   margin: 20rpx;
+						   border-radius: 20rpx;
+						   color: #fff;
+					   }
+				   }
+				}
+			}
+		}
+	  
+	
+	}
+}
+</style>

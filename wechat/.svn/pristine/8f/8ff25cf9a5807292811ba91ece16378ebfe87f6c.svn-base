@@ -1,0 +1,281 @@
+<template>
+	<view class="detail" v-if="pageShow">
+        <bepaid v-if="state=='待支付'" :createTime="messageObj.createTime" 
+		:orderNumber="messageObj.orderCode" :detailId="detailId"></bepaid>
+		<deliver v-if="state=='配送中'" :goodsArr="goodsArr"></deliver>
+		<view class="cancel" v-if="state=='已取消'">
+			订单已取消
+		</view>
+	    <view class="address">
+			<view class="nav">
+				<text class="cuIcon-locationfill lg text-white"></text>
+			</view>
+			<view class="word">
+				<view class="name">
+					{{messageObj.receiverName}} <text>{{messageObj.receiverTel}}</text>
+				</view>
+				<view class="home">
+				    {{messageObj.receiverCell}} {{messageObj.receiverDetail}}
+				</view>
+			</view>
+		</view>
+		<view class="goods">
+			<text>商品</text>
+			<view class="discrible" v-for="(item,index) in goodsArr" :key='index'>
+			    <view class="photo">
+					<image :src='item.goodsSmallImage' mode=""></image>
+			    </view>
+				<view class="type">
+					<view class="typebox">
+						<view>
+							<view class="type" >
+								{{item.goodsName}}
+							</view>
+							<view class="money" >
+								¥{{item.goodsPrice}}
+							</view>
+						</view>
+						<view class="number" >
+							x{{item.orderCount}}
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="button">
+				<view class="return" v-if="state=='配送中'" @click="goRefund">
+					退款
+				</view>
+			</view>
+		</view>
+	    <view class="totalbox">
+	    	<view class="item">
+	    		<view class="left">
+	    			商品总价
+	    		</view>
+				<view class="right">
+					¥{{messageObj.totalGoodsPrice}}
+				</view>
+	    	</view>
+			<view class="item ">
+				<view class="left" >
+					优惠券
+				</view>
+				<view class="right" >
+					¥{{messageObj.couponPrice}}
+				</view>
+			</view>
+			<view class="item">
+				<view class="left" >
+					配送费
+				</view>
+				<view class="right" >
+					¥0
+				</view>
+			</view>
+			<view class="item">
+				<view class="left" style="font-size: 32rpx;">
+					合计
+				</view>
+				<view class="right" style="font-size: 32rpx;">
+					<text>¥{{messageObj.orderPrice}}</text>
+				</view>
+			</view>
+	    </view>
+		<view class="message">
+			<view class="first">
+				订单信息
+			</view>
+			<view class="theme">
+				订单编号:{{messageObj.orderCode}}<text class="copy" @click="copyText">复制</text> 
+			</view>
+			<view class="theme">
+				下单时间:{{messageObj.createTime}}
+			</view>
+			<view class="theme" v-if="state=='配送中'">
+				支付时间:{{messageObj.updateTime}}
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		getDetail
+	} from '../../API/skedetail/index.js';
+	import   bepaid  from '../../components/orderType/toBePaid.vue'
+	import   deliver  from '../../components/orderType/deliver.vue'
+	export default {
+		data() {
+			return {
+			  messageObj:{},
+			  goodsArr:[],
+			 // goodsArrStr:'',
+			  state:'',
+			  detailId:'',
+			  //copyId:'',
+			  pageShow:false
+			}
+		},
+		components:{
+			bepaid,
+			deliver
+		},
+		computed: {
+			...mapState(['token','openId','userInfo']),
+		},
+		onLoad(options) {
+			console.log(options)
+			this.detailId=options.id;
+			this.state=options.state
+			// this.getMyOrder();
+		},
+		onShow() {
+			//this.copyId=this.detailId
+			this.getDetails();
+		},
+		methods: {
+			async getDetails(){
+				uni.showLoading({
+					title:'加载中'
+				})
+				const res = await getDetail(this.token,this.detailId);
+				console.log(res);
+				if(res){
+					uni.hideLoading()
+					this.messageObj=res.data.data;
+					this.goodsArr=res.data.goods;
+					this.pageShow=true
+				}
+			},
+			goRefund(){
+				uni.navigateTo({
+					url:'../refund/application?id='+this.detailId
+				})
+			},
+			copyText(){
+				uni.setClipboardData({
+				      //准备复制的数据
+				      data:this.messageObj.orderCode,
+				      success: function (res) {
+				        uni.showToast({
+				          title: '复制成功',
+						  icon:'none'
+				        });
+				      }
+				    })
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.cancel{
+		height: 160rpx;
+		line-height: 160rpx;
+		text-align: center;
+		background-color: #fff;
+		margin-bottom: 20rpx;
+		font-size: 32rpx;
+	}
+	.address{
+	display: flex;
+	padding: 40rpx;
+	background-color: #FFFFFF;
+	margin-bottom: 20rpx;
+	  .nav{
+		  width: 40rpx;
+		  height: 40rpx;
+		  background-image: url(../../static/orderDetail/yuan.png);
+		  background-size: 100%;
+		  margin-top: 30rpx;
+		  text-align: center;
+		  line-height: 40rpx;
+		  margin-right: 20rpx;
+	  }
+	  .word text{
+		  
+		  color: #bbb;
+	  }
+	}
+    
+	.goods{
+		border-bottom: 1px solid #eee;
+		background-color: #FFFFFF;
+		padding: 40rpx 20rpx;
+		.discrible{
+			display: flex;
+			width: 100%;
+			margin-bottom: 20rpx;
+			.photo{
+				width: 150rpx;
+				height: 150rpx;
+				margin-right: 30rpx;
+				image{
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.typebox{
+				width: 500rpx;
+				display: flex;
+				justify-content: space-between;
+			}
+		}
+		.button{
+			display: flex;
+			margin-top: 20rpx;
+			justify-content: flex-end;
+			view{
+				border: 1px solid #EEEEEE;
+				font-size: 24rpx;
+				border-radius: 40rpx;
+				width: 150rpx;
+				text-align: center;
+			}
+			.cart{
+				margin-right: 20rpx;
+			}
+		}
+	}
+    .totalbox{
+		background-color: #FFFFFF;
+		padding: 40rpx 20rpx 20rpx;
+		margin-bottom: 20rpx;
+		.item{
+			display: flex;
+			justify-content: space-between;
+			font-size:24rpx ;
+			text{
+				color: red;
+			}
+		}
+	}
+	.message{
+		padding: 20rpx 20rpx 60rpx;
+		background-color: #FFFFFF;
+		.first{
+			font-size: 32rpx;
+		}
+		.theme{
+			margin-bottom: 10rpx;
+			color: #aaa;
+			.copy{
+				display: inline-block;
+				color:var(--button);
+				border: 1px solid var(--button);
+				margin-left: 20rpx;
+				font-size: 20rpx;
+				width: 50rpx;
+				text-align: center;
+			}
+		}
+	}
+</style>
+
+

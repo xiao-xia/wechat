@@ -1,0 +1,163 @@
+<template>
+	<view class="container">
+		<view class="establishback">
+			<view class="estable">
+				<view class="establishName">
+					企业名称
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入企业名称" />
+				</view>
+			</view>
+			
+			<view class="estable">
+				<view class="establishName">
+					营业执照
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入营业执照号码" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					法人姓名
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入法人姓名" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					联系人
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入联系人姓名" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					联系号码
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入联系号码" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					企业现居地
+				</view>
+				<view class="inputClass">
+					<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="请输入企业现居地" />
+				</view>
+			</view>
+			<view class="estable">
+				<view class="establishName">
+					意见服务（可多选）
+				</view>
+				<view class="estableTab">
+					<view class="services" :class="select==index?'active':''"  v-for="(item,index) in content" :key='item.id'>
+						{{item.categoryName}}
+					</view>
+				</view>
+			</view>
+			
+		</view>
+	</view>
+	
+	
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+				select:0,
+				content:[{
+					categoryName:'工商服务'
+				},{
+					categoryName:'代理记账'
+				},{
+					categoryName:'财务审计'
+				},{
+					categoryName:'工商服务'
+				},{
+					categoryName:'工商服务'
+				},{
+					categoryName:'工商服务'
+				},],
+			}
+		},
+		onLoad(){
+			
+		},
+		onShow() {
+			
+		},
+		computed: {
+			
+		},
+		methods:{
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.container{
+		.establishback{
+			width: 100%;
+			height: 1200rpx;
+			background-color: #fff;
+			margin-top: 10rpx;
+			.estable{
+				padding: 10rpx 0 10rpx 30rpx;
+				.establishName{
+					font-size: 14px;
+					color: #333333;
+				}
+				.inputClass{
+					background-color: #F1F1F1;
+					width: 94%;
+					height: 72rpx;
+					padding: 5rpx 8rpx 0 2rpx;
+					.inputFrame{
+						width: 100%;
+						height: 60rpx;
+						font-size: 14px;
+						padding: 0 20rpx;
+					}
+				}
+			}
+			.estableTab{
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				.services{
+					width: 130rpx;
+					height: 50rpx;
+					background-color: #F1F1F1;
+					border-radius: 10rpx;
+					font-size: 28rpx;
+					text-align: center;
+					color: #CCCCCC;
+					line-height: -40rpx;
+					margin: 20rpx 40rpx 0 0;
+				}
+				.active{
+					width: 130rpx;
+					height: 50rpx;
+					background-color: #008CFF;
+					border-radius: 10rpx;
+					font-size: 28rpx;
+					text-align: center;
+					color: #fff;
+					line-height: -40rpx;
+					margin: 20rpx 40rpx 0 0;
+				}
+				
+			}
+		}
+	}
+	
+</style>

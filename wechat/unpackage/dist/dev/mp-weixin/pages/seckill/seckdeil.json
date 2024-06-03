@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "商标注册",
+  "usingComponents": {
+    "rate": "/components/rate"
+  }
+}

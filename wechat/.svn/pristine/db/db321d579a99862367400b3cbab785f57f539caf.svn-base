@@ -1,0 +1,19 @@
+import req from "../../common/req.js"
+
+export const detail = (token) => {
+	return req.post(
+		"/member/detail", {
+			token
+		}
+	)
+}
+
+export const update = (token,name,birthday,sex,IdNumber) => {
+	return req.post(
+		"/member/update", {
+			token,name,birthday,sex,IdNumber
+		}
+	)
+}
+
+

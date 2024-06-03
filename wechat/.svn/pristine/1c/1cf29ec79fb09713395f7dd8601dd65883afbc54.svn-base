@@ -1,0 +1,25 @@
+import req from "../../common/req.js"
+
+export const getAbout = () => {
+	return req.get(
+		"/platform/getAbout", {
+			
+		}
+	)
+}
+
+export const getIntroduction = () => {
+	return req.get(
+		"/platform/getIntroduction", {
+			
+		}
+	)
+}
+
+export const getBookkeeping = () => {
+	return req.get(
+		"/platform/getBookkeeping", {
+			
+		}
+	)
+}

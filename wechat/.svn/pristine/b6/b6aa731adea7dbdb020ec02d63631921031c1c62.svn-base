@@ -1,0 +1,541 @@
+{
+	"pages": [ 
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationStyle":"custom",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		/* {
+			"path": "pages/personal/integral/rule",
+			"style": {
+				"navigationBarTitleText": "积分规则",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		}, */
+		{
+			"path": "pages/checkReport/checkReport",
+			"style": {
+				"navigationBarTitleText": "查看体检报告",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/refund/detail",
+			"style": {
+				"navigationBarTitleText": "退款详情",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/refund/application",
+			"style": {
+				"navigationBarTitleText": "退款申请",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/rushPurchase/rushPurchase",
+			"style": {
+				"navigationBarTitleText": "秒杀商品"
+			}
+		},
+		{
+			"path": "pages/orderDetail/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},
+		{
+			"path": "pages/searchWelfare/searchWelfare", 
+			"style": { 
+				"navigationBarTitleText": "搜索商品"
+			}
+		},
+		{
+			"path": "pages/searchArticle/searchArticle", 
+			"style": { 
+				"navigationBarTitleText": "搜索文章"
+			}
+		},
+		{
+			"path": "pages/doctorPage/doctorPage", 
+			"style": { 
+				"navigationBarTitleText": "医生主页"
+			}
+		},
+		{
+			"path": "pages/recommendation/product", 
+			"style": { 
+				"navigationBarTitleText": "产品推荐"
+			}
+		},
+		{
+			"path": "pages/recommendation/advice", 
+			"style": { 
+				"navigationBarTitleText": "保健建议"
+			}
+		},
+		{
+			"path": "pages/treatment/treatment", 
+			"style": { 
+				"navigationBarTitleText": "治疗方案"
+			}
+		},
+		{
+			"path": "pages/recommendation/article", 
+			"style": { 
+				"navigationBarTitleText": "文章推荐"
+			}
+		},
+		{
+			"path": "pages/newPage/MarketManagement", 
+			"style": { 
+				"navigationBarTitleText": "营销管理"
+			}
+		},
+		{
+			"path": "pages/buyGoods/buyGoods",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
+		},
+		{
+			"path": "pages/welfareDetail/welfareDetail",
+			"style": {
+				"navigationBarTitleText": "公益项目详情"
+			}
+		},
+		{
+			"path": "pages/publicDetail/publicDetail",
+			"style": {
+				"navigationBarTitleText": "公益项目详情"
+			}
+		},
+		{
+			"path": "pages/shippingAddress/shippingAddress",
+			"style": {
+				"navigationBarTitleText": "收货地址"
+			}
+		},
+		{
+			"path": "pages/pay/pay",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
+		},
+		{
+			"path": "pages/seckillGoods/seckillGoods",
+			"style": {
+				"navigationBarTitleText": "智慧医疗"
+			}
+		},
+		{
+			"path": "pages/location/location",
+			"style": {
+				"navigationBarTitleText": "位置"
+			}
+		},
+		{
+			"path": "pages/position/position",
+			"style": {
+				"navigationBarTitleText": "位置"
+			}
+		},
+		{
+			"path": "pages/newPage/dataReport",
+			"style": {
+				"navigationBarTitleText": "数据报表"
+			}
+		},
+		{
+			"path": "pages/newPage/articleDetail",
+			"style": {
+				"navigationBarTitleText": "文章详情"
+			}
+		},
+		{
+			"path": "pages/newPage/modifyNoSeckill",
+			"style": {
+				"navigationBarTitleText": "商品信息修改"
+			}
+		},
+		{
+			"path": "pages/newPage/modifyProduct",
+			"style": {
+				"navigationBarTitleText": "商品信息修改"
+			}
+		},
+		{
+			"path": "pages/newPage/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},
+		{
+			"path": "pages/newPage/memberManagement",
+			"style": {
+				"navigationBarTitleText": "会员管理"
+			}
+		},
+		{
+			"path": "pages/newPage/goodsManagement",
+			"style": {
+				"navigationBarTitleText": "商品管理"
+			}
+		},
+		{
+			"path": "pages/newPage/orderManagement",
+			"style": {
+				"navigationBarTitleText": "订单管理"
+			}
+		},
+		{
+			"path": "pages/workBench/workBench",
+			"style": {
+				"navigationBarTitleText": "工作台"
+			}
+		},
+		{
+			"path": "pages/remarks/remarks",
+			"style": {
+				"navigationBarTitleText": "备注"
+			}
+		},
+		{
+			"path": "pages/settle/settle",
+			"style": {
+				"navigationBarTitleText": "订单结算"
+			}
+		},
+		{
+			"path": "pages/shopcart/shoppingCart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/seckill/seckdeil",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/welfare/welfare",
+			"style": {
+				"navigationBarTitleText": "公益项目"
+			}
+		},
+		{
+			"path": "pages/goodwriiting/goodwriiting",
+			"style": {
+				"navigationBarTitleText": "好文分享"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/classification/goodsClassify",
+			"style": {
+				"navigationBarTitleText": "产品分类",
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/personal/personal",
+			"style": {
+				"navigationStyle":"custom",
+				"navigationBarTextStyle":"white"
+			}
+		},
+		/* {
+			"path": "pages/distribution/distribution",
+			"style": {
+				"navigationBarTitleText": "健康场景",
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		}, */
+		{
+			"path": "pages/searchs/searchs",
+			"style": {
+				"navigationBarTitleText": "搜索商品"
+			}
+		},
+		{
+			"path": "pages/seckill/seckill",
+			"style": {
+				"navigationBarTitleText": "限时秒杀"
+			}
+		},
+		{
+			"path": "pages/welfare/releases",
+			"style": {
+				"navigationBarTitleText": "医疗设备租赁"
+			}
+		},
+		{
+			"path": "pages/welfare/examine",
+			"style": {
+				"navigationBarTitleText": "医疗设备租赁"
+			}
+		},
+		{
+			"path": "pages/goodwriiting/articledetail",
+			"style": {
+				"navigationBarTitleText": "好文分享"
+			}
+		},
+		
+		{
+			"path": "pages/personal/feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
+		{
+			"path": "pages/personal/setting/aboutUs",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		},
+		{
+			"path": "pages/personal/setting/answerAwardRule",
+			"style": {
+				"navigationBarTitleText": "答题有奖规则"
+			}
+		},
+		{
+			"path": "pages/personal/setting/userAgreement",
+			"style": {
+				"navigationBarTitleText": "用户协议"
+			}
+		},
+		{
+			"path": "pages/personal/setting/setting",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/personal/coupon/coupon",
+			"style": {
+				"navigationBarTitleText": "抵用券",
+				"navigationBarBackgroundColor":"#fff"
+			}
+		},
+		{
+			"path": "pages/personal/coupon/rollCenter",
+			"style": {
+				"navigationBarTitleText": "领券中心"
+			}
+		},
+		{
+			"path": "pages/personal/puliceweifare/puliceweifare",
+			"style": {
+				"navigationBarTitleText": "我发布的公益项目",
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/offGoods/offGoods",
+			"style": { 
+				"navigationBarTitleText": "下架商品",
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		/* {
+			"path": "pages/personal/integral/integral",
+			"style": {
+				"navigationBarTitleText": "公益积分"
+			}
+		}, */
+		{
+			"path": "pages/serviceCenter/serviceCenter",
+			"style": {
+				"navigationBarTitleText": "客服中心"
+			}
+		},
+		{
+			"path": "pages/answer/answer",
+			"style": {
+				"navigationBarTitleText": "客服中心"
+			}
+		},
+		{
+			"path": "pages/personal/questionnaire/commodityissues",
+			"style": {
+				"navigationBarTitleText": "商品问题"
+			}
+		},
+		{
+			"path": "pages/personal/questionnaire/distributionissues",
+			"style": {
+				"navigationBarTitleText": "配送问题"
+			}
+		},
+		{
+			"path": "pages/personal/questionnaire/paymentissues",
+			"style": {
+				"navigationBarTitleText": "支付问题"
+			}
+		},
+		{
+			"path": "pages/personal/questionnaire/priceproblem",
+			"style": {
+				"navigationBarTitleText": "价格问题"
+			}
+		},
+		{
+			"path": "pages/personal/mymessage/mymessage",
+			"style": {
+				"navigationBarTitleText": "个人信息",
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/personal/mymessage/editmymessage",
+			"style": {
+				"navigationBarTitleText": "个人信息",
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/personal/myolder/whole",
+			"style": {
+				"navigationBarTitleText": "我的订单" 
+			}
+		},
+		{
+			"path": "pages/personal/address/update",
+			"style": {
+				"navigationBarTitleText": "编辑收货地址"
+			}
+		},
+		{
+			"path": "pages/personal/address/addNew",
+			"style": {
+				"navigationBarTitleText": "新增收货地址"
+			}
+		},
+		{
+			"path" : "pages/personal/establishment/establishment",
+			"style" : {
+				"navigationBarTitleText":"企业完善"
+			}
+		},
+		{
+			"path" : "pages/personal/establishment/newEnterprise",
+			"style" : {
+				"navigationBarTitleText":"新增企业"
+			}
+		},
+		{
+			"path" : "pages/personal/establishment/modify",
+			"style" : {
+				"navigationBarTitleText": "修改企业"
+			}
+		},
+			{
+			"path": "pages/personal/abouts/bookKeep",
+			"style": {
+				"navigationBarTitleText": "关于我们",
+				"navigationStyle":"custom",
+				"navigationBarTextStyle":"white"
+			}
+		}
+		,{
+				"path" : "pages/personal/agreement/agreement",
+				"style" : {
+					"navigationBarTitleText": "用户协议"
+				}
+		},
+		{
+				"path" : "pages/personal/evaluate/evaluate",
+				"style" : {
+					"navigationBarTitleText": "我的评价"
+				}
+		},
+		{
+				"path" : "pages/personal/evaluate/publish",
+				"style" : {
+					"navigationBarTitleText": "发表评价"
+				}
+		}
+       ,{
+            "path" : "pages/membership/membership",
+            "style" : {
+							"navigationBarTitleText": "开通会员"
+						}
+        }
+        ,{
+            "path" : "pages/realTime/realTime",
+            "style" : {
+							"navigationBarTitleText": "资讯快读"
+						}
+        }
+        ,{
+            "path" : "pages/realTime/realDetail",
+            "style" : {
+							"navigationBarTitleText": "资讯快读"
+						}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#fff"
+	},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#2E9FFB",
+		"borderStyle": "white",
+		"list": [{
+				"pagePath": "pages/home/home",
+				"text": "首页",
+				"iconPath": "static/tabbar/homec.png",
+				"selectedIconPath": "static/tabbar/homeg.png"
+			},{
+				"pagePath": "pages/classification/goodsClassify",
+				"text": "分类",
+				"iconPath": "static/tabbar/classc.png",
+				"selectedIconPath": "static/tabbar/classsg.png"
+			},{
+				"pagePath": "pages/shopcart/shoppingCart",
+				"text": "购物车",
+				"iconPath": "static/tabbar/cartc.png",
+				"selectedIconPath": "static/tabbar/cartg.png"
+			},{
+				"pagePath": "pages/personal/personal",
+				"text": "我的",
+				"iconPath": "static/tabbar/deliveryc.png",
+				"selectedIconPath": "static/tabbar/deliveryg.png"
+			}
+		]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

@@ -1,0 +1,230 @@
+<template>
+	<view class="modifyProduct">
+		<view class="panel">
+			<view class="name item">
+				<view class="left">
+					<text style="color: red;">*</text>商品名称
+				</view>
+				<view class="right">
+					<input type="text" value="" />
+				</view>
+			</view>
+			
+			<view class="parameter">
+				<view class="left">
+					<text style="color: red;">*</text>商品参数
+				</view>
+				<textarea value="" 
+				style="width: calc(100% - 130rpx);border: 1px solid #ccc;border-radius: 10rpx;"/>
+			</view>
+			
+			<view class="classify item">
+				 <view class="left">
+				 	<text style="color: red;">*</text>商品分类
+				 </view>
+		         <picker :value="index" :range="array"   @change="bindPickerChange" >
+				 <view class="uni-input" style="padding: 0;">{{array[index]}}</view>
+	             </picker>    
+                 <text class="cuIcon-triangledownfill lg down"></text>
+			</view>
+		
+		    <view class="price item">
+		    	<view class="left">
+		    		<text style="color: red;">*</text>商品售价
+		    	</view>
+		    	<view class="right">
+		    		<input type="text" value="" />
+		    	</view>
+		    </view>
+			
+			<view class="classify item">
+				 <view class="left">
+				 	<text style="color: red;">*</text>配送规则
+				 </view>
+			     <picker :value="index" :range="array"   @change="bindPickerChange" >
+				 <view class="uni-input" style="padding: 0;">{{array[index]}}</view>
+			     </picker>    
+			     <text class="cuIcon-triangledownfill lg down"></text>
+			</view>
+		
+		
+		    <view class="photo">
+		    	<view class="">
+		    		<text style="color: red;">*</text>商品图片
+		    	</view>
+				<view class="zhu hang">
+					<text>主图</text>
+					<image src="../../static/goods.png" mode=""></image>
+				</view>
+				<view class="fu hang">
+					<text>副图</text>
+					<image src="../../static/goods.png" mode=""></image>
+					<image src="../../static/goods.png" mode=""></image>
+					<image src="../../static/goods.png" mode=""></image>
+					<view class="add">
+						<text class="cuIcon-add lg"></text>
+					</view>
+				</view>
+				<view class="detail hang">
+					<text>详情页</text>
+					<image src="../../static/goods.png" mode=""></image>
+					<view class="add">
+						<text class="cuIcon-add lg"></text>
+					</view>
+				</view>
+				<view class="" style="color: #ccc;padding-left: 130rpx;">
+					仅支持.jpg/.png 格式
+				</view>
+		    </view>
+		
+		    <view class="foot">
+				<view class="but">
+					<view class="save common">
+						保存
+					</view>
+					<view class="cancel common">
+						取消
+					</view>
+				</view>
+		    </view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+				index:0,
+				array: [ '请选择商品类别','中国', '美国', '巴西'],
+			}
+		},
+		methods:{
+			bindPickerChange(e){
+				 this.index = e.target.value
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.modifyProduct{
+		padding: 20rpx;
+		.panel{
+			padding: 40rpx 20rpx;
+			box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, .3);
+			background-color: #fff;
+			.item{
+				display: flex;
+				align-items: center;
+				margin-bottom: 30rpx;
+				.left{
+					width: 130rpx;
+				}
+				.right{
+					width: calc(100% - 130rpx);
+					height: 50rpx;
+					border: 1px solid #ccc;
+					border-radius: 10rpx;
+					input{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		
+		  .parameter{
+			  display: flex;
+			  margin-bottom: 30rpx;
+			  .left{
+			  	width: 130rpx;
+			  }
+		  }
+		
+		
+		   .classify{
+			   position: relative;
+			   picker{
+				   width: calc(100% - 130rpx);
+				   height: 50rpx;
+				   border: 1px solid #ccc;
+				   border-radius: 10rpx;
+			   }
+			   .down{
+				   position: absolute;
+				   right: 0;
+				   top: 50%;
+				   transform: translateY(-50%);
+				   font-size: 40rpx;
+			   }
+		   }
+		
+		   .photo{
+			   margin-bottom: 30rpx;
+			   .hang{
+				  display: flex;
+				  padding-left: 50rpx;
+				  padding-bottom: 30rpx;
+				   image{
+					   width: 110rpx;
+					   height: 110rpx;
+					   margin: 0 15rpx;
+				   }
+				   .add{
+					   width: 110rpx;
+					   height: 110rpx;
+					   border: 1px solid #ccc;
+					   font-size: 100rpx;
+					   text-align:center;
+					   line-height: 100rpx;
+					   color:#ccc ;
+					   margin: 0 15rpx;
+				   }
+			   }
+		       
+		       .detail{
+				   padding-left: 20rpx;
+			   }
+		   }
+		
+		   .write{
+			   display: flex;
+			   flex-wrap:wrap;
+			   .type{
+				   display: flex;
+				   flex:1;
+				   margin-bottom: 20rpx;
+				   input{
+					   width:180rpx;
+					   height: 50rpx;
+					   border: 1px solid #ccc;
+					   margin-left: 10rpx;
+					   border-radius: 10rpx;
+				   }
+			   }
+		   }
+		
+		   .foot{
+			   padding: 20rpx 100rpx 0;
+			   .but{
+				   display: flex;
+				   justify-content: space-between;
+				   .common{
+					   width:150rpx;
+					   height: 60rpx;
+					   line-height: 60rpx;
+					   text-align: center;
+					   border-radius: 10rpx;
+					   color: #fff;
+				   }
+				   .save{
+					   background-color:#0DB95D;
+				   }
+				   .cancel{
+					   background-color: #ccc;
+				   }
+			   }
+		   }
+		}
+	}
+</style>

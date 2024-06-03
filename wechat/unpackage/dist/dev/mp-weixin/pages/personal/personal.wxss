@@ -1,0 +1,303 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.users {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+.users .back {
+  color: #fff;
+  padding-left: 10rpx;
+}
+.users .user {
+  color: #fff;
+  padding-left: 10rpx;
+  width: 100%;
+  text-align: center;
+}
+.userInfoItem {
+  width: 100%;
+  height: 470rpx;
+}
+.userInfoItem .main {
+  position: absolute;
+  top: 180rpx;
+  left: 0;
+  width: 100%;
+  padding: 0 20rpx;
+}
+.userInfoItem image {
+  width: 100%;
+  height: 100%;
+}
+.userInfoItem .userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.userInfoItem .userInfo .userAvatar {
+  width: 120rpx;
+  height: 120rpx;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHoAAAB6CAYAAABwWUfkAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4NDZGODgyQkIxMkUxMUVBOEI3MURGQThCNTRBOTQ5NSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4NDZGODgyQ0IxMkUxMUVBOEI3MURGQThCNTRBOTQ5NSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjg0NkY4ODI5QjEyRTExRUE4QjcxREZBOEI1NEE5NDk1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjg0NkY4ODJBQjEyRTExRUE4QjcxREZBOEI1NEE5NDk1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bGRFEgAACx5JREFUeNrsnV1sHFcV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);
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.userInfoItem .userInfo .userAvatar .userAvatarimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.userInfoItem .userInfo .userInfoTexts {
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 150rpx);
+}
+.userInfoItem .userInfo .userInfoTexts .userInfoVipbar {
+  display: flex;
+  align-items: center;
+}
+.userInfoItem .userInfo .userInfoTexts .identity {
+  width: 150rpx;
+  height: 50rpx;
+  background-color: #0048c3;
+  border-radius: 30rpx;
+  color: #fff;
+  text-align: center;
+}
+.userInfoItem .userInfo .userInfoText {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 150rpx);
+}
+.orderItem {
+  width: 100%;
+  -webkit-transform: translateY(-50rpx);
+          transform: translateY(-50rpx);
+}
+.orderItem .orderbox {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 28rpx;
+  background-size: 100% 100%;
+  margin-top: -70rpx;
+}
+.orderItem .orderbox .menberItem {
+  z-index: 2;
+  display: flex;
+  margin-top: -300rpx;
+  margin-left: 130rpx;
+}
+.orderItem .orderbox .menberItem .menberege {
+  margin-top: -20rpx;
+}
+.orderItem .orderbox .menberItem .menberege .memberImg {
+  width: 130rpx;
+  height: 40rpx;
+}
+.orderItem .orderbox .menberItem .menberege .memberImg image {
+  width: 100%;
+  height: 100%;
+}
+.orderItem .orderbox .menberItem .menberege .privilege {
+  color: #c69b31;
+  margin-top: 20rpx;
+}
+.orderItem .orderbox .menberItem .shipCard {
+  border-radius: 10rpx;
+  color: #ddaa2b;
+  background-color: #ffff;
+  text-align: center;
+  height: 50rpx;
+  width: 170rpx;
+  line-height: 50rpx;
+  font-size: 13px;
+  margin-left: 140rpx;
+}
+.orderItem .orderbox .orderPersonal {
+  margin: 20rpx 0 0rpx 0;
+}
+.orderItem .orderbox .orderPersonal .orderTitle {
+  margin-left: 20rpx;
+  margin-top: 10rpx;
+}
+.orderItem .orderbox .orderPersonal .orderTitle .orderTitleimg .shu {
+  color: var(--button);
+}
+.orderItem .orderbox .orderPersonal .orderState {
+  display: flex;
+  padding: 30rpx 20rpx;
+  align-items: center;
+}
+.orderItem .orderbox .orderPersonal .orderState .orderBlock {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.orderItem .orderbox .orderPersonal .orderState .orderBlock .orderNumber {
+  position: absolute;
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  background-color: orange;
+  font-size: 20rpx;
+  color: #fff;
+  line-height: 30rpx;
+  text-align: center;
+  top: -15rpx;
+  right: 50rpx;
+}
+.MyFunction {
+  width: 100%;
+  background-color: #ffffff;
+  margin-top: -30rpx;
+  padding: 20rpx;
+}
+.MyFunction .mytion {
+  padding: 20rpx 0;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333333;
+  margin: 10rpx 10rpx 10rpx 36rpx;
+}
+.MyFunction .aboutFunction {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20rpx;
+}
+.MyFunction .aboutFunction .mytionBox {
+  width: 25%;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+.button {
+  width: 100%;
+  height: 80rpx;
+  background-color: #008cff;
+  color: white;
+  border-radius: 0;
+  line-height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  font-size: 30rpx;
+}
+.functionBlcok {
+  width: 100%;
+  height: 100rpx;
+  padding: 0 50rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.functionBlcok .functionLeft {
+  display: flex;
+  align-items: center;
+}
+.functionBlcok .functionLeft .functionText {
+  font-size: 28rpx;
+  margin-left: 20rpx;
+  color: #666666;
+}
+.functionBlcok .functionLeft .functionIcon {
+  font-size: 40rpx;
+}
+.functionBlcok .functionLeft .functionImg {
+  width: 50rpx;
+  height: 50rpx;
+}
+.functionBlcok:last-child {
+  border: none;
+}
+.editionItem {
+  font-size: 28rpx;
+  color: #a4a5a5;
+  text-align: center;
+  line-height: 70rpx;
+}
+.camera {
+  width: 180rpx;
+  height: 180rpx;
+  background-color: #fff;
+  margin: 0 auto;
+}
+.padding-xl {
+  display: flex;
+  justify-content: center;
+}
+.conform {
+  width: 180rpx;
+  height: 60rpx;
+  background-color: var(--button);
+  font-size: 30rpx;
+  color: #fff;
+  line-height: 60rpx;
+  border-radius: 10rpx;
+}
+.swiper-item {
+  width: 100%;
+  height: 700rpx !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swiper-item .checkImg {
+  width: 100%;
+}
+.noUserAvatarimg {
+  width: 70rpx !important;
+  height: 70rpx !important;
+}
+.upImg {
+  width: 100%;
+  height: 100%;
+}
+.cu-dialog {
+  width: 500rpx;
+  background-color: #fff;
+}
+.cu-bar {
+  height: 50rpx !important;
+  min-height: 0;
+  border: 1px solid #eee;
+}
+

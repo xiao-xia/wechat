@@ -1,0 +1,64 @@
+<template>
+	<view class="article">
+		<image src="../../static/article.png" mode=""></image>
+		<view style="font-weight:700;font-size: 32rpx;margin: 40rpx 0;">科技创新赋能生命健康，OFweek生命健康科技创新中心在线招商会圆满闭幕！</view>
+		<view class="">
+			智慧医养
+		</view>
+		<view class="" style="color: #bbb;">
+			更新于: 2020-05-08
+		</view>
+		<view class="text">
+			
+		</view>
+		<view class="foot">
+			<view class="tag">
+				审核
+			</view>
+			<view class="tag">
+				删除
+			</view>
+			<view class="tag">
+				发布
+			</view>
+			<view class="tag">
+				取消发布
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #FFFFFF;
+	}
+	.article{
+		padding: 20rpx;
+		image{
+			width: 100%;
+			height: 200rpx;
+		}
+	}
+	.foot{
+		padding: 20rpx;
+		border-top: 1px solid #ccc;
+		display: flex;
+		justify-content: space-between;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		.tag{
+			width: 140rpx;
+			height: 60rpx;
+			text-align: center;
+			line-height: 60rpx;
+			color: #fff;
+			border-radius: 10rpx;
+			background-color: #02BE8C;
+		}
+	}
+</style>

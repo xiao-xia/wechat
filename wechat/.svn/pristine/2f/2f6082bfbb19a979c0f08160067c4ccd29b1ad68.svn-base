@@ -1,0 +1,538 @@
+<template>
+	<view class="pageWidth" >
+		<view style="padding: 20rpx 14rpx 0;">
+			<view class="topItem">
+				<view class="nameItem">
+					<view class="inputTitle">
+						收货姓名
+					</view>
+					<view class="inputBlock">
+						<input class="inputFrame" v-model="formList.receiverName" type="text" placeholder="收货人姓名" @input="onKeyYHKNameInput"/>
+					</view>
+				</view>
+				<view class="sexItem">
+					<view class="sexBlock">
+						<view class="sexFrame" v-for="(item,index) in sexList" :key="index" :class="index==sexIndex?'sexFrame2':''" @tap="sexChange(item.sexId)">
+							{{item.sex}}
+						</view>
+					</view>
+				</view>
+				<view class="nameItem">
+					<view class="inputTitle">
+						手机号码
+					</view>
+					<view class="inputBlock" style="border: none;">
+						<input maxlength="11" class="inputFrame" v-model="formList.receiverTel" type="number" placeholder="输入收件人的手机号码" />
+					</view>
+				</view>
+			</view>
+			<view class="bottomItem">
+				<view class="bottomBlock" @tap="chooseAddress()">
+					<view class="bottomTitle">
+						收货地址
+					</view>
+					<view v-if="formList.locationAddress!=''" class="bottomAddress" style="border: none;">
+						{{formList.receiverCell}}
+					</view>
+					<view v-else class="cuIcon-right iconRight">
+						
+					</view>
+				</view>
+				<view class="bottomBlock">
+					<view class="bottomTitle">
+						楼牌门号
+					</view>
+					<view class="inputBlock2" style="border: none;">
+						<input class="inputFrame2" v-model="formList.receiverDetail" type="text" placeholder="详细地址" @input="onKeyYHKDetailInput"/>
+					</view>
+				</view>
+				<view>
+					<view class="cu-form-group">
+						<view class="bottomTitle">设为默认地址</view>
+						<switch @change="SwitchA" :class="formList.defaultStatus?'checked':''" :checked="formList.defaultStatus"></switch>
+					</view> 
+				</view>
+				<!-- <view class="bottomBlock">
+					<view class="bottomTitle">
+						标签
+					</view>
+					<view class="tagBlock">
+						<view class="tagFrame" :class="tag==formList.addressTag?'tagFrame2':''" v-for="(tag,index) in tagList" :key='index' @tap="tagChange(tag)">
+							{{tag}}
+						</view>
+					</view>
+				</view> -->
+			</view>
+		</view>
+		<view class="save" @tap="updateEvent()">保存收货地址</view>
+		<view class="delete" @tap="getdeleteEvents()">删除收货地址</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		getTags,update,getdelete,updateDefaultStatus,getAddress
+	} from '../../../API/addressArr';
+	export default {
+		data() {
+			return {
+				sexList: [
+					{
+						sex:'先生',
+						sexId:'0',
+					},{
+						sex:'女士',
+						sexId:'1',
+					}],
+				tagList: ['家','父母家','朋友家','公司','学校'],
+				formList: {},
+				id:'',
+				switchA: false,
+				addressIdData:[],
+				AddressId:'',
+				sexIndex:''
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad(option) {
+			console.log(option)
+			var data = JSON.parse(option.data);
+			this.formList = data;
+			console.log(this.formList)
+			this.formList.shoppingAddressId=this.formList.shoppingAddressId
+			console.log(this.formList.shoppingAddressId)
+			if(this.formList.receiverSex=='0'){
+				this.sexIndex = 0
+			}else{
+				this.formList.receiverSex='1'
+				this.sexIndex = 1
+			}
+			this.memberId = this.formList.memberId
+			if(this.formList.defaultStatus=="默认"){
+				this.formList.defaultStatus = true
+			} else{
+				this.formList.defaultStatus = false
+			}
+		},
+		onShow() {
+			this.getList();
+		},
+		methods: {
+			//收货姓名限制输入表情
+			onKeyYHKNameInput: function(event){
+				var _timer = setTimeout(()=>{
+					clearTimeout(_timer)
+					var value = event.target.value;
+					//匹配数字的正则表达式
+					// var patt = /.*[0-9,a-z,A-Z]{1,}.*/i;
+					//匹配特殊字符的正则表达式
+					var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+					var reg = /[^\a-\z\A-\Z0-9\u4E00-\u9FA5\@\.]/g
+					let _Namestr=""
+					for(let i=0,len=value.length;i<len;i++){
+					 _Namestr+=value[i].replace(reg,'')
+					}
+					this.formList.receiverName = _Namestr;
+				 },3)
+			 },
+			 //门牌号
+			 onKeyYHKDetailInput:function(event){
+				 var _timer = setTimeout(()=>{
+				 	clearTimeout(_timer)
+				 	var value = event.target.value;
+				 	//匹配数字的正则表达式
+				 	// var patt = /.*[0-9,a-z,A-Z]{1,}.*/i;
+				 	//匹配特殊字符的正则表达式
+				 	var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+				 	var reg = /[^\a-\z\A-\Z0-9\u4E00-\u9FA5\@\.]/g
+				 	let _Detailstr=""
+				 	for(let i=0,len=value.length;i<len;i++){
+				 	 _Detailstr+=value[i].replace(reg,'')
+				 	}
+				 	this.formList.receiverDetail = _Detailstr;
+				  },3)
+			 },
+			async getList() {
+				const res = await getAddress(this.token);
+				console.log(res)
+				if(res){
+					this.addressList = res.data.records;
+					/* this.addressList.forEach((item,index)=>{
+						if(item.memberId==this.memberId){
+							 if(this.addressList[index].defaultStatus==0){
+								 item.defaultStatus = true
+							 }
+						}
+					}) */
+					console.log(this.addressList)
+				}
+			},
+			async SwitchA(){
+				console.log(this.formList.shoppingAddressId)
+				 var that = this;
+				 uni.showModal({
+				 	title: '提示',
+				 	content: '您确定要更改地址状态',
+				 	success: function (res) {
+				 		if (res.confirm) {
+							that.addressIdData.push(that.formList.shoppingAddressId);
+							that.addressList.forEach((item)=>{
+								 if(item.defaultStatus == '0'){
+										 that.addressIdData.push(item.shoppingAddressId);
+										 console.log(that.addressIdData)
+								 }
+							 })
+							 that.AddressId = that.addressIdData
+				 			setTimeout(() => {  //定时
+				 				that.getEvent();
+				 			},100)
+				 			// uni.navigateBack({
+				 			// })
+				 			console.log('用户点击确定');
+				 		} else if (res.cancel) {
+							that.formList.defaultStatus = !that.formList.defaultStatus
+				 			console.log('用户点击取消');
+				 		}
+				 	}
+				 });
+				 this.formList.defaultStatus = !this.formList.defaultStatus
+				/* const res = await updateDefaultStatus(this.token,this.AddressId);
+				if(res.code=='200'){
+					uni.showToast({
+						title:'操作成功',
+						icon:'none'
+					})
+				}
+				this.AddressId.length=0
+				console.log(res) */
+			},
+			async getEvent(){
+				const res = await updateDefaultStatus(this.token,this.AddressId);
+				if(res.code=='200'){
+					uni.showToast({
+						title:'操作成功',
+						icon:'none'
+					})
+				}
+				this.AddressId.length=0
+				this.getList()
+			},
+
+			sexChange(sexId) {
+				console.log(sexId)
+				this.formList.receiverSex = sexId;
+				this.sexIndex = sexId
+			},
+			tagChange(tag) {
+				this.formList.addressTag = tag;
+			},
+			chooseAddress() {
+				var that=this
+				uni.chooseLocation({
+				    success: function (res) {
+				        console.log('位置名称：' + res.name);
+				        console.log('详细地址：' + res.address);
+				        console.log('纬度：' + res.latitude);
+				        console.log('经度：' + res.longitude);
+						that.formList.longitude= res.longitude
+						that.formList.latitude=res.latitude
+						that.formList.receiverCell=res.name
+						//that.formList.receiverDetail=res.address
+				    }
+				});
+			},
+			async getdeleteEvents(){
+				var that = this;
+				uni.showModal({
+					title: '提示',
+					content: '您确定要删除该地址吗',
+					success: function (res) {
+						if (res.confirm) {
+							that.getdeleteEvent(that.formList.shoppingAddressId);
+							uni.navigateBack({
+							})
+							console.log('用户点击确定');
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+							this.getList()
+						}
+					}
+				});
+			},
+			async getdeleteEvent(shoppingAddressId){
+				const res = await getdelete(this.token,shoppingAddressId);
+				if(res.code=='200'){
+					this.getList()
+					uni.showToast({
+						title:'删除成功'
+					})
+				}
+			},
+			async updateEvent() {
+				console.log(this.formList.receiverSex)
+				if(!this.formList.receiverName){
+					uni.showToast({
+						title:'请输入姓名',
+						icon:'none'
+					})
+					return
+				}else if(this.formList.receiverSex==null){
+					    uni.showToast({
+					    	title:'请选择性别',
+					    	icon:'none'
+					    })
+						return
+				}else if(!this.formList.receiverTel){
+					uni.showToast({
+						title:'请输入号码',
+						icon:'none'
+					})
+					return
+				}else if(this.formList.receiverTel.length<11){
+					uni.showToast({
+						title:'请输入11位联系号码',
+						icon:'none'
+					})
+					
+					return
+				}
+				else if(!this.formList.receiverCell){
+					uni.showToast({
+						title:'请选择收货地址',
+						icon:'none'
+					})
+					return
+				}else if(!this.formList.receiverDetail){
+					uni.showToast({
+						title:'请输入详细地址',
+						icon:'none'
+					})
+					return
+				}/* else if(!this.formList.addressTag){
+					uni.showToast({
+						title:'请选择地址标签',
+						icon:'none'
+					})
+					return
+				} */else{
+				const res = await update(
+					this.token,
+					this.formList.receiverName,
+					this.formList.receiverTel,
+					this.formList.receiverSex,
+					this.formList.receiverCell,
+					this.formList.receiverDetail,
+					this.formList.longitude,
+					this.formList.latitude,
+					this.formList.shoppingAddressId,
+				);
+				console.log(res)
+				if(res) {
+					uni.navigateBack({
+					})
+				}else {
+					uni.showToast({
+						title:'保存失败'
+					})
+				}
+				} 
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.topItem {
+		width: 100%;
+		height: 300rpx;
+		background-color: #FFF;
+		
+		.nameItem {
+			height: 100rpx;
+			display: flex;
+			padding: 0 8rpx 0 26rpx;
+			
+			.inputTitle {
+				width: 20%;
+				height: 100rpx;
+				font-size: 28rpx;
+				color: #000;
+				line-height: 100rpx;
+			}
+			
+			.inputBlock {
+				width: 80%;
+				height: 100rpx;
+				border-bottom: 1rpx solid #F4F2F2;
+				display: flex;
+				align-items: center;
+				
+				.inputFrame {
+					width: 100%;
+					height: 60rpx;
+					font-size: 28rpx;
+					padding: 0 20rpx;
+				}
+			}
+		}
+		.sexItem {
+			height: 100rpx;
+			padding: 0 8rpx 0 26rpx;
+			border-bottom: 1rpx solid #F4F2F2;
+			
+			.sexBlock {
+				width: 80%;
+				height: 100rpx;
+				margin-left: 20%;
+				display: flex;
+				align-items: center;
+				.sexFrame {
+					width: 120rpx;
+					height: 50rpx;
+					border-radius: 10rpx;
+					border: 1px solid #CCCCCC;
+					font-size: 28rpx;
+					line-height: 50rpx;
+					text-align: center;
+					color: #A4A5A5;
+					margin-right: 16rpx;
+				}
+				.sexFrame2 {
+					width: 120rpx;
+					height: 50rpx;
+					border-radius: 10rpx;
+					background-image: linear-gradient(to right, #1093FE, #55AFF9);
+					font-size: 28rpx;
+					line-height: 50rpx;
+					text-align: center;
+					color: #fff;
+					margin-right: 16rpx;
+				}
+			}
+		}
+	}
+	
+	.bottomItem {
+		margin-top: 30rpx;
+		width: 100%;
+		height: auto;
+		background-color: #FFF;
+		padding: 0 8rpx;
+		
+		.bottomBlock {
+			width: 100%;
+			height: 100rpx;
+			display: flex;
+			justify-content: space-between;
+			padding: 0 26rpx;
+			border-bottom: 1rpx solid #F4F2F2;
+			
+			
+			.bottomTitle {
+				width: 20%;
+				height: 100rpx;
+				font-size: 28rpx;
+				color: #000;
+				line-height: 100rpx;
+			}
+			
+			.bottomAddress {
+				width: 80%;
+				font-size: 28rpx;
+				line-height: 100rpx;
+				color: #000;
+				padding: 0 20rpx;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			
+			.iconRight {
+				width: 20%;
+				height: 100rpx;
+				font-size: 28rpx;
+				color: #A4A5A5;
+				line-height: 100rpx;
+				text-align: right;
+			}
+			
+			.picker {
+				line-height: 100rpx;
+			}
+			
+			.inputBlock2 {
+				width: 80%;
+				height: 100rpx;
+				border-bottom: 1rpx solid #F4F2F2;
+				display: flex;
+				align-items: center;
+				
+				.inputFrame2 {
+					width: 100%;
+					height: 60rpx;
+					font-size: 28rpx;
+					padding: 0 20rpx;
+				}
+			}
+			
+			.tagBlock {
+				width: 80%;
+				height: 100rpx;
+				display: flex;
+				align-items: center;
+				.tagFrame {
+					width: 120rpx;
+					height: 50rpx;
+					border-radius: 28rpx;
+					background-color: #f3f3f3;
+					font-size: 28rpx;
+					line-height: 50rpx;
+					text-align: center;
+					color: #101010;
+					margin-right: 16rpx;
+				}
+				.tagFrame2 {
+					width: 120rpx;
+					height: 50rpx;
+					border-radius: 28rpx;
+					background-color: var(--button);
+					font-size: 28rpx;
+					line-height: 50rpx;
+					text-align: center;
+					color: #fff;
+					margin-right: 16rpx;
+				}
+			}
+		}
+	}
+	.save{
+		background-image: linear-gradient(to right, #1093FE, #55AFF9);
+		text-align: center;
+		height: 80rpx;
+		line-height: 80rpx;
+		width:500rpx;
+		margin:0  auto;
+		color: #fff;
+		border-radius: 50rpx;
+		font-size: 32rpx;
+		margin-top: 60rpx;
+	}
+	.delete{
+		width:500rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		color: #F83333;
+		margin:0  auto;
+		margin-top:20rpx ;
+		font-size: 32rpx;
+	}
+</style>

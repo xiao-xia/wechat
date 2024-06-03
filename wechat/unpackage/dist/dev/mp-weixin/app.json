@@ -1,0 +1,101 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/refund/detail",
+    "pages/refund/application",
+    "pages/rushPurchase/rushPurchase",
+    "pages/orderDetail/orderDetail",
+    "pages/searchWelfare/searchWelfare",
+    "pages/searchArticle/searchArticle",
+    "pages/recommendation/product",
+    "pages/recommendation/advice",
+    "pages/treatment/treatment",
+    "pages/recommendation/article",
+    "pages/buyGoods/buyGoods",
+    "pages/welfareDetail/welfareDetail",
+    "pages/publicDetail/publicDetail",
+    "pages/shippingAddress/shippingAddress",
+    "pages/pay/pay",
+    "pages/seckillGoods/seckillGoods",
+    "pages/location/location",
+    "pages/position/position",
+    "pages/remarks/remarks",
+    "pages/settle/settle",
+    "pages/shopcart/shoppingCart",
+    "pages/seckill/seckdeil",
+    "pages/login/login",
+    "pages/classification/goodsClassify",
+    "pages/personal/personal",
+    "pages/searchs/searchs",
+    "pages/seckill/seckill",
+    "pages/personal/feedback",
+    "pages/personal/setting/userAgreement",
+    "pages/personal/setting/setting",
+    "pages/personal/coupon/coupon",
+    "pages/personal/coupon/rollCenter",
+    "pages/serviceCenter/serviceCenter",
+    "pages/answer/answer",
+    "pages/personal/mymessage/mymessage",
+    "pages/personal/mymessage/editmymessage",
+    "pages/personal/myolder/whole",
+    "pages/personal/address/update",
+    "pages/personal/address/addNew",
+    "pages/personal/establishment/establishment",
+    "pages/personal/establishment/newEnterprise",
+    "pages/personal/establishment/modify",
+    "pages/personal/abouts/bookKeep",
+    "pages/personal/agreement/agreement",
+    "pages/personal/evaluate/evaluate",
+    "pages/personal/evaluate/publish",
+    "pages/membership/membership",
+    "pages/realTime/realTime",
+    "pages/realTime/realDetail",
+    "pages/membership/shipConfirm",
+    "pages/buyGoods/expressFee",
+    "pages/Business/Business",
+    "pages/Business/Finance",
+    "pages/classification/Categorys"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#fff"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2E9FFB",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "static/tabbar/homec.png",
+        "selectedIconPath": "static/tabbar/homeg.png"
+      },
+      {
+        "pagePath": "pages/classification/goodsClassify",
+        "text": "分类",
+        "iconPath": "static/tabbar/classc.png",
+        "selectedIconPath": "static/tabbar/classsg.png"
+      },
+      {
+        "pagePath": "pages/shopcart/shoppingCart",
+        "text": "购物车",
+        "iconPath": "static/tabbar/cartc.png",
+        "selectedIconPath": "static/tabbar/cartg.png"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "我的",
+        "iconPath": "static/tabbar/deliveryc.png",
+        "selectedIconPath": "static/tabbar/deliveryg.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "usingComponents": {}
+}

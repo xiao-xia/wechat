@@ -1,0 +1,10 @@
+import req from "../../common/req.js"
+
+//用户协议
+export const getPlatform = () => {//  右侧数据
+	return req.get(
+		"/platform/getPlatform", {
+			
+		}
+	)
+}

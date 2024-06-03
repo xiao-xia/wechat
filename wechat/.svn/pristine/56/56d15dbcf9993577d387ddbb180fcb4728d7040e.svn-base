@@ -1,0 +1,60 @@
+<template>
+	<view class="">
+		<view class="" v-if="articleList.length==0">
+			当前无积分规则
+		</view>
+		<view class="" v-else>
+			<view class="">
+				{{articleObj.articleTitle}}
+			</view>
+			<view class="">
+				{{articleObj.publishTime}}
+			</view>
+			<view class="">
+				<rich-text :nodes="strings"></rich-text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		rules
+	} from '../../../API/intergralArr/index.js';
+	export default{
+		data(){
+			return{
+				articleObj:{},
+				strings:'',
+				articleList:[]
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onShow() {
+			this.getRules()
+		},
+		methods:{
+		async	getRules(){
+				const res=await rules(this.token,4)
+				console.log(res)
+				this.articleList=res.articleList
+				this.articleObj=res.articleList[0]
+				this.strings=res.articleList[0].articleContent
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+	}
+</style>

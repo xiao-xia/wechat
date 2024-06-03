@@ -1,0 +1,238 @@
+<template>
+	<view class="container">
+		<view class="ReadItem" v-for="(item,index) in ByidData" :key="item.id">
+			<view class="science">
+				{{item.platformName}}
+			</view>
+			<view class="typeItem">
+				<view class="right">
+					{{item.platformType}}
+				</view>
+				<view class="left">
+					<view class="source">来源：{{item.createId}}</view>
+					<view class="detime">更新于{{item.createTime}}</view>
+				</view>
+			</view>
+			<view class="words">
+				{{item.content}}
+			</view>
+			<view class="buttonItem">
+				<view class="pieceItem" v-if="pageshow||realshow">
+					<view class="piece" @tap="getLast">上一篇</view>
+					<view class="pieceMore">这是上一篇的标题最多显示</view>
+				</view>
+				<view class="pieceItem" v-if="nextshow||realshows">
+					<view class="piece" @tap="getNext">下一篇</view>
+					<view class="pieceMore">没有更多</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { getInformationById,getAllInformationIds } from '../../API/healthy/index.js'
+	export default {
+		data() {
+			return {
+				ByidData:[],
+				id:'',
+				IdsData:[],
+				idIndex:'',
+				pageshow:true,
+				nextshow:true,
+				realshow:true,
+				nextshows:true,
+			}
+		},
+		onLoad(options) {
+			console.log(options)
+			this.id = options.id
+			if(options.platformType == undefined){
+				this.platformType = '全部资讯'
+				console.log(this.platformType)
+			} else{
+				this.platformType = options.platformType
+				console.log(this.platformType)
+			}
+			if(options.realids){
+				this.realids=JSON.parse(options.realids)
+			} else{
+				this.realids=[]
+			}
+			if(this.index==0){
+			   this.getLast=false
+			}else if(this.index==this.IdsData.length-1){
+				 this.getNext=false
+			 }
+			console.log(typeof this.realids)
+			this.getrealids()
+			this.pageshow=true
+			this.nextshow=true
+		},
+		onShow() {
+			this.getrealByid()
+			this.getgetAllIds()
+		},
+		methods: {
+			async getrealByid() {
+				const res = await getInformationById(this.id);
+				console.log(res)
+				this.ByidData = res.data
+			},
+			//全部资讯
+			async getgetAllIds() {
+				if(this.platformType == '全部资讯'){
+					this.platformType = '全部资讯'
+					const res = await getAllInformationIds();
+					console.log(res)
+					this.IdsData = res.data
+					console.log(this.IdsData)
+					this.IdsData.forEach((item,index) => {  //数组才可以foreach
+						if(item == this.id) {    //选中的商品和item中一样时就选中
+							console.log(index)
+							this.idIndex = index;
+							console.log(this.idIndex)
+						}
+					});
+					if(this.idIndex ==0){
+						this.pageshow = false
+					} else if(this.idIndex ==this.IdsData.length-1){
+						this.nextshow = false
+					}
+				}
+			},
+			//类型资讯
+			async getrealids() {
+				console.log(this.platformType)
+				if(this.platformType !== '全部资讯'){
+					this.IdsData =this.realids
+					console.log(this.IdsData)
+					this.realids.forEach((item,index) => {  //数组才可以foreach
+						if(item == this.id) {    //选中的商品和item中一样时就选中
+							console.log(index)
+							this.idIndex = index;
+							console.log(this.idIndex)
+						}
+					});
+				}
+				if(this.idIndex ==0){
+					this.realshow = false
+					console.log(this.realshow)
+				} else if(this.idIndex ==this.IdsData.length-1){
+					this.realshows = false
+					console.log(this.realshows)
+				}
+			},
+			//上一篇	
+			async getLast(){
+				if(this.idIndex ==0){
+					this.pageshow = false
+				} 
+				this.idIndex--
+				this.nextshow = true
+				console.log(this.idIndex)
+					if(this.idIndex ==0){
+						this.pageshow = false
+					}
+					const res = await getInformationById(this.IdsData[this.idIndex]);
+					console.log(res)
+					this.ByidData = res.data
+					console.log(this.ByidData)
+			},
+			//下一篇
+			async getNext(){
+				this.pageshow = true
+				this.idIndex++
+				console.log(this.idIndex)
+				console.log(this.IdsData.length)
+				if(this.idIndex == this.IdsData.length-1){
+					this.nextshow = false
+				}
+				const res = await getInformationById(this.IdsData[this.idIndex]);
+				console.log(res)
+				this.ByidData = res.data
+				console.log(this.ByidData)
+				
+			}
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+	}
+	.container{
+		width: 100%;
+		height: 100vh;
+		background-color: #FFFFFF;
+		.ReadItem{
+			padding: 0 20rpx;
+			.science{
+				font-size: 36rpx;
+				font-weight: 600;
+			}
+			.typeItem{
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				.right{
+					width: 160rpx;
+					height: 50rpx;
+					line-height: 50rpx;
+					background-color: #C4E3FD;
+					color: #088EFE;
+					text-align: center;
+					border-radius: 10rpx;
+					margin-top: 10rpx;
+				}
+				.left{
+					width: 50%;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;
+					.source{
+						font-size: 28rpx;
+					}
+					.detime{
+						font-size: 26rpx;
+						color: #CCCCCC;
+					}
+				}
+			}
+			.words{
+				font-size: 28rpx;
+			}
+			.buttonItem{
+				width: 100%;
+				.pieceItem{
+					width: 100%;
+					display: flex;
+					align-items: center;
+					margin-top: 20rpx;
+					.piece{
+						width: 140rpx;
+						height: 50rpx;
+						line-height: 40rpx;
+						border: 1px solid #088EFE;
+						color: #088EFE;
+						font-size: 26rpx;
+						border-radius: 20rpx;
+						text-align: center;
+					}
+					.pieceMore{
+						font-size: 28rpx;
+						color: #CCCCCC;
+						margin-left: 20rpx;
+						width: 70%;
+						overflow: hidden;    
+						text-overflow:ellipsis;    
+						whitewhite-space: nowrap;
+					}
+				}
+			}
+		}
+	}
+</style>

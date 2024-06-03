@@ -1,0 +1,9 @@
+import req from "../../common/req.js"
+
+export const getDetail = (token,id) => {
+	return req.post(
+		"/goods/detail", {
+			token,id
+		}
+	)
+}

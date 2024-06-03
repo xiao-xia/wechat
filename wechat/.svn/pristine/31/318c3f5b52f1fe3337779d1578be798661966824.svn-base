@@ -1,0 +1,1370 @@
+<template>
+	<view class="seckillcont">
+		<view class="contentbanner">
+			<swiper class="swiper" indicator-dots  circular>
+					<swiper-item class="swiperitem" v-for="(item,index) in mainPhoto" :key='index'>
+						<image :src="goodsObj.goodsMainImage"></image>
+					</swiper-item>
+			</swiper>
+
+			<view class="contentdetail">
+				<view class="productMove">
+					<view class="productdetail">
+						{{goodsObj.goodsName}}
+					</view>
+					<view style="font-size: 14px; color: #7B7B7B;">
+						已售{{goodsObj.goodsStock}}件
+					</view>
+				</view>
+				
+				<view style="display: flex;width: 100%;">
+					<view class="detailmoney">
+						<text style="font-size: 24rpx;color: red;">￥</text>
+						{{goodsObj.goodsSuggestedRetailPrice}}<text style="font-size: 28rpx;color: red;">起</text>
+					</view>
+					<view class="detailvip">
+						vip
+					</view>
+					<view class="detailMoneys"><text style="font-size: 24rpx;color: red;">￥</text>
+					{{goodsObj.goodsPriceVip}}起</view>
+				</view>
+				<view class="detailOriginal">
+					<text style="font-size: 24rpx;color: #CCCCCC;">￥</text>{{goodsObj.goodsOriginalPrice}}
+					<text style="font-size: 28rpx;color: #CCCCCC;">起</text>
+				</view>
+				
+				<view class="share">
+					<text class="cuIcon-share lg"></text>
+					<text>分享</text>
+					<button open-type="share"></button>
+				</view>
+				
+				<view class="memberItem" v-if='memberData.membershipStatus==0'>
+					<view class="memberOpen">
+						<view class="openBox">
+							<image class="memberImg" src="../../static/home/crown.png"></image>
+							<view class="memberWold">
+								开通企瑞宝会员立享多项
+								<text style="color:#F63737 ;">特权</text>
+							</view>
+							<view class="memberButton" @click="activate">立即开通</view>
+						</view>
+					</view>
+					<view>
+					</view>
+				</view>	
+				
+			</view>
+		</view>
+		
+		<view class="heng">
+			
+		</view>
+		<view class="detail">
+			<view class="words">
+				<view class="left">
+					<text style="margin-right: 10px;" >规格</text>		
+				</view>
+				<view class="right" @click="Specifications">
+					<text style="color: #999999;" v-if="goodsSpecificationName==''">请选择规格</text>
+					<view class="rightName" v-else>{{goodsSpecificationName}}</view>
+					<text class="cuIcon-right"></text>
+				</view>		
+			</view>
+			<view class="brief">
+				<view class="left" style="margin-right: 10px;">简介</view>
+				<view class="right" style="color: #999999;">{{goodsObj.goodsSource}}</view>
+			</view>
+		</view>
+		<view class="heng"></view>
+		<view class="commodity">
+			
+			<view class="Product">
+				<view class="ProductDetail" :class="barcar==index?'Productevaluate':''" v-for="(item,index) in ProductData" :key="item.id" @click="detailClick(index)">
+					{{item.productName}}
+				</view>
+			</view>
+			
+			<view v-if="barcar==1">
+				<view class="scoreMove">
+					<view class="score">
+						<view class="scoreColor">5.00</view>
+						<view class="scoreSize">综合评分</view>
+					</view>
+					<view>
+						<view class="attitude" v-for="(item,index) in 3" :key="index">
+							<view style="margin-right: 20rpx;">服务态度</view>
+							<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+							<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+							<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+							<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+							<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+							<view style="margin-left: 20rpx;">5.00</view>
+						</view>
+					</view>
+				</view>
+				<view class="estableTab">
+					<view class="services" :class="select==index?'active':''"  v-for="(item,index) in evaluatent" :key='item.id' @click="serviceCliak(index)">
+						{{item.categoryName}}
+					</view>
+				</view>
+				<view class="orderEvaluate" v-for="(item,index) in 2">
+					<view class="imgSize">
+						<image src="../../static/orderImg/head.png"></image>
+					</view>
+					<view class="Nickname">
+						<view class="NicknameTime">
+							<text>昵称</text>
+							<text style="margin-left: 65%;">2020-11-01</text>
+						</view>
+						<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+						<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+						<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+						<text style="color: #FFDA44;" class="cuIcon-favorfill"></text>
+						<text style="color: #999999;" class="cuIcon-favorfill"></text>
+						<br/>
+						<text>{{goodsObj.remark}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<view class="details" v-if="barcar==0">
+				<view class="words">
+					商品详情
+				</view>
+				<view class="photo">
+					<image :src="goodsObj.goodsMainImage" mode="widthFix"></image>
+				</view>
+			</view>
+		</view>
+		
+		<view class="detailbottom">
+			<view class="detailState">
+				<view class="orderBlock" @click="goHome">
+					<text style="color: #999999;" class="cuIcon-home lg"></text>
+					<view style="font-size: 24rpx;text-align: center;color: #bbb;margin-top: 10rpx;">
+						首页
+					</view>
+				</view>
+				<view class="orderBlock">
+					<button open-type="contact" class="botttomLeft">
+						<image class="customerImg" src="../../static/orderImg/customer.png"></image>
+						<view style="font-size: 24rpx;text-align: center;color: #bbb;">
+							客服
+						</view>
+					</button>
+				</view>
+			   <view class="orderBlock" @click="goCart">
+					<text style="color: #999999;left: -5rpx;position: relative;" class="cuIcon-cart lg"></text>
+					<view style="font-size: 24rpx;text-align: center;color: #bbb;margin-top: 10rpx;">
+						购物车
+					</view>
+					<view class="badge" v-if="flag">
+						{{num}}
+					</view>
+				</view>
+			</view>
+			<view class="orderbutton">
+				<view  class="orderleft"  @click="toCart" v-show="goodspay">
+					加入购物车
+				</view>
+				<view  class="orderleft" v-show="!goodspay">
+					加入中
+				</view>
+				<view class="orderright" @click="goBuyGoods" >
+					立即购买
+				</view>
+			</view>
+		</view>
+		<!-- 选择规格 -->
+		<view class="cu-modal bottom-modal " :class="bottomshow?'show':''" >
+			<view class="cu-dialog" >
+				<view class="cu-bar bg-white">
+					<view class="specibox">
+						<view class="SpecificaImg">
+							<image :src="goodsObj.goodsMainImage" mode=""></image>
+						</view>
+						<view class="Trademark">
+							<view class="brand">
+								{{goodsObj.goodsName}}
+								<!-- {{TrademarkData.goodsSpecificationName}} -->
+							</view>
+							<view class="brandBox">
+								<view class="registratPrice"><text style="font-size: 24rpx;color: red;">￥</text><!-- {{TrademarkData.goodsPresentPrice}} -->{{goodsObj.goodsSuggestedRetailPrice}}
+								</view>
+								<view class="registratVip">vip</view>
+								<view class="brandPrice"><text style="font-size: 24rpx;color: red;">￥</text><!-- {{TrademarkData.goodsVipPrice}} -->{{goodsObj.goodsPriceVip}}</view>
+								
+							</view>
+							<text style="color: #CCCCCC;font-size: 12px;display: flex;text-decoration: line-through;"><text style="font-size: 24rpx;">￥</text>{{TrademarkData.goodsOriginalPrice}}</text>
+						</view>
+					</view>
+					<view class="cuIcon-roundclose guan" @tap="hideModal"></view>
+				</view>
+				<view class="modalItem">
+					<view style="display: flex;margin-left: 12rpx;">
+						请选择规格
+					</view>
+					<view class="SelectRegister">
+						<view class="RegisterWold" v-if="item.goodsStock>0" :class="index==selectBar?'active':''"  v-for="(item,index) in Register" :key='item' @tap="selectItem(item,index)">
+							{{item.goodsSpecificationName}}
+						</view>
+						<view class="Registercolor" v-if="item.goodsStock==0" v-for="(item,index) in Register" :key='item'>
+							{{item.goodsSpecificationName}}
+							<view class="replenishment">
+								<view style="display: flex; align-items: center;justify-content: center;height: 60rpx; line-height: 60rpx;">
+									<image style="width: 46rpx;height: 46rpx;color: #FFFFFF;" src="../../static/shopCart/circular.png"></image><text style="color: #FFFFFF !important;">补货中</text>
+								</view>
+							</view>
+	
+						</view>
+					</view>
+					<view class="productNumber">
+						<view style="margin-left: 20rpx;">数量</view>
+						<view class="productchange">
+							<view class="productJian" @click="subNum(item)">
+								<image src="../../static/product/jian.png"></image>
+							</view>
+							<text style="margin: 0 10rpx 10rpx 10rpx;">{{payNum}}</text>
+							<view class="productJia" @click="increaseNum()">
+								<image src="../../static/product/jia.png"></image>
+							</view>
+						</view>
+					</view>
+					<view class="determine">
+						<view class="deterleft"  @click="addtoCart" v-show="gopay">
+							加入购物车
+						</view>
+						<view class="deterleft"  v-show="!gopay">
+							加入中，请稍等
+						</view>
+						<!-- <view class="buttonColor" @tap="confim">
+							立即购买
+						</view> -->
+						<view class="deterright" @click="goBuyGoods" >
+							立即购买
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+    import {
+    	mapState,
+    	mapGetters,
+    	mapMutations,
+    	mapActions
+    } from 'vuex';
+	import {
+		showToast,
+	} from '../../common/util.js';
+	import {
+		addNum,deleteNum,updateNum,SpecificaId
+	} from '../../API/classificationArr/index';
+	import { getDetail,getqueryId } from  '../../API/goodsDetail/index.js';
+	import {
+		totalNum
+	} from '../../API/classificationArr/index';
+	import {
+		getMemberMsg
+	}from '../../API/personArr';
+	export default{
+		data(){
+			return{
+				memberData:{},
+				payNum:1,
+				bottomshow:false,
+				pageShow:false,
+				barcar:0,
+				goodsObj:{},
+				mainPhoto:['http://47.93.61.34:8081/trademark.png'],
+				detailPhoto:[],
+				goodsNums:'',
+				goodsId:'',
+				goodsTypeId:'',
+				num:'',
+				flag:false,
+				isShow:false,
+				select:0,
+				selectBar:0,
+				evaluatent:[{
+					categoryName:'全部（10）',
+					id:'1',
+				},{
+					categoryName:'好评（10）',
+					id:'2',
+				},{
+					categoryName:'中评（10）',
+					id:'3',
+				},{
+					categoryName:'差评（10）',
+					id:'4',
+				},],
+				Register:[{
+					goodsSpecificationName:'商标注册（15-31个工作日）'
+				},{
+					goodsSpecificationName:'商标注册（15-41个工作日）'
+				},{
+					goodsSpecificationName:'商标注册（15-31个工作日）'
+				},{
+					goodsSpecificationName:'商标注册（15-41个工作日）'
+				},],
+				goodsSpecificationName:'',
+				TrademarkData:{},
+				ProductData:[{
+					productName:'商品详情',
+					id:'1',
+				},{
+					productName:'商品评价(10)',
+					id:'2',
+				}],
+				goodsList:[],
+				shoppingNum:'',
+				shopNum:'',
+				addesNum:'',
+				gopay:true,
+				goodspay:true,
+				superiorId:'',
+				goodsStocknum:'',
+				buyStock:'',
+				stockData:[],
+			}
+		},
+		onLoad(options){
+			this.getCart()
+			console.log(options)
+			this.superiorId = options.superiorId
+			if(options.goodsTypeId){
+				this.getData(options.goodsTypeId);
+			}else if(options.Id){
+				this.getqueryData(options.Id);
+			} else{
+				this.Id = options.goodsId
+				this.getqueryData(this.Id);
+				this.bottomshow=true;
+			}
+			this.goodsTypeId=options.goodsTypeId;
+			// this.shoppingCartId=options.goodsTypeId;
+			// console.log(typeof(this.shoppingCartId))
+			
+		},
+		onShow(){
+			this.getCart()
+			this.getMember()
+		},
+		computed: {
+			...mapState(['unfoin','token','userInfo']),
+		},
+		methods:{
+			//是否会员
+			async getMember(){
+				const res=await getMemberMsg(this.token);
+				this.memberData = res.data
+				console.log(this.memberData)
+			},
+			// addNum(){
+			//    this.payNum++
+			// },
+			// subNum(){
+			// 	this.payNum--
+			// },
+			activate(){
+				uni.navigateTo({
+					url:'../membership/membership'
+				})
+			},
+			serviceCliak(index){
+				this.select=index
+			},
+			detailClick(index){
+				this.barcar=index;
+				console.log(this.barcar)
+				
+			},
+			Specifications(){
+				this.bottomshow=true;
+				// this.goodsSpecificationName='商标注册（15-31个工作日）'	
+			},	
+			//选择规格，获取第几个规格数据
+			selectItem(item,index){
+				this.selectBar=index
+				console.log(this.selectBar)
+				console.log(item)
+				this.goodsSpecificationName=item.goodsSpecificationName
+				this.buyStock = item.goodsStock
+				this.goodsStocknum = item.goodsStock
+				console.log(this.buyStock)
+				console.log(this.goodsStocknum)
+				this.goodsSpecificationId=item.goodsSpecificationId
+				console.log(this.goodsSpecificationId)
+				console.log(this.goodsList)
+				this.goodsPresentPrice=item.goodsPresentPrice
+				this.goodsVipPrice=item.goodsVipPrice
+				this.TrademarkPrice(this.selectBar)
+			},
+			showModal(e) {
+				this.show=true
+			},
+			hideModal(e) {
+				this.bottomshow=false;
+			},
+			async getData(goodsTypeId){
+				const res=await getDetail(this.token,goodsTypeId);
+				if(res){
+					uni.hideLoading()
+					this.goodsObj=res.data;
+					this.goodsId = this.goodsObj.goodsId
+					this.goodsCode = this.goodsObj.goodsCode
+					console.log(this.goodsObj)
+					console.log(this.goodsId)
+					this.getSpecificaId()
+					this.pageShow=true
+				}
+			},
+			//购物车
+			async getqueryData(Id){
+				const res=await getqueryId(this.token,Id);
+				console.log(res);
+					this.goodsObj=res.data;
+					this.goodsId = this.goodsObj.goodsId
+					this.goodsCode = this.goodsObj.goodsCode
+					this.goodsTypeId = this.goodsObj.goodsTypeId
+					console.log(this.goodsId)
+					this.getSpecificaId()
+					this.pageShow=true
+			},
+			//规格循环数据
+			async getSpecificaId(){
+				const res=await SpecificaId(this.token,this.goodsId);
+				if(res){
+					uni.hideLoading()
+					this.Register = res.data
+					console.log(this.Register);
+					this.Register.forEach((item,index)=>{
+						if(item.goodsStock>0){
+							this.stockData.push(this.Register[index])//push大于0的
+							return
+						}
+					})
+					console.log(this.stockData)
+					this.TrademarkPrice(0)
+				}
+			},
+			//头部默认规格数据
+			async TrademarkPrice(index){
+				// console.log(index)
+				// this.TrademarkData=this.Register[index];
+				this.TrademarkData=this.stockData[index]; //取push的第一位
+				console.log(this.TrademarkData)
+			},
+			
+			//规格里的点击加入购物车
+			async addtoCart(){
+				/* if(!this.goodsSpecificationName){
+					console.log(this.TrademarkData)
+					this.goodsSpecificationName=this.TrademarkData.goodsSpecificationName
+					this.goodsSpecificationId=this.TrademarkData.goodsSpecificationId
+					this.goodsPresentPrice=this.TrademarkData.goodsPresentPrice
+					this.goodsVipPrice=this.TrademarkData.goodsVipPrice
+				} */
+				if(this.goodsList.length==0){
+					this.addgoods() 
+				}
+				// this.goodsSpecificationId=this.TrademarkData.goodsSpecificationId
+				console.log(this.goodsList)
+				var burIndex = null //定义
+		
+				this.goodsList.forEach((item,index)=>{
+					if(item.goodsSpecificationId == this.goodsSpecificationId){
+							burIndex = index  //进行赋值，如果不相等null，相等赋值index，否则执行增加数量
+							this.shoppingCartId = this.goodsList[index].shoppingCartId
+							this.addesNum = this.goodsList[index].goodsNums //数量
+							this.goodsStocknum = this.goodsList[index].goodsStock //库存
+							console.log(this.goodsStocknum)
+							console.log(this.shoppingCartId)
+					}
+				})
+				
+				if(burIndex == null) {
+					this.addgoods()  //购物车没有共同商品增加商品
+				}else {
+					if(this.addesNum){
+						this.shopNum = this.payNum + this.addesNum
+						console.log(this.shopNum)
+					}
+					if(this.shopNum >99){
+						console.log(this.gopay)
+						uni.showToast({
+							title:'数量不能超过99件！',
+							icon: 'none'
+						})
+						return true
+					}
+					this.goodNum() //购物车有共同商品增加数量
+					this.gopay=false;
+				}
+			},
+			//增加数量
+			async goodNum(){
+				
+				if(this.goodsStocknum==0){
+					uni.showToast({
+						title:'库存不足！',
+						icon: 'none'
+					})
+					return true
+				}
+				console.log(this.addesNum)
+				this.bottomshow=false;
+				console.log(this.gopay)
+				if(this.payNum > 0){
+					const res=await updateNum(this.token,this.shoppingCartId,this.shopNum);
+					uni.showToast({
+						title:'加入成功',
+						icon:'success',
+						mask:true
+					})
+					console.log(res)
+					this.getCart();
+					this.gopay=true;
+				}else if(this.goodsNums < 1){
+					
+				}
+			},
+			
+			//最外层点击加入购物车
+			async toCart(){
+				
+				if(this.goodsSpecificationName==''){
+					this.bottomshow=true;
+					return
+				}
+				if(this.goodsStocknum==0){
+					uni.showToast({
+						title:'库存不足！',
+						icon: 'none'
+					})
+					return true
+				}
+				var curIndex = null
+				this.goodsList.forEach((item,index)=>{
+					if(item.goodsSpecificationId == this.goodsSpecificationId){
+							curIndex = index
+							console.log(index)
+							this.shoppingCartId = this.goodsList[index].shoppingCartId
+							this.shoppingNum = this.goodsList[index].goodsNums
+							console.log(this.shoppingCartId)
+							console.log(this.shoppingNum)
+					}
+				})
+				if(curIndex == null) {
+					this.addgoods() //购物车没有共同商品新增加商品
+				}else {
+					this.addNums() //购物车有共同商品增加数量
+					this.goodspay=false;
+				}
+			},
+			//购物车新增加商品
+			async addgoods(){
+				console.log(this.goodsStocknum)
+				if(this.goodsStocknum==0){
+					uni.showToast({
+						title:'库存不足！',
+						icon: 'none'
+					})
+					return true
+				}
+				this.gopay=false
+				const res=await addNum(this.token,this.goodsSpecificationId,this.payNum,this.goodsCode,this.goodsId);
+				uni.showToast({
+					title:'加入成功',
+					icon:'success',
+					mask:true
+				})
+				this.getCart();
+				this.bottomshow=false;
+				this.gopay=true
+				console.log(this.gopay)
+			},
+			async getCart(){
+				const res=await totalNum(this.token);
+				console.log(res)
+				this.goodsList=res.data.shoppingCartVoIPage.records
+				let cartNum = res.data.goodsNums;  //通过后台接口获取
+				console.log(cartNum)
+				console.log(this.goodsList)
+				if(cartNum!=0) {
+					this.flag=true
+				   this.num=cartNum
+				}
+			},
+			// 购物车增加数量
+			async addNums(){
+				if(this.goodsStocknum==0){
+					uni.showToast({
+						title:'库存不足！',
+						icon: 'none'
+					})
+					return true
+				}
+				// this.payNum++
+				this.shoppingNum++
+				if(this.shoppingNum){
+					this.shopNum = this.shoppingNum
+					if(this.shopNum >99){
+						uni.showToast({
+							title:'数量不能超过99件！',
+							icon: 'none'
+						})
+						return true
+					}
+					console.log(this.shopNum)
+				}
+				console.log(this.payNum)
+				if(this.payNum > 0){
+					const res=await updateNum(this.token,this.shoppingCartId,this.shopNum);
+					console.log(res)
+					this.getCart();
+					this.goodspay=true
+				}else if(this.goodsNums < 1){
+					
+				}
+			},
+			
+			//加减数量
+			async increaseNum(item){
+				this.payNum++
+				if(this.payNum > 1){
+				}else if(this.goodsNums < 1){
+					
+				}
+			},
+			async subNum(item){
+				  if(this.payNum > 1){
+						this.payNum--
+				}
+			},
+			
+			goCart(){
+			uni.switchTab({
+				url:'../shopcart/shoppingCart'
+			})
+			},
+			goHome(){
+				uni.switchTab({
+					url:'../home/home'
+				})
+			},
+			closeBtn(){
+				this.isShow=false
+			},
+			addNum(){
+			   this.payNum++
+			},
+			//立即购买
+			goBuyGoods(){
+				if(this.goodsSpecificationName==''){
+					this.bottomshow=true;
+					/* if(!this.goodsSpecificationName){
+						console.log(this.TrademarkData)
+						this.goodsSpecificationName=this.TrademarkData.goodsSpecificationName
+						this.goodsSpecificationId=this.TrademarkData.goodsSpecificationId
+						this.goodsPresentPrice=this.TrademarkData.goodsPresentPrice
+						this.goodsVipPrice=this.TrademarkData.goodsVipPrice
+						this.goodsVipPrice=this.TrademarkData.goodsVipPrice
+						this.buyStock = this.TrademarkData.goodsStock
+						console.log(this.buyStock)
+						this.goodsId=this.goodsId
+						this.goodsTypeId=this.goodsTypeId
+					} */
+				}else{
+					console.log(this.buyStock)
+					if(this.buyStock==0){
+						uni.showToast({
+							title:'库存不足！',
+							icon: 'none'
+						})
+						return true
+					}
+					let data={}
+					data.goodsSpecificationName=this.goodsSpecificationName
+					data.goodsSpecificationId=this.goodsSpecificationId
+					data.goodsPresentPrice=this.goodsPresentPrice
+					data.goodsVipPrice=this.goodsVipPrice
+					data.goodsNums=this.payNum
+					data.goodsId=this.goodsId
+					data.goodsTypeId=this.goodsTypeId
+					data.superiorId=this.superiorId
+					data.goodsMainImage=encodeURIComponent(JSON.stringify(this.goodsObj.goodsMainImage))
+					// data.totalPrice=this.goodsPresentPrice*this.payNum
+					// data.price=this.goodsObj.goodsSuggestedRetailPrice
+					// data.goodsId=this.goodsObj.goodsId
+					this.bottomshow=false;
+					uni.navigateTo({
+						url:'../buyGoods/buyGoods?goodsItem=' + JSON.stringify(data) 
+					})
+				}	
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		position: relative;
+		background-color: #fff;
+		.seckillcont {
+			width: 100%;
+			.contentbanner {
+				width: 100%;
+				.swiper{
+					width: 100vw;
+					height: 100vw;
+					.swiperitem {
+						width: 100%;
+						height: 100%;
+						 image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+		
+			}
+		     .heng{
+				 height: 8rpx;
+				 background-color: #EEEEEE;
+			 }
+			 .detail{
+				 padding: 40rpx 20rpx 30rpx;
+				 .words{
+					 margin-bottom: 30rpx;
+					 display: flex;
+					 border-bottom:1rpx solid #f2f2f2;
+					 width: 100%;
+					 height: 100rpx;
+					 padding: 0 20rpx;
+					 .left{
+						 
+					 }
+					 .right{
+						 display: flex;
+						 justify-content: space-between;
+						 color: #cccccc;
+						 width: 88%;
+						 overflow: hidden;
+						 text-overflow:ellipsis;    
+						 whitewhite-space: nowrap;
+						 .rightName{
+							 overflow : hidden;/*必须结合的属性,当内容溢出元素框时发生的事情*/
+							 text-overflow: ellipsis;/*可以用来多行文本的情况下，用省略号“…”隐藏超出范围的文本 。*/
+							 display: -webkit-box;/*必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。*/
+							 -webkit-line-clamp: 2;/*用来限制在一个块元素显示的文本的行数。*/
+							 -webkit-box-orient: vertical;/*必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。*/
+						 }
+					 }
+				 }
+				 .brief{
+					 display: flex;
+					 padding: 0 20rpx;
+					 .left{
+						 // width: 15%;
+					 }
+					 .right{
+						 width: 88%;
+					 }
+				 }
+				 
+			 }
+			
+			.commodity{
+				width: 100%;
+				background-color: #FFFFFF;
+				padding: 40rpx 20rpx 130rpx;
+				.Product{
+					width: 100%;
+					height: 80rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					flex-wrap: space-between;
+					// border-bottom:1px solid #cccccc;
+					.ProductDetail{
+						font-size: 14px;
+						color: #999999;
+						width: 180rpx;
+					}
+					.Productevaluate{
+						font-size: 14px;
+						color: #333333;
+						width: 180rpx;
+					}
+				}
+				.scoreMove{
+					display: flex;
+					justify-content: space-around;
+					padding: 30rpx 0;
+					border-top: 1rpx solid #f2f2f2;
+					border-bottom: 1rpx solid #f2f2f2;
+					.score{
+						width: 30%;
+						border-right: 1px solid #F1F1F1;
+						.scoreColor{
+							color: #F63737;
+							font-size: 46rpx;
+							font-weight: 650;
+							padding-left: 10rpx;
+						}
+						.scoreSize{
+							color: #333333;
+							font-size: 28rpx;
+						}
+					}
+					.attitude{
+						display: flex;
+					}
+				}
+				
+				.details{
+					 padding: 40rpx 20rpx 30rpx;
+					 .words{
+						 margin-bottom: 30rpx;
+					 }
+					 .photo{
+						 image{
+							 width: 100%;
+						 }
+					 }
+				}
+				
+				.estableTab{
+					width: 100%;
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+					margin: 20rpx 0 20rpx 0;
+					.services{
+						width: 150rpx;
+						height: 50rpx;
+						background-color: #FFFFFF;
+						border-radius: 10rpx;
+						font-size: 24rpx;
+						text-align: center;
+						color: #666666;
+						line-height: 50rpx;
+						padding-left: 10rpx;
+						border: 1rpx solid #ccc;
+
+					}
+					.active{
+						width: 150rpx;
+						height: 50rpx;
+						background-color: #FFFFFF;
+						border-radius: 10rpx;
+						font-size: 24rpx;
+						text-align: center;
+						color: #008CFF;
+						line-height: 50rpx;
+						padding-left: 10rpx;
+					}
+					
+				}
+				.orderEvaluate{
+					width: 100%;
+					display: flex;
+					margin-bottom: 20rpx;
+					.imgSize{
+						width: 130rpx;
+						height: 90rpx;
+						image{
+							width: 100%;
+							height: 100%;
+						}
+					}
+					.Nickname{
+						margin-left: 20rpx;
+						width: 100%;
+						.NicknameTime{
+							display: flex;
+						}
+					}
+				}
+			}
+			.contentdetail {
+				width: 100%;
+				padding: 30rpx 20rpx;
+				position: relative;
+				.productMove{
+					display: flex;
+					justify-content: space-between;
+					.productdetail {
+						// width: 80%;
+						color: black;
+						display: flex;
+						justify-content: space-between;
+						color: #333333;
+						font-size: 16px;
+						.datailimg {
+							width: 64rpx;
+							height: 62rpx;
+						}
+							
+						.productsname {
+							font-size: 26rpx;
+							width: calc(100% - 136rpx);
+						}
+							
+					}
+				}
+				
+		
+				.detailmoney {
+					font-size: 40rpx;
+					// padding: 10rpx 0 0 0;
+					color: #F63737;
+				}
+				.detailvip{
+					margin: 8rpx 0 0 20rpx;
+					font-size: 16px;
+					color: #333333;
+				}
+				.detailMoneys{
+					margin: 10rpx 0 0 0;
+					font-size: 32rpx;
+					color: #F63737;
+				}
+				.detailOriginal{
+					color: #CCCCCC;
+					font-size: 12px;
+					width: 120rpx;
+					text-decoration: line-through;
+					padding-bottom: 10px;
+					width: 100%;
+				}
+			}
+		
+			.pleaseolder {
+				width: 100%;
+				padding: 10rpx 40rpx;
+				color: #ccc;
+				border-top: 4rpx solid #ccc;
+				border-bottom: 4rpx solid #ccc;
+			}
+		
+			.parameter {
+				width: 100%;
+				padding: 10rpx 40rpx;
+		
+				.productmeter {
+					
+					display: flex;
+					white-space: nowrap;
+					// overflow: hidden;
+					// flex-wrap: wrap;
+					// text-overflow: ellipsis;
+				}
+			}
+		}
+		.detailbottom {
+			width: 100%;
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			padding: 20rpx 10rpx;
+			position: fixed;
+			bottom: 0;
+			border-top: 1px solid #ddd;
+			.detailState {
+				width: 34%;
+				display: flex;
+				align-items: center;
+				.orderBlock {
+					text-align: center;
+					font-size: 50rpx;
+					line-height: 40rpx;
+					position: relative;
+					margin-left: 20rpx;
+					top: 10rpx;
+					.botttomLeft{
+						margin: 0;
+						padding: 0;
+						line-height: 0.8;
+						background-color: #fff;
+					}
+					.botttomLeft::after{ border: none; }
+					.customerImg{
+						width: 50rpx;
+						height: 50rpx;
+					}
+					.badge{
+						position: absolute;
+						background-color: red;
+						color: #fff;
+						width: 30rpx;
+						height: 30rpx;
+						border-radius: 50%;
+						top:0;
+						right: 0;
+						transform: translate(45%,-50%);
+						text-align: center;
+						line-height: 30rpx; 
+						font-size: 20rpx;
+					}
+				}
+			}
+		
+			.orderbutton {
+				display: flex;
+				
+				view{
+					width: 200rpx;
+					padding: 16rpx 20rpx;
+					text-align: center;
+					align-self: center;
+					color: #fff;
+				}
+				
+				.orderleft{
+					border-top-left-radius:40rpx;
+					border-bottom-left-radius:40rpx;
+					background-image: linear-gradient(to right, #EBB528, #FE9702);
+				}
+				.orderright{
+					border-top-right-radius:40rpx;
+					border-bottom-right-radius:40rpx;
+					background-image: linear-gradient(to right, #F63936, #F46E1D);
+				}
+			}
+		}
+	}
+	
+ .payNow{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		background-color: rgba(0,0,0,0.5);
+		height: 100%;
+		z-index: 999;
+		.goods{
+			position: fixed;
+			left: 0;
+			top:50%;
+			width: 100%;
+			height: 50%;
+			background-color: #fff;
+			.up{
+			    padding: 20rpx;
+				display: flex;
+				border-bottom: 1px solid #ccc;
+				image{
+					width: 100rpx;
+					height: 100rpx;
+				}
+				.right{
+				   margin-left: 20rpx;
+				}
+			}
+			.down{
+				padding: 20rpx 20rpx 0 20rpx;
+				height: 440rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				.payNum{
+					display: flex;
+					justify-content: space-between;
+				}
+				.payBtn{
+					height: 60rpx;
+					background-color: #0dc793;
+					text-align: center;
+					line-height: 60rpx;
+					color: #fff;
+					border-radius: 40rpx;
+				}
+			}
+		}
+	}
+	.specibox{
+		display: flex;
+		margin: 20rpx 0 20rpx 0;
+		.SpecificaImg{
+			flex-shrink: 0;
+			width: 200rpx;
+			height: 200rpx;
+			// padding-left: 20rpx;
+			margin-left: 20rpx;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.Trademark{
+			padding: 20rpx;
+			display: flex;
+			align-items: flex-start;
+			flex-direction: column;	
+			.brand{
+				color: #333333;
+				font-size: 26rpx;
+				font-weight: bold;
+				text-align: left;
+			}
+			.brandBox{
+				display: flex;
+				.registratPrice{
+					color: #F63737;
+					font-size: 40rpx;
+				}
+				.registratVip{
+					font-size: 16px;
+					color: #333333;
+					margin: 5rpx 0 0 18rpx;
+				}
+				.brandPrice{
+					font-size: 32rpx;
+					color: #F63737;
+					margin-top: 8rpx;
+				}
+			}
+		}
+	}
+	.modalItem{
+		background-color: #FFFFFF;
+		.SelectRegister{
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 20rpx 0 20rpx 0;
+			flex-wrap: wrap;
+			.RegisterWold{
+				width: 350rpx;
+				height: 60rpx;
+				background-color: #F1F1F1;
+				border-radius: 10rpx;
+				font-size: 12px;
+				text-align: center;
+				color: #999999;
+				line-height: 60rpx;
+				border: 1px solid #ccc;
+				margin-bottom: 20rpx;
+				overflow: hidden;//字长进行转化
+				text-overflow:ellipsis;    
+				whitewhite-space: nowrap;
+				margin-left: 10rpx;
+				margin-right: 10rpx;
+
+			}
+			.Registercolor{
+				width: 350rpx;
+				height: 60rpx;
+				background-color: #F1F1F1;
+				border-radius: 10rpx;
+				font-size: 12px;
+				text-align: center;
+				color: #101010;
+				line-height: 60rpx;
+				border: 1px solid #ccc;
+				margin-bottom: 20rpx;
+				overflow: hidden;//字长进行转化
+				text-overflow:ellipsis;    
+				whitewhite-space: nowrap;
+				margin-left: 10rpx;
+				margin-right: 10rpx;
+				.replenishment{
+					background-color: #32303A;
+					opacity: 0.7;
+					position: absolute;
+					color: #ffff;
+					width: 350rpx;
+					height: 60rpx;
+					margin-top: -30px;
+					border-radius: 10rpx;
+					text-align: center;
+					line-height: 60rpx;
+				}
+			}
+			.active{
+				width: 350rpx;
+				height: 60rpx;
+				background-color: #0A90FE;
+				border-radius: 10rpx;
+				font-size: 12px;
+				text-align: center;
+				color: #fff;
+				line-height: 60rpx;
+				border: 1px solid #ccc;
+				margin-bottom: 20rpx;
+				margin-left: 10rpx;
+				margin-right: 10rpx;
+
+			}
+		}
+		.productNumber{
+			display: flex;
+			width: 100%;
+			margin-bottom: 20rpx;
+			.productchange{
+				margin-left: 120rpx;
+				width: 70%;
+				display: flex;
+				justify-content: flex-end;
+				.productJian{
+					width: 50rpx;
+					height: 50rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.productJia{
+					width: 50rpx;
+					height: 50rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		}
+		.determine{
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			view{
+				width: 300rpx;
+				padding: 16rpx 20rpx;
+				text-align: center;
+				align-self: center;
+				color: #fff;
+				margin-bottom: 10rpx;
+			}
+			.deterleft{
+				border-top-left-radius:40rpx;
+				border-bottom-left-radius:40rpx;
+				background-image: linear-gradient(to right, #EBB528, #FE9702);
+			}
+			.deterright{
+				border-top-right-radius:40rpx;
+				border-bottom-right-radius:40rpx;
+				background-image: linear-gradient(to right, #F63936, #F46E1D);
+			}
+		}
+		.buttonColor{
+			width: 94%;
+			height: 80rpx;
+			background-image: linear-gradient(to right, #F63737, #F3741C);
+			color: white;
+			line-height: 80rpx;
+			border-radius: 50rpx;
+			margin-bottom: 20rpx;
+		}
+	}
+
+    .button{
+		   display: flex;
+		   justify-content: flex-end;
+    .change{
+			display: flex;
+			width:100rpx;
+			height: 50rpx;
+			justify-content: center;
+			line-height: 50rpx;
+			background-color: #E7FFE6;
+			position: relative;
+			margin-right: 20rpx;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		   .sub{
+			   top:0;
+			   left: -20rpx;
+			   position: absolute;
+			   width: 50rpx;
+			   height: 50rpx;
+		   }
+		   .add{
+			   top:0;
+			   right: -20rpx;
+			   width: 50rpx;
+			   height: 50rpx;
+			   position: absolute;
+		   }
+    }
+    }
+	
+	.guan{
+		position: absolute;
+		top: 1rpx;
+		right: 10rpx;
+		font-size: 38rpx;
+	}
+	
+	.share{
+		position: absolute;
+		width: 120rpx;
+		height: 70rpx;
+		background-color: #F4741C;
+		color: #fff;
+		bottom: 190rpx;
+		right: 0;
+		text-align: center;
+		border-top-left-radius: 30rpx;
+		border-bottom-left-radius: 30rpx;
+		line-height: 70rpx;
+		button{
+			position: absolute;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			
+		}
+	}
+	.memberItem{
+		background-size:cover;
+		background-image: url(../../static/home/bottom.png);
+		height: 95rpx;
+		.memberOpen{
+			width: 100%;
+			margin-top: -10rpx;
+			.openBox{
+				display: flex;
+				margin-left: 40rpx;
+				padding-top: 25rpx;
+				.memberImg{
+					width: 50rpx;
+					height: 40rpx;
+				}
+				.memberWold{
+					color: #F0DCB9;
+					margin-left: 20rpx;
+				}
+				.memberButton{
+					height: 50rpx;
+					width: 130rpx;
+					line-height: 50rpx;
+					font-size: 13px;
+					text-align: center;
+					margin-left: 50rpx;
+					background-color: #F0DCB9;
+					border-radius: 30rpx;
+					color: #3E414F;
+				}
+			}
+		}
+	}
+	button .cu-tag {
+		position: absolute;
+		top: 8upx;
+		right: 8upx;
+	}
+</style>

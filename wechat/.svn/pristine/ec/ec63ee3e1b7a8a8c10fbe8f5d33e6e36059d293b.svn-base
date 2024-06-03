@@ -1,0 +1,223 @@
+<template>
+	<view class="confirmItem">
+		<view class="myhome">
+			<view class="homecont">
+				<view class="homeaddress">
+					<image src="../../static/orderImg/address.png" mode="" class="img"></image>
+					<view class="down">
+						请选择企业
+					</view>
+				</view>
+				<view class="cuIcon-right right" @click="establish"></view>
+			</view>	
+		</view>
+		<view class="" style="width: 100%;height: 20rpx;"></view>
+		<view class="ordercomfirm">
+			<view class="ordercont">
+				<view class="message">
+					订单信息
+				</view>
+				<view class="vipyear">
+					<view class="yearsize">3年VIP</view>
+					<view class="price">
+						￥1600
+					</view>
+				</view>
+				<view class="vipyear">
+					<view class="yearsize">3年VIP</view>
+					<view class="redprice">
+						<text style="font-size: 24rpx;color:red;">￥</text>
+						1600
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="" style="width: 100%;height: 20rpx;"></view>
+		<view class="ordercomfirm">
+			<view class="ordercont">
+				<view class="message">
+					支付方式
+				</view>
+				<view class="vipyear">
+					<view class="vipradio">
+						<image mode="true" class="radioIcon" src="../../static/orderImg/wx.png"role="img"></image>
+						<view class="radioName">微信支付</view>
+					</view>
+					<view class="price">
+						<checkbox-group @change="selected(item)">
+							<checkbox style="transform: scale(0.7); " :checked="item.flag"/>
+						</checkbox-group>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="" style="width: 100%;height: 20rpx;"></view>
+		<view class="ordercomfirm">
+			<view class="ordercont">
+				<view class="agreeyear">
+					<view class="vipradio">
+						<checkbox-group @change="selected(item)">
+							<checkbox style="transform: scale(0.7); " :checked="item.flag"/>
+						</checkbox-group>
+						<view style="font-size: 28rpx;color: #999999;">开通即同意</view>
+						<view style="font-size: 28rpx; color: red;">《企瑞宝会员卡用户协议》</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="setbottom">
+			<view class="setends">
+				<view class="endscont">
+					<view>应付金额:<text style="font-size: 32rpx;color: red;">￥1600</text></view>
+					
+					<text class="discount">已优惠：￥0.00</text>
+				</view>
+				<view class="endbutton" @click="pay">
+					确认订单
+				</view>
+			</view>
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	import { createCardRecord } from '../../API/membership/membership.js'
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.confirmItem{
+		padding: 20rpx;
+		width: 100%;
+		height: 100%;
+		.myhome{
+			background-color: #fff;
+			border-radius: 20rpx;	
+			.homecont{
+				padding: 20rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.homeaddress{
+					display: flex;
+					align-items: center;
+					.img{
+						width: 50rpx;
+						height: 50rpx;
+					}
+					.down{
+						color: #ccc;
+					}
+				}
+			}	
+		}
+		.ordercomfirm{
+			background-color: #fff;
+			border-radius: 20rpx;	
+			.ordercont{
+				padding: 20rpx;
+				.message{
+					font-size: 28rpx;
+					border-bottom: 2rpx solid #eee;
+					padding-bottom: 20rpx;
+				}
+				.agreeyear{
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					.vipradio{
+						display: flex;
+					}
+					checkbox-group{
+						width: 60rpx;
+						border-radius: 100%
+					}
+					checkbox .wx-checkbox-input {
+						border-radius: 50% !important;
+						color: #ffffff !important;
+					}
+				}
+				.vipyear{
+					display: flex;
+					align-items: center;
+					border-bottom: 2rpx solid #eee;
+					justify-content: space-between;
+					padding: 20rpx 20rpx 20rpx 0;
+					.vipradio{
+						display: flex;
+					}
+					.radioIcon{
+						width: 50rpx;
+						height: 50rpx;
+					}
+					.radioName{
+						font-size: 28rpx;
+						color: #101010;
+						margin-left: 20rpx;
+					}
+					.yearsize{
+						font-size: 28rpx;
+					}
+					.price{
+						font-size: 26rpx;
+					}
+					checkbox-group{
+						width: 60rpx;
+						border-radius: 100%
+					}
+					checkbox .wx-checkbox-input {
+							border-radius: 50% !important;
+							color: #ffffff !important;
+						}
+					.redprice{
+						font-size: 36rpx;
+						color: red;
+					}
+				}
+				
+			}
+		}
+		.setbottom{
+			margin-top: 20rpx;
+			width: 100%;
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			background-color: #e4e4e4;
+			border-top: 1rpx solid #f2f2f2;
+			z-index: 999;
+			.setends {
+				padding-left: 30rpx;
+				display: flex;
+				justify-content: space-between;
+				background-color: #FFFFFF;
+				.endscont{
+					.discount{
+						color: rgb(155,155,155);
+					}
+					// text{
+					// 	display: block;
+					// }
+				}
+				.endbutton{
+					height: 110rpx;
+					line-height: 110rpx;
+					width: 180rpx;
+					color: #fff;
+					background-color: #F86500;
+					text-align: center;
+				}
+			}
+		}
+	}
+</style>

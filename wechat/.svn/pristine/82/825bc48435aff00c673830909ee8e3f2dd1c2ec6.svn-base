@@ -1,0 +1,167 @@
+<template>
+	<view class="data">
+		<view class="bg">
+			<view class="income">
+				<view class="all">
+					今日总收入
+				</view>
+				<view class="all" style="color: #EBDA18;margin-bottom: 20rpx;">
+					188888.00
+				</view>
+				<view class="division">
+					<view class="">
+						<view class="">
+							昨日总收入
+						</view>
+						<view class="" style="text-align: center;">
+							10010
+						</view>
+					</view>
+					<text class="cuIcon-titles" style="font-size: 40rpx;color: #ccc;"></text>
+					<view class="">
+						<view class="">
+							本周总收入
+						</view>
+						<view class="" style="text-align: center;">
+							700010
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="panel">
+			<text>财务数据</text>
+			<view class="common">
+				<view class="item">
+					<view class="word">
+						18888.00
+					</view>
+					<view class="word">
+						今日总收入
+					</view>
+					<view class="heng">
+						
+					</view>
+				</view>
+				<view class="item">
+					<view class="word">
+						18888.00
+					</view>
+					<view class="word">
+						昨日总收入
+					</view>
+					<view class="heng">
+						
+					</view>
+				</view>
+				<view class="item">
+					<view class="word">
+						18888.00
+					</view>
+					<view class="word">
+						累计总收入
+					</view>
+					<view class="heng">
+						
+					</view>
+				</view>
+			</view>
+		
+		     <text>订单数据</text>
+			 <view class="common">
+			 	<view class="item">
+			 		<view class="word">
+			 			18888.00
+			 		</view>
+			 		<view class="word">
+			 			今日总收入
+			 		</view>
+			 		<view class="heng smallBg1">
+			 			
+			 		</view>
+			 	</view>
+			 </view>
+			 
+			 <text>会员数据</text>
+			 <view class="common">
+			 	<view class="item">
+			 		<view class="word">
+			 			18888.00
+			 		</view>
+			 		<view class="word">
+			 			今日总收入
+			 		</view>
+			 		<view class="heng smallBg2">
+			 			
+			 		</view>
+			 	</view>
+			 </view>
+		</view>
+	</view>
+</template>
+
+<script>
+</script>
+
+<style lang="scss">
+	.bg{
+		width: 100%;
+		height: 150rpx;
+		background-color: #0DA98C;
+		position: relative;
+		.income{
+			background-color: #fff;
+			border-radius: 20rpx;
+			position: absolute;
+			top: 50rpx;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 660rpx;
+			height: 250rpx;
+			.all{
+				text-align: center;
+				font-size: 32rpx;
+			}
+			.division{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding:0 100rpx;
+			}
+		}
+	
+	}
+     .panel{
+     	padding: 180rpx 40rpx;
+		text{
+			font-size: 32rpx;
+		}
+		.common{
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			.item{
+				width: 200rpx;
+				background-color: #fff;
+				border-top-left-radius: 20rpx;
+				border-top-right-radius: 20rpx;
+				padding-top: 20rpx;
+				margin: 20rpx 0;
+				.word{
+					text-align: center;
+				}
+				.heng{
+					height: 15rpx;
+					background-color: #FF7E6D;
+					border-radius: 20rpx;
+				}
+				.smallBg1{
+					background-color:#CE68FE;
+				}
+				.smallBg2{
+					background-color:#69A5FE;
+				}
+			}
+		}
+     }
+</style>

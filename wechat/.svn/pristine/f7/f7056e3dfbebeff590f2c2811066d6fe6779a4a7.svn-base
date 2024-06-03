@@ -1,0 +1,113 @@
+<template>
+	<view class="container">
+		<view class="agentItem">
+			<image src="../../../static/personal/city.png"></image>
+			<aboutNav></aboutNav>
+		</view>
+		<view class="logoBox">
+			<view class="logoColor">Logo</view>
+			<view class="writeBack">
+				<view class="writeMove">
+					<view class="agentName">福建企瑞宝科技服务有限公司</view>
+					<view class="Subtitle">代理记账业务</view>
+					<view class="keynote">税务核算，税务申报，出具报表，我们选择经验丰富的会计为客服提供服务。</view>
+					<view style="color: #666666;">
+						<text>代理记账高素质的会计团队和税务部门建立紧密的合作关系服务周到，谦虚谨慎。</text><br/>
+						<text>代理记账高素质的会计团队和税务部门建立紧密的合作关系服务周到，谦虚谨慎代理记账高素质的会计团队和税务部门建立紧密的合作关系服务周到，谦虚谨慎代理记账高素质的会计团队和税务部门建立紧密的合作关系服务周到，谦虚谨慎代理记账高素质的会计团队和税务部门建立紧密的合作关系服务周到，谦虚谨慎。专业代理记账机构，为广大中小企业提供财务代理记账，我们的任何一个会计。</text>
+						</view>
+						<view class="consulting">
+							立即咨询
+						</view>
+				</view>
+				
+			</view>
+		</view>
+		
+		
+		
+		
+	</view>
+</template>
+
+<script>
+	import aboutNav from './aboutNav.vue'
+	export default{
+		components:{
+			aboutNav
+		}
+	}
+</script>
+
+<style lang="scss">
+	.container{
+		width: 100%;
+		height: 100%;
+		.agentItem{
+			width: 100%;
+			height: 658rpx;
+			image{
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+			}
+		}
+		.logoBox{
+			width: 100%;
+			height: auto;
+			display: flex;
+			justify-content: center;
+			.logoColor{
+				position: absolute;
+				font-size: 20px;
+				top: 190rpx;
+				width: 150rpx;
+				height: 150rpx;
+				line-height: 150rpx;
+				background-color: #fff;
+				color: #333333;
+				border-radius: 50%;
+				text-align: center;
+				font-weight: bold;
+				box-shadow: 0 0 5px 1px rgba($color: #000000, $alpha: 0.1);//阴影
+			}
+			.writeBack{
+				width: calc(100% - 160rpx);
+				height: calc(100% - 80rpx);;
+				background-color: #FFFFFF;
+				margin-top: -200px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				.writeMove{
+					margin: 10rpx 10rpx 10rpx 10rpx;
+					.agentName{
+						text-align: center;
+						margin-top: 110rpx;
+						color: #333333;
+					}
+					.Subtitle{
+						text-align: center;
+						color: #666666;
+						margin-top: 20rpx;
+					}
+					.keynote{
+						color: #F77B44;
+						margin: 20rpx 0 20rpx 0;
+					}
+					.consulting{
+						width: 190rpx;
+						height: 60rpx;
+						background-color: #50ADF9;
+						color: #FFFFFF;
+						text-align: center;
+						line-height: 60rpx;
+						font-size: 13px;
+						border-radius: 40rpx;
+						margin: 50rpx 0 20rpx 0;
+					}
+				}
+			}
+		}
+	}
+</style>

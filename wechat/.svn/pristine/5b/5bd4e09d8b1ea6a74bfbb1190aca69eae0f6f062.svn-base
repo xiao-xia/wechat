@@ -1,0 +1,287 @@
+<template>
+	<view class="container">
+		<view class="memberBack">
+			<image style="z-index: -1;" src="../../static/home/memberBack.png"></image>
+			<view class="openCard">
+				<view class="openMember">开通会员卡</view>
+				<view class="openMove">
+					<image style="width: 20rpx;height: 20rpx;" src="../../static/home/member.png"></image>
+					<view style="color:#F3D3BF;font-size: 30rpx;">独享多项会员特权</view>
+					<image style="width: 20rpx;height: 20rpx;" src="../../static/home/member.png"></image>
+				</view>
+				<view class="colorItem">
+					<view class="colorWidth">
+						<view class="colorBack">
+							<view class="colorLittle">
+								<text style="font-size: 24rpx;color: #FFFFFF;margin-top: -6rpx;">推荐</text>
+							</view>
+							<view class="vIPword">
+								<view style="color: #6E4C2B; font-size: 30rpx;">3年VIP</view>
+								<view style="color: #543115; font-size: 46rpx; font-weight: bold;">￥1600</view>
+								<view style="color: #373333; font-size: 22rpx; text-decoration: line-through; margin-top: -10rpx;">原价￥2600</view>
+								<view style="color: #6C4827; font-size: 22rpx;">限时活动价</view>
+								<text style="margin: -26rpx 0 0 170rpx;font-size: 30rpx;color: #fff;" class="cuIcon-check"></text>
+							</view>
+						</view>
+						
+						<view class="writeBack" v-for="(item,index) in 2" :key="index">
+							<view class="colorLittle">
+								<text style="font-size: 24rpx;color: #FFFFFF;margin-top: -6rpx;">推荐</text>
+							</view>
+							<view class="vIPword">
+								<view style="color: #6E4C2B; font-size: 30rpx;">3年VIP</view>
+								<view style="color: #543115; font-size: 46rpx; font-weight: bold;">￥1600</view>
+								<view style="color: #373333; font-size: 22rpx; text-decoration: line-through; margin-top: -10rpx;">原价￥2600</view>
+								<view style="color: #6C4827; font-size: 22rpx;">限时活动价</view>
+								<text style="margin: -26rpx 0 0 170rpx;font-size: 30rpx;color: #fff;" class="cuIcon-check"></text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="privilegesItem">		
+					<view class="privileges">
+						<span class="line"></span>
+							会员特权
+						<span class="line"></span>
+					</view>
+					<view class="Equityvalue">权益价值翻倍</view>
+				</view>
+				<view class="specialItem">
+					<view class="Seckill">
+						<image style="width: 100rpx;height: 100rpx;" src="../../static/home/seckill.png"></image>
+						<text class="area">秒杀专区</text>
+					</view>
+					<view class="Seckill">
+						<image style="width: 100rpx;height: 100rpx;" src="../../static/home/volume.png"></image>
+						<text  class="area">每月抵用券</text>
+					</view>
+					<view class="Seckill">
+						<image style="width: 100rpx;height: 100rpx;" src="../../static/home/price.png"></image>
+						<text class="area">商品会员价</text>
+					</view>
+					<view class="Seckill">
+						<image style="width: 100rpx;height: 100rpx;" src="../../static/home/exclusive.png"></image>
+						<text class="area">专属客服</text>
+					</view>
+				</view>
+				<view class="areaItem">
+					<view class="areaBox">
+						<text style="color: #FFFFFF;">专属会员特权-秒杀专区，只要开通会员VIP的用户才能参与秒杀产品抢购哦！</text>
+					</view>
+				</view>
+				<view class="buttonItem">
+					<button class="buttonColor">
+						<view style="font-size: 40rpx; color: #32303A;">确认支付</view>
+						<view style="font-size: 40rpx; color: #32303A;margin: 20rpx">开通VIP</view>
+						<view class="limit">限时</view>
+					</button>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		height: 100%;
+	}
+	.container{
+		width: 100%;
+		height: 100%;
+		.memberBack{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			image{
+				width:100%;
+				height: 100%;
+			}
+			.openCard{
+				width: 100%;
+				z-index: 1;
+				display: flex;
+				justify-content: center;
+				.openMember{
+					color: #DEAA8A;
+					font-size: 60rpx;
+					position: absolute;
+					top: 40rpx;
+				}
+				.openMove{
+					width: 100%;
+					color: #DEAA8A;
+					font-size: 60rpx;
+					position: absolute;
+					top: 120rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin-top: 30rpx;
+				}
+				.colorItem{
+					width: 100%;
+					font-size: 60rpx;
+					position: absolute;
+					top: 120rpx;
+					margin-top: 120rpx;
+					.colorWidth{
+						display: flex;
+						justify-content: space-around;
+						align-items: center;
+						.colorBack{
+							width: 200rpx;
+							background-image: url(../../static/home/memberYello.png);
+							background-repeat: no-repeat;
+							.colorLittle{
+								background-image: url(../../static/home/recommend.png);
+								background-repeat: no-repeat;
+								width: 60rpx;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								height: 44rpx;
+								margin: -10rpx;
+							}
+							.vIPword{
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								flex-direction: column;
+							}
+						}
+						.writeBack{
+							width: 200rpx;
+							background-color: #FFFFFF;
+							border-radius: 20rpx;
+							.colorLittle{
+								background-image: url(../../static/home/recommend.png);
+								background-repeat: no-repeat;
+								width: 60rpx;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								height: 44rpx;
+								margin: -10rpx;
+							}
+							.vIPword{
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								flex-direction: column;
+							}
+						}
+					}
+				}
+				.privilegesItem{
+					width: 100%;
+					position: absolute;
+					top: 550rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					flex-direction: column;
+					.privileges{
+						color: #DEAA8A;
+						font-size: 40rpx;
+						.line{
+							display: inline-block;
+							width: 70px;
+							border: 1px dashed #cccccc;
+							vertical-align: 5px;
+							height: 4rpx;
+							margin: 0 10px 0 10px;
+						}
+					}
+					.Equityvalue{
+						font-size: 26rpx;
+						background-color: #E7B394;
+						color: #32303A;
+						text-align: center;
+						width: 200rpx;
+						height: 40rpx;
+						line-height: 40rpx;
+						border-radius: 40rpx;
+
+					}
+				}
+				.specialItem{
+					width: 100%;
+					position: absolute;
+					top: 700rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					.Seckill{
+						width: 180rpx;
+						text-align: center;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						flex-direction: column;
+						.area{
+							color: #BC875D;
+							font-size: 30rpx;
+						}
+					}
+				}
+				.areaItem{
+					width: 100%;
+					position: absolute;
+					top: 890rpx;
+					display: flex;
+					justify-content: center;
+					.areaBox{
+						width: 660rpx;
+						height: 140rpx;
+						border: 1px solid #BC875D;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						padding: 20rpx;
+					}
+				}
+				.buttonItem{
+					width: 100%;
+					position: absolute;
+					top: 1070rpx;
+					display: flex;
+					justify-content: center;
+					.buttonColor{
+						width: 600rpx;
+						height: 100rpx;
+						text-align: center;
+						background-image: linear-gradient(to right, #F8E6D7, #E7B596)
+						;
+						border-radius: 50rpx;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						.limit{
+							width: 60rpx;
+							height: 30rpx;
+							border-radius: 50rpx;
+							background-color: #FE040A;
+							text-align: center;
+							font-size: 18rpx;
+							color: #fff;
+							line-height: 30rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+</style>

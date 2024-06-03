@@ -1,0 +1,162 @@
+<template>
+	<view class="container">
+		<view class="orderCompleted">
+			<view class="complete">本次订单已完成</view>
+			<view class="evaluate">请对本商品进行评价</view>
+			<view class="evaluateOrder">
+				<view class="favorableBox">
+					<image class="favorableImg" src="../../../static/personal/favorable.png"></image>
+					<view class="favorableWord">好评</view>
+				</view>
+				<view class="mediumBox">
+					<image class="mediumImg" src="../../../static/personal/medium.png"></image>
+					<view class="mediumWord">中评</view>
+				</view>
+				<view class="negativeBox">
+					<image class="negativeImg" src="../../../static/personal/negative.png"></image>
+					<view class="mnegativeWord">差评</view>
+				</view>
+			</view>
+			<view class="attitude">
+				<view style="margin-right: 20rpx;">服务态度</view>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+			</view>
+			<view class="attitude">
+				<view style="margin-right: 20rpx;">专业评价</view>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #FFDA44; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+			</view>
+			<view class="attitude">
+				<view style="margin-right: 20rpx;">效果评价</view>
+				<text style="color: #999999;margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #999999;margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #999999;margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #999999;margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+				<text style="color: #999999; margin-left: 10rpx;" class="cuIcon-favorfill"></text>
+			</view>
+		</view>
+		
+		<view class="textItemBox">
+			<view class="textItem">
+				<textarea class="textarea" v-model="formList.content" placeholder="请评价商品" />
+				<button class="buttonColor">提交</button>
+			</view>
+			
+		</view>
+		
+	</view>
+</template>
+
+<script>
+</script>
+
+<style lang="scss">
+	.container{
+		.orderCompleted{
+			background-color: #FFFFFF;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin: 20rpx;
+			.complete{
+				color: #333333;
+				font-weight: bold;
+				font-size: 34rpx;
+				margin-top: 10rpx;
+			}
+			.evaluate{
+				color: #CCCCCC;
+				font-size: 25rpx;
+			}
+			.evaluateOrder{
+				display: flex;
+				width: 100%;
+				justify-content: space-around;
+				margin-top: 20rpx;
+				.favorableBox{
+					display: flex;
+					.favorableImg{
+						width: 36rpx;
+						height: 36rpx
+					}
+					.favorableWord{
+						color: #F54830;
+						font-size: 26rpx;
+						margin: -4rpx 0 0 10rpx;
+					}
+				}
+				.mediumBox{
+					display: flex;
+					.mediumImg{
+						width: 36rpx;
+						height: 36rpx
+					}
+					.mediumWord{
+						color: #F54830;
+						font-size: 26rpx;
+						margin: -4rpx 0 0 10rpx;
+					}
+				}
+				.negativeBox{
+					display: flex;
+					.negativeImg{
+						width: 36rpx;
+						height: 36rpx
+					}
+					.mnegativeWord{
+						color: #F54830;
+						font-size: 26rpx;
+						margin: -4rpx 0 0 10rpx;
+					}
+				}
+			}
+			.attitude{
+				display: flex;
+				margin: 10rpx 0 10rpx 0;
+			}
+		}
+		.textItemBox{
+			margin: 20rpx;
+			.textItem {
+				width: 100%;
+				height: 84%;
+				background-color: #fff;
+				padding: 20rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				.textarea{
+					height: 260rpx;
+					width: 660rpx;
+					border:1px solid #CCCCCC;
+					font-size: 28rpx;
+					line-height: 40rpx;
+					padding: 20rpx;
+				}
+				.buttonColor{
+					height: 80rpx;
+					width: 630rpx;
+					border-radius: 50rpx;
+					text-align: center;
+					line-height: 80rpx;
+					color: #FFFFFF;
+					background-image: linear-gradient(to right, #1093FE, #55AFF9);
+					font-size: 34rpx;
+					margin-top: 40rpx;
+
+				}
+			}
+			
+		}
+		
+	}
+</style>

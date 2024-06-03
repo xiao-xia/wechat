@@ -1,0 +1,71 @@
+<template>
+	<view class="container">
+		<view class="noestabItem">
+			<image class="noestabImg" src="../../../static/personal/establishment.png" mode="widthFix"></image>
+			<view class="noestabText">新增相关企业信息</view>
+		</view>
+		<view class="buttonBack">
+			<view class="buttonSpan">
+				<button @click="newEnterprise" class="buttonColor">新增企业信息</button>
+			</view>
+		</view>
+		
+	</view>
+	
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			newEnterprise(){
+				uni.navigateTo({
+					url:'./newEnterprise'
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.noestabItem{
+		position: absolute;
+		top: 40%;
+		width: 100%;
+		transform: translateY(-50%);
+		text-align: center;
+		.noestabImg{
+			width: 300rpx;
+		}
+		.noestabText{
+			font-size: 28rpx;
+			color: #aaa;
+		}
+	}
+	.buttonBack{
+		width: 100%;
+		background-color: #FFFFFF;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		height: 140rpx;
+		display: flex;
+		justify-content: center;
+		.buttonSpan{
+			width: 80%;
+			margin-top: 20rpx;
+			.buttonColor{
+				width: 92%;
+				height: 100rpx;
+				background-color:#008CFF;
+				color: white;
+				line-height: 100rpx;
+				border-radius: 50rpx;
+			}
+		}
+	}
+</style>

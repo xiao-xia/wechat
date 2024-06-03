@@ -1,0 +1,260 @@
+<template>
+	<view class="container">
+		<view class="Completed">
+			<view style="color: #333333; font-size: 38rpx;">已完成</view>
+			<view class="contact">
+				<button open-type="contact" class="customer">
+					<view style="line-height: 50rpx;">联系客服</view>
+				</button>
+				<view class="another" @click="getOrder()">再来一单</view>
+			</view>
+		</view>
+		<view class="urbanItem" v-for="(item,index) in 2">
+			<view class="urbanMove">
+				<image style="width: 50rpx;height: 50rpx;" src="../../static/shopCart/Geography.png"></image>
+				<view class="cityArea">
+					<view style="color: #333333;font-weight: 550;">仓山区某某小区5栋511</view>
+					<view style="color: ##666666; font-size: 24rpx;">陈某某(女士)18888888888</view>
+				</view>
+			</view>
+		</view>
+		<view class="informationItem">
+			<view class="orderNews">
+				<view style="color: #333333;font-size: 24rpx;">订单信息</view>
+				<view style="color: #333333;font-size: 24rpx;padding-right: 20rpx;">3件</view>
+			</view>
+			<view class="registOrder" v-for="(item,index) in 2">
+				<view class="Ordervive">
+					<image style="width: 120rpx;height: 100rpx;" src="http://47.93.61.34:8081/trademark.png"></image>
+					<view class="trademarking">
+						<view>商标注册</view>
+						<view>￥800</view>
+					</view>
+					<view>X1</view>
+				</view>
+			</view>
+			<view class="totalPrice">
+				<view style="color: #333333;font-size: 24rpx;">总价</view>
+				<view style="color: #333333;padding-right: 10px;font-size: 24rpx;">￥2400</view>
+			</view>
+			<view class="totalPrice">
+				<view style="color: #333333;font-size: 24rpx;">抵用券</view>
+				<view style="color: #333333;padding-right: 10px;font-size: 24rpx;">￥-100.00</view>
+			</view>
+			<view class="totalPrice">
+				<view style="display: flex;align-items: center;">
+					<view style="color: #333333;font-size: 24rpx;">快递费</view>
+					<image style="width: 22rpx;height: 22rpx;margin-left: 10rpx;" src="../../static/orderImg/question.png"></image>
+				</view>
+				<view style="color: #333333;padding-right: 10px;font-size: 24rpx;">￥0.00</view>
+			</view>
+			<view class="totalPrice">
+					<view style="color: #333333;font-size: 24rpx;">合计</view>
+					<view style="color: #F63737;padding-right: 10px;font-size: 24rpx;">￥2300</view>
+			</view>
+			
+		</view>
+		<view class="remarkItem">
+			<view style="color: #333333;font-size: 28rpx;">备注</view>
+			<view  style="color: #333333;padding-right: 10px;font-size: 24rpx;">无</view>
+		</view>
+		<view class="messageItem">
+			<view style="color: #333333;font-size: 28rpx;">订单信息</view>
+			<view style="color: #333333;font-size: 24rpx;">
+				订单编号：2020255245 <text class="copy" @click="handlecopy()">复制</text>
+			</view>
+			<view style="color: #333333;font-size: 24rpx;">下单时间：2020-07-01 19:00:20</view>
+			<view style="color: #333333;font-size: 24rpx;">支付时间：2020-07-01 20:00:20</view>
+		</view>
+	</view>
+	  
+		
+	   
+
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import { getDetail } from '../../API/skedetail/index.js'
+	export default {
+		data() {
+			return {
+			  messageObj:{},
+			  goodsArr:[],
+			  state:'',
+			  pageShow:false
+			}
+		},
+		components:{
+			
+		},
+		computed: {
+			...mapState(['token','openId','userInfo']),
+		},
+		onLoad(options) {
+			console.log(options)
+			this.orderId=options.orderId;
+			// this.state=options.state
+		},
+		onShow() {
+			this.getDetails();
+		},
+		methods: {
+			getOrder(){
+				uni.navigateTo({
+					url:'../buyGoods/buyGoods'
+				})
+			},
+			handlecopy(){
+				uni.showToast({
+					title: "复制成功!",
+					icon: 'none'
+				})
+			},
+			/* async getDetails(){
+				uni.request({
+					url:'http://192.168.2.213:9907/order/orderDetail',
+					data:{
+						token:this.token,
+						orderId:this.orderId
+					},
+					header:{
+						'content-type':'application/x-www-form-urlencoded',//自定义请求头信息
+					},
+					dataType:'json',
+					method:'POST',
+					success: (res) => {
+						console.log(res)
+					}
+				})
+
+			}, */
+			async getDetails(){
+				uni.showLoading({
+					title:'加载中'
+				})
+				const res = await getDetail(this.token,this.orderId);
+				console.log(res)
+					uni.hideLoading()
+			},
+		
+		}
+	}
+</script>
+
+<style lang="scss">
+	.container{
+		width: 100%;
+		.Completed{
+			// width: 100%;
+			background-color: #FFFFFF;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			padding: 20rpx;
+			margin: 20rpx;
+			.contact{
+				display: flex;
+				margin-top: 20rpx;
+				justify-content:space-around;
+				width: 60%;
+				.customer{
+					// width: 150rpx;
+					height: 50rpx;
+					color: #999999;
+					background-color: #FFFFFF;
+					border: 1px solid #CCCCCC;
+					text-align: center;
+					line-height: 50rpx;
+					border-radius: 30rpx;
+				}
+				.another{
+					width: 150rpx;
+					height: 50rpx;
+					color: #FFFFFF;
+					background-color: #FE771E;
+					text-align: center;
+					line-height: 50rpx;
+					border-radius: 30rpx;
+				}
+			}
+		}
+		.urbanItem{
+			// width: 100%;
+			background-color: #FFFFFF;
+			padding: 20rpx;
+			margin: 20rpx;
+			.urbanMove{
+				display: flex;
+				align-items: center;
+				.cityArea{
+					margin-left: 30rpx;
+				}
+			}
+		}
+		.informationItem{
+			// width: 100%;
+			background-color: #FFFFFF;
+			padding: 20rpx;
+			margin: 20rpx;
+			.orderNews{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+			.registOrder{
+				margin-bottom: 30rpx;
+				border-bottom: 1px solid #E6E6E6;
+				padding-bottom: 20rpx;
+				.Ordervive{
+					display: flex;
+					align-items: center;
+					.trademarking{
+						width: 70%;
+						margin-left: 20rpx;
+					}
+				}
+			}
+			.totalPrice{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 30rpx;
+				border-bottom: 1px solid #E6E6E6;
+				padding-bottom: 20rpx;
+			}
+		}
+		.remarkItem{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #E6E6E6;
+			background-color: #FFFFFF;
+			padding: 20rpx;
+			margin: 20rpx;
+		}
+		.messageItem{
+			background-color: #FFFFFF;
+			padding: 20rpx;
+			margin: 20rpx;
+			.copy{
+				color: #0A90FE;
+				border: 1px solid #0A90FE;
+				width: 50rpx;
+				height: 20rpx;
+				padding: 1rpx 10rpx;
+				border-radius: 6rpx;
+				margin-left: 20rpx;
+			}
+		}
+	}
+</style>
+
+

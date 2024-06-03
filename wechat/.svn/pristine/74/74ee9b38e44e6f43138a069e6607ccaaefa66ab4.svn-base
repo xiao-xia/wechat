@@ -1,0 +1,39 @@
+<template>
+	<view class="pageWidth">
+		<view class="textItem">
+			<textarea class="textarea" v-model="formList.content" placeholder="这是用户建议协议内容" />
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style style="scss">
+	.textItem {
+		width: 100%;
+		height: 84%;
+		background-color: #fff;
+		padding: 20rpx;
+		}	
+		.textarea{
+			height: 1140rpx;
+			width: 100%;
+			border:1px solid #CCCCCC;
+			font-size: 28rpx;
+			color: #CCCCCC;
+			line-height: 40rpx;
+			padding: 20rpx;
+		}
+</style>

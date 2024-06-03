@@ -1,0 +1,9 @@
+import req from "../../common/req.js"
+
+export const getDetail = (token,goodsTypeId) => {
+	return req.get(
+		"/goods/goodsDetail", {
+			token,goodsTypeId
+		}
+	)
+}

@@ -1,0 +1,139 @@
+<template>
+	<view class="container" v-if="pageShow">
+		<view class="message">
+			<image :src="doctorObj.picUrl" mode=""></image>
+			<view class="right">
+				<view class="">
+					{{doctorObj.doctorName}} <text class="word">主任医师</text>
+				</view>
+				<view class="word">
+					{{doctorObj.doctorDept}}
+				</view>
+			</view>
+		</view>
+		
+	
+	    <view class="specialty">
+	    	<view class="">
+	    		擅长主治
+	    	</view>
+			<view class="">
+				{{doctorObj.specialtyArea}}
+			</view>
+	    </view>
+		
+		<view class="introduction">
+			<view class="">
+				个人简介
+			</view>
+			<view class="">
+				{{doctorObj.individualResume}}
+			</view>
+		</view>
+		
+		<view class="add">
+			免费咨询
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapMutations,
+	} from 'vuex';
+	import {getAdvice} from '../../API/healthy/index.js'
+	export default{
+		data(){
+			return{
+				index:'',
+				doctorObj:{},
+				pageShow:false
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad(options) {
+			console.log(options.index)
+			this.index=options.index
+		},
+		onShow() {
+		    this.getAdviceList()
+			
+		},
+		methods:{
+			async getAdviceList(){
+				uni.showLoading({
+					title:'加载中'
+				})
+				const res=await getAdvice(this.token)
+				console.log(res)
+				if(res){
+					uni.hideLoading()
+					var doctorList=res.doctorRecommendList
+					doctorList.forEach((item,i)=>{
+						if(this.index==i){
+							this.doctorObj=doctorList[i]
+							console.log(this.doctorObj)
+						}
+					})
+					this.pageShow=true
+				}
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.message{
+		display: flex;
+		background-color: #fff;
+		padding: 20rpx 40rpx;
+		border-bottom: 1px solid #eee;
+		image{
+			width: 120rpx;
+			height: 120rpx;
+			border-radius: 50%;
+		}
+		.right{
+			margin-left: 30rpx;
+		.word{
+			font-size: 20rpx;
+			color: #ccc;
+		}
+		}
+	}
+	.statistics{
+		display: flex;
+		background-color: #fff;
+		.item{
+			flex:1;
+			.box{
+				text-align: center;
+			}
+		}
+	}
+	
+	.specialty{
+		background-color: #fff;
+		margin: 20rpx 0;
+		padding: 20rpx;
+	}
+	.introduction{
+		background-color: #fff;
+		padding: 20rpx;
+	}
+	.add{
+		background-color: var(--button);
+		text-align: center;
+		height: 80rpx;
+		line-height: 80rpx;
+		width:500rpx;
+		margin:0  auto;
+		color: #fff;
+		border-radius: 50rpx;
+		font-size: 32rpx;
+		margin-top: 50rpx;
+	}
+</style>

@@ -1,0 +1,137 @@
+<template>
+	<view class="container">
+		<view class="menuBg">
+			<view class="menu" :class="index==current?'active':''" v-for="(item,index) in title" :key="index" @click="tabChange(index)">
+				{{item}}
+			</view>
+		</view>
+		<view class="noCoupon" v-if="imgShow.length==0">
+			<image src="../../static/noPhoto.png" mode="widthFix"></image>
+			<view class="" style="color: #aaa;">
+				最近三天未上传哦~
+			</view>
+		</view>
+		<view class="photoWrap">
+			<view class="" v-for="(item,index) in imgShow" :key='index' @click="previewImage(index)">
+				<image :src="item" mode="widthFix"></image>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		getReport,getRecent
+	}from '../../API/personArr/index.js'
+	export default{
+		data(){
+			return{
+				title:['最近','全部'],
+				current:0,
+				imgShow:[]
+			}
+		},
+		onLoad() {
+			this.showRecent()
+		},
+		onShow() {
+			
+		},
+		computed: {
+			...mapState(['token','userInfo','phoneNumber']),
+		},
+		methods:{
+			tabChange(index){
+				this.current=index
+				if(index==1){
+					this.showReport()
+				}else if(index==0){
+					this.showRecent()
+				}
+			},
+			previewImage: function(index) {
+				//预览图片
+				console.log(index)
+				uni.previewImage({
+					current: this.imgShow[index],
+					urls: this.imgShow
+				})
+			},
+			async showReport(){
+					const res=await getReport(this.token)
+					console.log(res)
+					let imgStr=res.data
+					this.imgShow=imgStr.split(",")
+					//this.imgShow=res.data.join()
+					console.log(this.imgShow)
+				},
+			async showRecent(){
+				const res=await getRecent(this.token)
+				console.log(res.data)
+				console.log(typeof(res.data))
+				//let imgStr=JSON.parse(res.data)
+				this.imgShow=res.data
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		background-color: #fff;
+		height: 100%;
+	}
+	.container{
+		height: 100%;
+		position: relative;
+		.noCoupon{
+			position: absolute;
+			width: 100%;
+			top:50%;
+			transform: translateY(-50%);
+			text-align: center;
+			image{
+				width: 300rpx;
+			}
+		}
+	}
+	.menuBg{
+		background-color: #f0f0f0;
+		width: 500rpx;
+		height: 60rpx;
+		border-radius: 20rpx;
+		display: flex;
+		margin: 20rpx auto;
+		.menu{
+			flex:1;
+			border-radius: 20rpx;
+			text-align: center;
+			line-height: 60rpx;
+		}
+		.active{
+			background-color: var(--button);
+			color: #fff;
+		}
+	}
+	.photoWrap{
+		padding: 20rpx 10rpx;
+		display: flex;
+		flex-wrap: wrap;
+		view{
+			width: calc(33.33% - 20rpx);
+			height: 200rpx;
+			margin: 0 10rpx 20rpx;
+			//border: 1px solid #ccc;
+			overflow: hidden;
+			image{
+				width: 100%;
+			}
+		}
+	}
+</style>

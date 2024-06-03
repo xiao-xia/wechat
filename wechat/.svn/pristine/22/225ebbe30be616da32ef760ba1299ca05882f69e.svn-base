@@ -1,0 +1,19 @@
+import req from "../../common/req.js"
+
+export const payadd=(token,id,goodsReceiptsPrice,orderPrice,goodsPayablePrice,goodsNum,shoppingAddressId,receiverTel,receiverName,companyId,seckillOrder,remark)=>req.post(
+	'/order/addOrder', {
+		token,id,goodsReceiptsPrice,orderPrice,goodsPayablePrice,goodsNum,shoppingAddressId,receiverTel,receiverName,companyId,seckillOrder,remark
+	}
+)
+
+export const pay = (token,password,orderCode) =>req.post(
+	'/order/pay', {
+		token,password,orderCode
+	}
+)
+
+export const advancePay=(token,orderNum)=>req.post(
+	'/wx/pay', {
+		token,orderNum
+	}
+)

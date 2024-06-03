@@ -1,0 +1,477 @@
+<template>
+	<view class="pageWidth ">
+		<view class="bar">
+			<view v-if="index<5" :class="index==curIndex?'barBlockStyle':'barBlock'" v-for="(item,index) in titleList" :key="index" @tap="selectState(index,item)">
+				{{item.classifyName}}
+			</view>
+		</view>
+		
+		<view class="noOrderItem" v-if="olderData.length==0">
+			<image class="noOrderImg" src="../../../static/orderImg/whole.png" mode="widthFix"></image>
+			<view class="noOrderText">暂无相关订单</view>
+			<!-- <view @click="lookHome">
+				<button class="buttonColor">去首页逛逛</button>
+			</view> -->
+		</view> 
+		
+		<view class="orderback" v-for="(item,index) in olderData" :key="index" >
+			<view class="orderBox" @click="Completed(item)">
+				<view class="orderfinsh">
+					<!-- <view class="finshWord" v-if="item.orderStatus=='待评价'">已完成</view> -->
+					<view class="finshWord" v-if="item.orderStatus==0">已完成</view>
+					<view class="finshWord" v-if="item.orderStatus==1">待支付</view>
+					<view class="finshWord" v-if="item.orderStatus==2">待处理</view>
+					<view class="finshWord" v-if="item.orderStatus==3">处理中</view>
+					<view class="finshWord" v-if="item.orderStatus==4">待评价</view>
+					<view class="finshTime">{{item.createTime}}</view>
+				</view>
+				<view  class="cuIcon-right right" style="color: #666666;"></view>
+			</view>
+			<view class="Completed" v-for="(good,index) in item.orderGoodsList" :key="index">
+				<view class="completeLeft">
+					<view class="CompletedImg">
+						<image :src="good.goodsSmallImage"></image>
+					</view>
+					<view class="completedMove">
+						<view class="completePrice">
+							<view>{{good.goodsSpecificationName}}</view>
+							<view >￥{{good.goodsReceiptsPrice}}</view>
+						</view>		
+					</view>
+					<view class="compleEvaluated">
+						<view class="completeNum">X{{good.goodsNum}}</view>
+						<view class="Evaluated" v-if="item.orderStatus==4" @click="toEvaluated(item)">去评价</view>
+					</view>	
+				</view>
+			</view>
+			<view class="totalItem">
+				<view class="totalContact">
+					<view class="totalPay">
+						<view class="piece">共1件，实付</view>
+						<view class="pieces"><text style="font-size: 22rpx;color: red;">￥</text>{{item.officialReceiptsPrice}}</view>
+					</view>
+				</view>
+				<view class="contactItem">
+					<button open-type="contact" class="contact">
+						<view style="line-height: 60rpx;">联系客服</view>
+					</button>
+					<view class="anothe" @click="getOrder(item)" v-if="item.seckillOrder==0">再来一单</view>
+					<view class="anothe" v-else>秒杀订单</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		list,deleteOrder,orderList
+	} from '../../../API/olderArr/index.js';
+	export default {
+		data() {
+			return {
+				titleList: [{
+					classifyName: "全部",
+				},{
+					classifyName: "待支付"
+				},{
+					classifyName: "待处理"
+				},{
+					classifyName: "处理中"
+				},{
+					classifyName: "待评价"
+				}],
+				current: '',
+				orderList:[{
+					createTime:'2019.1.1'
+				},],
+				olderData:[],
+				totalNum:0,
+				curIndex:0,
+				orderStatus:'',
+				wholeStatus:''
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad(options) {
+			console.log(options)
+			this.current=options.state
+			this.wholeStatus=options.state
+			console.log(this.wholeStatus)
+			this.curIndex=options.index
+			// this.showOrderList()
+		},
+		onShow() {
+			this.showOrderList()
+		},
+		methods: {
+			getOrder(item){
+				uni.navigateTo({
+					url:'../../buyGoods/buyGoods?orderItem=' +JSON.stringify(item)
+				})
+			},
+			Completed(item){
+				uni.navigateTo({
+					url:'../../orderDetail/orderDetail?orderId='+item.orderId
+				})
+			},
+			// lookHome(){
+			// 	uni.switchTab({
+			// 		url:'../../home/home'
+			// 	})
+			// },
+			ToTop(){
+				uni.pageScrollTo({
+					scrollTop: 0,
+					duration: 300
+				})
+			},
+			toEvaluated(item){
+				console.log(item)
+				uni.navigateTo({
+					url:'../evaluate/publish?orderCode=' +item.orderCode+ '&orderId='  +item.orderId
+				})
+			},
+			selectState(index,item){
+				this.curIndex=index
+				console.log(item)
+				console.log(this.curIndex)
+				this.current=item
+				this.wholeStatus = item.classifyName
+				console.log(this.wholeStatus)
+				this.showOrderList()
+			},
+			goDetail(item){
+			   if(item.orderStatus=='退款'){
+				   uni.navigateTo({
+				   	url:'../../refund/detail?id='+item.id
+				   })
+			   }else{
+				  uni.navigateTo({
+				  	url:'../../orderDetail/orderDetail?id='+item.id+'&state='+item.orderStatus
+				  }) 
+			   }
+		    },
+				
+			async showOrderList(){
+				if(this.wholeStatus=='全部'){
+					uni.showLoading({
+						title:'加载中'
+					})
+					this.orderStatus=''
+					const res = await orderList(this.token,this.orderStatus);
+					console.log(res)
+					if(res){
+						uni.hideLoading()
+						this.titleList = res.data.dictionaryVos
+						this.olderData = res.data.orderVoIPage.records
+						console.log(this.olderData)
+					}	
+				}
+				else{
+					this.orderStatus=this.curIndex
+					console.log(this.orderStatus)
+					uni.showLoading({
+						title:'加载中'
+					})
+					const res = await orderList(this.token,this.orderStatus);
+					if(res){
+						uni.hideLoading()
+						this.olderData = res.data.orderVoIPage.records
+						console.log(this.olderData)
+					}	
+				}
+				/* else if(this.wholeStatus){
+					this.orderStatus=this.curIndex
+					console.log(this.orderStatus)
+					uni.showLoading({
+						title:'加载中'
+					})
+					const res = await orderList(this.token,this.orderStatus);
+					if(res){
+						uni.hideLoading()
+						this.olderData = res.data.orderVoIPage.records
+						console.log(this.olderData)
+					}	
+				}
+				else if(this.wholeStatus=='处理中'){
+					this.orderStatus=this.curIndex
+					console.log(this.orderStatus)
+					uni.showLoading({
+						title:'加载中'
+					})
+					const res = await orderList(this.token,this.orderStatus);
+					if(res){
+						uni.hideLoading()
+						this.olderData = res.data.orderVoIPage.records
+						console.log(this.olderData)
+					}	
+				} */
+			},
+
+			/* happenTimeFun(num){ //时间转换
+				let date = new Date(num);
+				var y = date.getFullYear();
+				var m = date.getMonth() + 1;
+				m = m < 10 ? ('0' + m) : m;
+				var d = date.getDate();
+				d = d < 10 ? ('0' + d) : d;
+				var h = date.getHours();
+				var minute = date.getMinutes();
+				minute = minute < 10 ? ('0' + minute) : minute;
+				console.log(minute)
+				return y + '-' + m + '-' + d+' '+h+':'+minute;
+			}, */
+			async goOrder(item){
+				uni.navigateTo({
+					url:'../../settle/settle?orderItem='+JSON.stringify(item)
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.noOrderItem {
+		position: absolute;
+		top:50%;
+		width: 100%;
+		transform: translateY(-50%);
+		text-align: center;
+		.noOrderImg {
+			width: 300rpx;
+		}
+		.noOrderText {
+			font-size: 25rpx;
+			color: #aaa;
+			//letter-spacing: 10rpx;
+		}
+		.buttonColor{
+			height: 60rpx;
+			width: 190rpx;
+			line-height: 60rpx;
+			font-size: 13px;
+			text-align: center;
+			background-color: #008CFF;
+			border-radius: 30rpx;
+			color: #fff;
+			margin-top: 20rpx;
+		}
+	}
+	
+	.orderback{
+		width: 100%;
+		background-color: #fff;
+		padding: 0 0 0 20rpx;
+		margin-top: 20rpx;
+		.orderBox{
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			height: 90rpx;
+			padding: 0 20rpx 0 10rpx;
+			border-bottom: 1px  solid #f2f2f2;
+			.orderfinsh{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				.finshWord{
+					font-size: 30rpx;
+					color: #FE771E;
+				}
+				.finshTime{
+					margin-left: 20rpx;
+					font-size: 24rpx;
+					color: #ccc;
+				}
+			}
+			.right{
+				color: #ccc;
+			}
+		}
+		.Completed{
+			width: 100%;
+			// height: 150rpx;
+			border-bottom: 1px solid #f2f2f2;
+			display: flex;
+			justify-content: space-between;
+			padding: 30rpx 20rpx 30rpx 10rpx;
+			.completeLeft{
+				display: flex;
+				align-items: center;
+				.CompletedImg{
+					width: 120rpx;
+					height: 120rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.completedMove{
+					display: flex;
+					.completePrice{
+						margin-left: 30rpx;
+						width: 420rpx;
+					}
+					
+				}
+				.compleEvaluated{
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;
+					.completeNum{
+						color: #333333;
+						font-size: 24rpx;
+					}
+					.Evaluated{
+						color: #FE771E;
+						border: 1px solid #FE771E;
+						width: 120rpx;
+						height: 50rpx;
+						text-align: center;
+						font-size: 24rpx;
+						border-radius: 30rpx;
+						line-height: 45rpx;
+						margin-top: 10rpx;
+					}
+				}
+			}
+			
+		}
+		.totalItem{
+			width: 100%;
+			padding: 30rpx 20rpx 30rpx 10rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.totalContact{
+				display: flex;
+				.totalPay{
+					display: flex;
+					align-items: center;
+					.piece{
+						color: #333333;
+						font-size: 24rpx;
+					}
+					.pieces{
+						font-size: 32rpx;
+						color: red;
+					}
+				}
+			}
+			.contactItem{
+				display: flex;
+				.contact{
+					// width: 150rpx;
+					height: 60rpx;
+					color: #CCCCCC;
+					background-color: #FFFFFF;
+					// line-height: 60rpx;
+					border-radius: 30rpx;
+					border: 1px solid #ccc;
+					text-align: center;
+					font-size: 26rpx;
+					margin-right: 20rpx;
+				}
+				.anothe{
+					width: 150rpx;
+					height: 60rpx;
+					color: #FFFFFF;
+					background-color: #FE771E;
+					line-height: 60rpx;
+					border-radius: 30rpx;
+					text-align: center;
+					font-size: 26rpx;
+				}
+			}
+		}
+	}
+	
+	.bar {
+		width: 100%;
+		height: 100rpx;
+		margin: 0 0 20rpx ;
+		display: flex;
+		justify-content: space-between;
+		padding: 0 66rpx;
+		background-color: #FFFFFF;
+		position: sticky;
+		top: 0;
+		z-index: 9999;
+		.barBlockStyle {
+			font-size: 28rpx;
+			color:  #008CFF;
+			line-height: 100rpx;
+			text-align: center;
+		}
+		
+		.barBlock {
+			font-size: 28rpx;
+			// font-weight: 600;
+			color: #101010;
+			line-height: 100rpx;
+			text-align: center;
+		}
+	}
+	
+	.card{
+		width: 100%;
+		margin-bottom: 20rpx;
+		padding: 20rpx 40rpx;
+		background-color: #fff;
+		.top{
+			display: flex;
+			justify-content: space-between;
+		}
+		.num{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20rpx;
+			.photo{
+				display: flex;
+				align-items: center;
+				.wrap{
+					width: 200rpx;
+					height: 200rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		}
+		.choose{
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 20rpx;
+			.lbtn{
+				width: 200rpx;
+				line-height: 60rpx;
+				height: 60rpx;
+				text-align: center;
+				border: 1px solid #eee;
+				color: #aaa;
+				margin-right: 20rpx;
+			}
+			.rbtn{
+				width: 200rpx;
+				line-height: 60rpx;
+				height: 60rpx;
+				text-align: center;
+				color:var(--button);
+				border: 1px solid var(--button);
+			}
+		}
+	}
+	
+</style>

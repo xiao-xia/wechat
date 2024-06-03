@@ -1,0 +1,928 @@
+<template>
+	<view class="container">
+		<view class="orderset">
+			<view class="myhome">
+				<view class="homecont">
+					<view class="homeaddress">
+						<image src="../../static/orderImg/address.png" mode="" class="img"></image>
+						<view class="add">
+							<view class="up">
+								{{selectedObj.receiverCell||addressList.receiverCell}}
+							</view>
+							<view class="down">
+								{{selectedObj.receiverName||addressList.receiverName}}({{selectedObj.receiverSex||addressList.receiverSex}}) {{selectedObj.receiverTel||addressList.receiverTel}} 
+							</view>
+						</view>
+					</view>
+					<view class="cuIcon-right right" @click="goAddress"></view>
+				</view>
+			</view>
+			<view class="" style="width: 100%;height: 20rpx;"></view>
+			<view class="myhome">
+				<view class="homecont">
+					<view class="homeaddress">
+						<image src="../../static/orderImg/qiye.png" mode="" class="img"></image>
+						<view class="add">
+							<view class="up">
+								{{eatablishObj.companyName||eatablishData.companyName}}
+							</view>
+							<view class="down">
+								{{eatablishObj.companyContactName||eatablishData.companyContactName}} {{eatablishObj.companyMobile||eatablishData.companyMobile}}
+							</view>
+						</view>
+					</view>
+					<view class="cuIcon-right right" @click="establish"></view>
+				</view>
+			</view>
+			<view class="setproduct">
+				<view class="endproduct">
+					<view class="head">
+						<text>订单信息</text>
+						<text>1件</text>
+					</view>
+					<view class="proimg" >
+							<view class="producttycont">
+								<view class="producttys">
+									<image class="producttyimg" src="http://47.93.61.34:8081/trademark.png" mode=""></image>
+								</view>
+								<view class="detail">
+									<view class="brandName">
+										{{goodsObj.goodsSpecificationName}}
+									</view>
+									<view class="brandPrice">
+										¥{{goodsObj.price}}
+									</view>
+								</view>
+							</view>
+						<view class="piecenum">
+							<view class="productchange">
+								<view class="productJian">
+									<image src="../../static/product/jian.png"></image>
+								</view>
+								<text style="margin:10rpx;">1</text>
+								<view class="productJia">
+									<image src="../../static/product/jia.png"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="amount">
+						<view class="amountbot">
+							<text>总价</text>
+							<text style="font-weight: bold;margin-right: 30rpx;">￥800</text>
+						</view>
+					</view>
+					<view class="pieces">
+						<view class="piecepro">
+							<view class="">
+								<text>抵用卷</text>
+								<text style="margin-left: 10rpx;color: rgb(195,195,195);">({{0}}张可用)</text>
+							</view>
+							<view class="right" @click="openList">
+								<text style="font-weight: bold;">￥ -{{0}}</text>
+								<text class="cuIcon-right" style="color: #A4A5A5;"></text>
+							</view>
+						</view>
+					</view>
+					<view class="setdistribution">
+							<text>快递费</text>
+							 <text style="font-weight: bold;margin-right: 30rpx;">￥{{0}}</text>
+					</view>
+					<view class="total">
+						<text>合计</text>
+						<text style="font-weight: bold;margin-right: 30rpx;color: red;font-size: 34rpx;">¥800</text>
+					</view>
+				</view>
+			</view>
+			<view class="beizhu">
+				<text>备注</text>
+				<view class="right" @click="goRemarks">
+					<text style="margin-right: 40rpx;color: #ccc;">{{msg}}</text>
+					<text class="cuIcon-right" style="color: #A4A5A5;margin-right: 20rpx;"></text>
+				</view>
+			</view>
+			<view class="box" style="height: 170rpx;">
+				
+			</view>
+			<view class="advertisement">
+				<view class="left">
+					开通企瑞宝立减500元
+				</view>
+				<view class="right">
+					<text class="kai" @click="activate()">立即开通</text>
+					<text class="cuIcon-right"></text>
+				</view>
+			</view>
+			<view class="setbottom" >
+				<view class="setends">
+					<view class="endscont">
+						<text class="endcope">应付金额 ￥800</text>
+						<text class="discount">已优惠 ￥0</text>
+					</view>
+					<view class="endbutton" @click="pay">
+						确认订单
+					</view>
+				</view>
+			</view>
+			
+			<view class="cu-modal bottom-modal " :class="bottomshow?'show':''" >
+				<view class="cu-dialog">
+					<view class="cu-bar bg-white">
+						<view class="specibox">
+							<view class="Trademark">
+								<view class="brand">
+									支付方式
+								</view>
+							</view>
+						</view>
+						<view class="cuIcon-roundclose guan" @tap="hideModal"></view>
+					</view>
+					<view class="payItem">
+						<radio-group name="" @change="radioChange">
+							<view class="radioBlock" v-for="(item,index) in radioArr" :key="index">
+								<view class="radioLeft">
+									<image class="radioIcon" :src="item.img" mode=""></image>
+									<view class="radioName">{{item.name}}</view>
+								</view>
+								<radio class="radioStyle blue" :value="item.name" :checked="index === currentRadio" />
+							</view>
+						</radio-group>
+					</view>
+					<view class="informent" v-if="currentRadio==1">
+						<view class="infoItem">
+							<view class="title">
+								企瑞宝对公账户信息
+							</view>
+							<view class="content">
+								开户名称：企瑞宝科技有限公司
+							</view>
+							<view class="content">
+								开户银行：XXXXX银行有限公司福州分行营业厅
+							</view>
+							<view class="content">
+								银行卡号：8888 8888 8888 8888
+							</view>
+							<view class="botton">
+								<view class="copy">
+									复制
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- <view class="" style="border: 5rpx solid #ccc; width: 100%;"></view> -->
+					<view class="now" v-if="currentRadio==1">
+						<view class="title">
+							线下支付须知:
+						</view>
+						<view class="content">
+							由于企业网银到账时间由银行系统转账时间决定，因此我们确认收款与您的转账时间有-定间隔期，会导致您的转账未能及时到账，我们以收到您的实际转账为准，请您谅解。
+						</view>
+					</view>
+					<view class="" style="width: 100%;height: 100rpx;"></view>
+					<view class="setbottom" >
+						<view class="setends">
+							<view class="endscont">
+								<text class="endcope">应付金额 ￥800</text>
+								<text class="discount" style="text-align: left;">已优惠 ￥0</text>
+							</view>
+							<view class="endbutton" @click="comfirmList()">
+								确认支付
+							</view>
+						</view>
+					</view>
+					
+				</view>
+				
+			</view>
+			<pay v-if="ordershow" :orderCode="orderCode" :orderId="orderId"></pay>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import pay from '../../components/pay.vue'
+	import { defaultAddress } from '../../API/defaultAddresss/index.js'
+	import { add } from '../../API/olderArr/index.js'
+	import { payadd,advancePay } from '../../API/orderpay/index.js'
+	import {showCoupon } from '../../API/couponArr/index.js'
+	import { getAddress }from '../../API/addressArr/index.js';
+	import { companyList } from '../../API/eatablishment/index.js'
+	export default{
+		data(){
+			return{
+				ordershow:false,
+				show:false,
+				ayChoose:false,
+				orderCode:'',
+				orderId:'',
+				addressObj:{},
+				selectedObj:{},
+				eatablishObj:{},
+				addressObj:{
+					receiverCell:'仓山区万达广场一区1#2202',
+					receiverName:'啊荣',
+					receiverSex:'先生',
+					receiverTel:'135909090'
+				},
+				eatablishData:{
+					companyName:'企瑞宝有限公司',
+					companyContactName:'雷某某',
+					companyMobile:'13596363666'
+				},
+				msg:'选填，补充说明',
+				goodsObj:{},
+				totalPrice:'',
+				id:'',
+				goodsData:{},
+				goodsArr:[],
+				isShow:false,
+				bottomshow:false,
+				addressList:{},
+				radioArr: [
+					{img:"../../static/orderImg/wx.png",name:"微信支付"},
+					{img:"../../static/orderImg/yhk.png",name:"线下支付"},
+				],
+				currentRadio: 0,
+			}
+		},
+		components:{
+			pay
+		},
+		onLoad(options) {
+			console.log(options)
+			let goodsItem=JSON.parse(options.goodsItem)
+			console.log(goodsItem)
+			this.goodsObj=goodsItem
+			this.goodsData.goodsId = this.goodsObj.goodsId
+			this.goodsData.price=this.goodsObj.price
+			this.goodsData.goodsSpecification=this.goodsObj.goodsSpecificationName
+			this.goodsData.goodsNums=this.goodsObj.goodsNums
+		},
+		onShow() {
+			uni.$on('select', (data)=>{
+			    // data即为传过来的值
+				console.log(123);
+			  console.log(data);
+				if(data.receiverSex==0){
+					data.receiverSex = '先生'
+				} else{
+					data.receiverSex = '女士'
+				}
+				this.selectedObj=data
+			});
+			console.log(this.selectedObj)
+			uni.$on('selectment', (data)=>{
+			  console.log(data);
+				this.eatablishObj=data
+			});
+			console.log(this.eatablishObj)
+			this.getAddressList()
+			this.getcompanyList()
+		},
+		computed:{
+			...mapState(['unfoin','token','userInfo'])
+		},
+		methods:{
+			//地址
+			async getAddressList(){
+				const res=await getAddress(this.token)
+				this.addressList = res.data.records[0];
+				console.log(this.addressList)
+				if(this.addressList.receiverSex== '0'){
+					this.addressList.receiverSex = '先生'
+				}else{
+					this.addressList.receiverSex = '女士'
+				}
+			},
+			//企业
+			async getcompanyList(){
+				const res=await companyList(this.token)
+				this.eatablishData = res.data[0];
+				console.log(this.eatablishData)
+			},
+			//确认支付
+			async comfirmList() {
+				if(null == this.token || '' == this.token){
+					var timer = setTimeout(function() {
+						uni.navigateTo({
+							url: '../login/login'
+						})
+					}, 1500);
+				}
+				if(this.currentRadio==null){
+					return showToast('请选择支付方式')
+				}
+				const res = await payadd(this.token,this.goodsData.goodsId,this.goodsData.price,this.goodsData.goodsSpecification);
+				console.log(res)
+				
+				this.payChoose=true
+				this.bottomshow=false
+				this.ordershow=true
+				this.orderCode=res.msg.orderCode
+				console.log(this.orderCode)
+				this.orderId=res.msg.orderId
+			},
+			
+			activate(){
+				uni.navigateTo({
+					url:'../membership/membership'
+				})
+			},
+			
+			myAddress(){
+				uni.navigateTo({
+					url:'../shippingAddress/shippingAddress'
+				})
+			},
+			radioChange: function(evt) {
+				console.log(evt)
+				for (let i = 0; i < this.radioArr.length; i++) {
+					if (this.radioArr[i].name === evt.target.value) {
+						this.currentRadio = i;
+						console.log(this.currentRadio)
+						break;
+					}
+				}
+			},
+			pay(){
+				this.bottomshow=true;
+			},
+			establish(){
+				uni.navigateTo({
+					url:'../personal/establishment/establishment'
+				})
+			},
+			goAddress(){
+				uni.navigateTo({
+					url:'../shippingAddress/shippingAddress'
+				})
+			},
+			pays(){
+				uni.navigateTo({
+					url:'../personal/myolder/whole'
+				})
+			},
+			hideModal(e) {
+				this.bottomshow=false;
+			},
+			async  wxPay(orderNumber){
+				const result=await advancePay(this.token,orderNumber)
+				console.log(result)
+				//console.log(res)
+				if(result){
+					uni.hideLoading()
+				}
+				uni.requestPayment({
+					provider: 'wxpay',
+					timeStamp: result.data.timeStamp,
+					nonceStr: result.data.nonceStr,
+					package: result.data.package,
+					signType: result.data.signType,
+					paySign: result.data.paySign,
+					success: function (res) {
+						console.log(res);
+						uni.showToast({
+							title:'支付成功',
+							icon:'none'
+						})
+					},
+					fail: function (err) {
+						console.log(err);
+						var index=1
+						uni.navigateTo({
+							url:'../personal/myolder/whole?index='+index
+						})
+					}
+				});
+			},
+			openList(){
+					this.isShow=true
+				},
+			close(){
+				this.isShow=false
+			},
+			goRemarks(){
+				if(this.msg=='商品、配送补充说明'){
+				uni.navigateTo({
+					url:'../remarks/remarks'
+				})
+				}else{
+					uni.navigateTo({
+						url:'../remarks/remarks?value='+this.msg
+					})
+				}
+			},
+		} 
+	}
+</script>
+
+<style lang="scss">
+	.page{
+		height: 100%;
+	}
+	.payments{
+		width: 70%;
+		height:23%;
+		background-color: rgb(102,102,102);
+		position: relative;
+		left:0;
+		right:0;
+		bottom:0;
+		top:0;
+		margin:auto;
+		
+		.paymentscont{
+			padding: 20rpx;
+			position: relative;
+			
+			.payuan{
+				position: absolute;
+				top:20rpx;
+				left:20rpx;
+				width: 40rpx;
+				height: 40rpx;
+				line-height: 40rpx;
+				border-radius:50% ;
+				font-weight: bold;
+				background-color: rgb(51,51,51);
+				color: rgb(102,102,102);
+				text-align: center;
+			}
+			.paytent{
+				display: flex;
+				
+				
+				.payzhifu{
+					width: 100%;
+					text-align: center;
+					font-size: 34rpx;
+					color: #fff;
+				}
+			}
+			.paymoneys{
+				height: 80rpx;
+				text-align: center;
+				line-height: 110rpx;
+				font-size: 66rpx;
+				color: #ff6600;
+			}
+		}
+		
+		.pwass{
+			border-top:4rpx solid #fff;
+			
+			.bortop{
+				padding: 20rpx 20rpx;
+				display: flex;
+				justify-content: space-between;
+				
+				view{
+					width: 60rpx;
+					height: 60rpx;
+					background-color: #fff;
+				}
+			}
+		}
+	}
+	.setheight{
+		width: 100%;
+		height: 150rpx;
+	}
+	.orderset{
+		width: 100%;
+		padding: 20rpx;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		.coupon{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+			.couponlist{
+				position: absolute;
+				left: 0;
+				top:50%;
+				width: 100%;
+				//height: 50%;
+				background-color: #F6F6F6;
+				.top{
+					display: flex;
+					flex-wrap: wrap;
+					align-content: space-between;
+					background-color: #fff;
+					padding: 20rpx;
+					position: relative;
+					.guanbi{
+						position: absolute;
+						left: 20rpx;
+						top: 20rpx;
+					}
+					.down{
+						width: 100%;
+						display: flex;
+						justify-content: space-between;
+					}
+				}
+				.showList{
+					padding: 30rpx;
+					.card{
+						width: 100%;
+						height: 200rpx;
+						background-color: #fff;
+						display: flex;
+						padding: 20rpx;
+						align-items: center;
+						border: 1px solid #eee;
+						
+					}
+					.rule{
+						display: flex;
+						justify-content: space-between;
+						background-color: #fff;
+						padding: 0 20rpx;
+					}
+				}
+			}
+		}
+		
+		.myhome,.setproduct{
+			background-color: #fff;
+			border-radius: 20rpx;	
+			.homecont{
+				padding: 20rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				// border-bottom: 2rpx solid #ccc;
+				.homeaddress{
+					display: flex;
+					align-items: center;
+					.img{
+						width: 50rpx;
+						height: 50rpx;
+					}
+					.add{
+						margin-left: 20rpx;
+						.up{
+							
+						}
+						.down{
+							color: #ccc;
+						}
+					}
+				}
+				.right{
+					color: #ccc;
+				}
+				.homebor{
+					border-radius: 20rpx;
+					background-color: rgb(242,242,242);
+					color: rgb(180,180,180);
+					width: 150rpx;
+					height: 50rpx;
+					text-align: center;
+					line-height: 50rpx;
+				}
+				.bottomBlock{
+					display: flex;
+					align-self: center;
+					margin-left: 20rpx;
+				}
+				.homeadd{
+					margin-left:30rpx ;
+				}
+			}
+			.settime{
+				padding: 10rpx 30rpx;
+			}
+			.settime,.setright{
+				display: flex;
+				justify-content: space-between;
+				
+				text,.cuIcon-right{
+					height: 104rpx;
+					line-height: 104rpx;
+				}
+				.setpro{
+					font-size: 36rpx;
+					font-weight: bold;
+				}
+				.setright{
+					.setdate{
+						margin-right:20rpx;
+						color: #ccc;
+					}
+				}
+				
+			}
+		}
+		
+		.setproduct{
+			margin-top:20rpx;
+			.endproduct{
+				margin-bottom:20rpx;
+				padding: 30rpx 0 0;
+				.head{
+					padding-left: 20rpx;
+					padding-right: 40rpx;
+					display: flex;
+					justify-content: space-between;
+				}
+				.proimg{
+					padding: 0 20rpx;
+					margin-top: 20rpx;
+					.producttycont{
+						display: flex;
+						.detail{
+							margin-left: 40rpx;
+							.brandName{
+								font-size: 25rpx;
+							}
+							.brandPrice{
+								font-size: 24rpx;
+							}
+						}
+						.producttys{
+							width: 120rpx;
+							height: 120rpx;
+							flex-shrink: 0;//不让元素进行挤压
+							image{
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+				}
+				.proimg,.piecenum{
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					}
+					.productchange{
+						display: flex;
+						justify-content: flex-end;
+						align-items: center;
+						.productJian{
+							width: 40rpx;
+							height: 40rpx;
+							image{
+								width: 100%;
+								height: 100%;
+							}
+						}
+						.productJia{
+							width: 40rpx;
+							height: 40rpx;
+							image{
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+					.piecenum,.cuIcon-right{
+								
+						text{
+							margin-right: 30rpx;
+							
+						}
+					}
+				}
+				
+				.amount{
+					border-bottom: 2rpx solid #eee;
+					
+					.amountbot{
+						padding: 20rpx;
+						display: flex;
+						justify-content: space-between;
+						
+						text{
+							font-size: 30rpx;
+						}
+					}
+					
+				}
+				
+				.pieces{
+					
+					.piecepro{
+						padding: 30rpx 20rpx;
+						display: flex;
+						justify-content: space-between;
+						border-bottom: 2rpx solid #eee;
+						text{
+							font-size: 30rpx;
+						}
+					}
+				}
+				.setdistribution{
+					height: 100rpx;
+					line-height: 100rpx;
+					display: flex;
+					justify-content: space-between;
+					border-bottom: 1px solid #eee;
+					padding:0 20rpx;
+				}
+				.total{
+					height: 100rpx;
+					line-height: 100rpx;
+					display: flex;
+					justify-content: space-between;
+					padding:0 20rpx;
+				}
+			}
+		}
+	
+	  .beizhu{
+		  display: flex;
+		  justify-content: space-between;
+		  padding-left: 20rpx;
+		  background-color: #fff;
+		  border-radius: 20rpx;
+		  height: 100rpx;
+		  line-height: 100rpx;
+		  font-size: 32rpx;
+		  .right{
+			  display: flex;
+			  align-items: center;
+		  }
+	  }
+	.advertisement{
+		position: fixed;
+		left:0;
+		bottom: 100rpx;
+		width: 100%;
+		height: 70rpx; 
+		align-items: center;
+		background-color: #B1D9FB;
+		display: flex;
+		justify-content: space-between;
+		padding: 0 30rpx;
+		.left{
+			color: #41A5FC;
+		}
+		.right{
+			color: #F86500;
+		}
+	}
+	.setbottom{
+			margin-top:20rpx;
+			width: 100%;
+			position: fixed;
+			left:0;
+			bottom: 0;
+			background-color: rgb(228,228,228);
+			border-top: 1rpx solid #f2f2f2;
+			z-index: 999;
+			
+			.setends{
+				padding-left: 30rpx;
+				display: flex;
+				justify-content: space-between;
+				background-color: #FFFFFF;
+				.endscont{
+					.discount{
+						color: rgb(155,155,155);
+					}
+					text{
+						display: block;
+					}
+				}
+				.endbutton{
+					height: 100rpx;
+					line-height: 100rpx;
+					width: 180rpx;
+					color: #fff;
+					background-color: #F86500;
+					text-align: center;
+				}
+			}
+		}
+	.guan{
+		position: absolute;
+		top: 10rpx;
+		right: 10rpx;
+		font-size: 40rpx;
+	}
+	.payItem {
+		margin-top: 10rpx;
+		width: 100%;
+		background-color: #fff;
+		padding: 20rpx 30rpx;
+		
+		.radioBlock {
+			width: 100%;
+			height: 70rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			
+			.radioLeft {
+				display: flex;
+				align-items: center;
+				
+				.radioIcon {
+					width: 50rpx;
+					height: 50rpx;
+				}
+				.radioName {
+					font-size: 28rpx;
+					color: #101010;
+					margin-left: 20rpx;
+				}
+			}
+			
+			.radioStyle {
+				transform: scale(0.9);
+			}
+			
+		}
+	}
+	.informent{
+		margin-top: 10rpx;
+		width: 100%;
+		background-color: #fff;
+		padding: 20rpx 30rpx;
+		.infoItem{
+			width: 100%;
+			background-image: linear-gradient(to right, #A0CAFD, #D5E5F8);
+			border-radius: 20rpx;
+			.title{
+				color: #5C77EA;
+				padding: 20rpx 20rpx;
+			}
+			.content{
+				color:  #5C77EA;
+				padding: 0 20rpx;
+				text-align: left;
+			}
+			.botton{
+				display: flex;
+				justify-content: flex-end;
+				margin-right: 40rpx;
+				padding: 20rpx 0;
+				.copy{
+					width: 120rpx;
+					height: 50rpx;
+					background-color:#5C77EA;
+					color: #fff;
+					text-align: center;
+					border-radius: 40rpx;
+				}
+			}
+		}
+	}
+	.now{
+		margin-top: 10rpx;
+		width: 100%;
+		background-color: #fff;
+		padding: 20rpx 30rpx;
+		border-bottom: 1rpx solid #f2f2f2;
+		.title{
+			padding: 20rpx 20rpx;
+		}
+		.content{
+			padding: 0 20rpx;
+			text-align: left;
+		}
+	}
+	.specibox{
+		display: flex;
+		.Trademark{
+			padding: 20rpx;
+			.brand{
+				color: #333333;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.brandBox{
+				display: flex;
+				.registratPrice{
+					color: #F63737;
+					font-size: 40rpx;
+				}
+				.registratVip{
+					font-size: 16px;
+					color: #333333;
+					margin: 8rpx 0 0 20rpx;
+				}
+				.brandPrice{
+					font-size: 32rpx;
+					color: #F63737;
+					margin-top: 10rpx;
+				}
+			}
+		}
+	}
+</style>
+	
+

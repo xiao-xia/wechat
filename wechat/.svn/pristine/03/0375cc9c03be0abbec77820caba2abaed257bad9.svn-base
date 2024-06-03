@@ -1,0 +1,172 @@
+<template>
+	<view class="workBench">
+		<view class="bg">
+			<view class="profit">今日收益:</view>
+			<view class="money">
+				<view class="coin">
+					<!-- <image src="../../static/workBench/coin.png" mode=""></image> -->
+				</view>
+				<view class="num">
+					18888.00
+				</view>
+				<view class="order">
+					今日订单: 100
+				</view>
+			</view>
+			<view class="photo">
+				
+			</view>
+		</view>
+		<view class="panel">
+			<view class="box">
+				<view class="smallBox">
+					<!-- <image src="../../static/workBench/first.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					会员管理
+				</view>
+			</view>
+			<view class="box">
+				<view class="smallBox two">
+					<!-- <image src="../../static/workBench/second.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					订单管理
+				</view>
+			</view>
+			<view class="box">
+				<view class="smallBox three">
+					<!-- <image src="../../static/workBench/third.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					商品管理
+				</view>
+			</view>
+			<view class="box">
+				<view class="smallBox fourth">
+					<!-- <image src="../../static/workBench/forth.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					营销管理
+				</view>
+			</view>
+			<view class="box">
+				<view class="smallBox five">
+					<!-- <image src="../../static/workBench/fifth.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					数据管理
+				</view>
+			</view>
+			<view class="box">
+				<view class="smallBox six">
+					<!-- <image src="../../static/workBench/sixth.png" mode=""></image> -->
+				</view>
+				<view class="title">
+					进入小程序
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+			 
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.bg{
+		background-color: #00C38C;
+		padding: 80rpx 20rpx 40rpx;
+		position: relative;
+		.profit{
+			font-size: 35rpx;
+			color: #fff;
+		}
+		.money{
+			display: flex;
+			.coin{
+				width:40rpx;
+				height: 40rpx;
+				margin-top: 16rpx;
+				image{
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.num{
+				font-size: 40rpx;
+				color: #EBDA18;
+			}
+			.order{
+				margin-top: 16rpx;
+				margin-left: 20rpx;
+				color: #fff;
+			}
+				
+			
+		}
+	    .photo{
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			width: 50%;
+			height: 100%;
+			// background-image: url(../../static/workBench/bg.png);
+			background-size: 100%;
+		}
+	}
+
+    .panel{
+		padding:60rpx 60rpx;
+		display: flex;
+		flex-wrap:wrap;
+		justify-content: space-between;
+		.box{
+			width: 45%;
+			height: 300rpx;
+			background-color:#fff;
+			border-radius: 15rpx;
+			margin-bottom: 30rpx;
+			.smallBox{
+				width: 130rpx;
+				height: 130rpx;
+				background-color: #FF7E6D;
+				border-radius: 15rpx;
+				margin: 60rpx auto 20rpx;
+				justify-content: center;
+				display: flex;
+				align-items: center;
+				image{
+					width: 80rpx;
+					height: 80rpx;
+				}
+			}
+			.two{
+				background-color:#7480FE;
+			}
+			.three{
+				background-color:#CE68FE;
+			}
+			.fourth{
+				background-color:#3AB65F;
+			}
+			.five{
+				background-color:#FF6C6E;
+			}
+			.six{
+				background-color:#69A5FE;
+			}
+			.title{
+				text-align: center;
+			}
+		}
+		
+	}
+</style>

@@ -1,0 +1,148 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.confirmItem {
+  padding: 20rpx;
+  width: 100%;
+  height: 100%;
+}
+.confirmItem .myhome {
+  background-color: #fff;
+  border-radius: 20rpx;
+}
+.confirmItem .myhome .homecont {
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.confirmItem .myhome .homecont .homeaddress {
+  display: flex;
+  align-items: center;
+}
+.confirmItem .myhome .homecont .homeaddress .img {
+  width: 50rpx;
+  height: 50rpx;
+}
+.confirmItem .myhome .homecont .homeaddress .add {
+  margin-left: 20rpx;
+}
+.confirmItem .myhome .homecont .homeaddress .add .down {
+  color: #ccc;
+}
+.confirmItem .ordercomfirm {
+  background-color: #fff;
+  border-radius: 20rpx;
+}
+.confirmItem .ordercomfirm .ordercont {
+  padding: 20rpx;
+}
+.confirmItem .ordercomfirm .ordercont .message {
+  font-size: 28rpx;
+  border-bottom: 2rpx solid #eee;
+  padding-bottom: 20rpx;
+}
+.confirmItem .ordercomfirm .ordercont .agreeyear {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.confirmItem .ordercomfirm .ordercont .agreeyear .vipradio {
+  display: flex;
+}
+.confirmItem .ordercomfirm .ordercont .agreeyear checkbox-group {
+  width: 60rpx;
+  border-radius: 100%;
+}
+.confirmItem .ordercomfirm .ordercont .agreeyear checkbox .wx-checkbox-input {
+  border-radius: 50% !important;
+  color: #ffffff !important;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear {
+  display: flex;
+  align-items: center;
+  border-bottom: 2rpx solid #eee;
+  justify-content: space-between;
+  padding: 20rpx 20rpx 20rpx 0;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .vipradio {
+  display: flex;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .radioIcon {
+  width: 50rpx;
+  height: 50rpx;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .radioName {
+  font-size: 28rpx;
+  color: #101010;
+  margin-left: 20rpx;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .yearsize {
+  font-size: 28rpx;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .price {
+  font-size: 26rpx;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear checkbox-group {
+  width: 60rpx;
+  border-radius: 100%;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear checkbox .wx-checkbox-input {
+  border-radius: 50% !important;
+  color: #ffffff !important;
+}
+.confirmItem .ordercomfirm .ordercont .vipyear .redprice {
+  font-size: 36rpx;
+  color: red;
+}
+.confirmItem .setbottom {
+  margin-top: 20rpx;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  border-top: 1rpx solid #f2f2f2;
+  z-index: 999;
+}
+.confirmItem .setbottom .setends {
+  padding-left: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+}
+.confirmItem .setbottom .setends .endscont .discount {
+  color: #9b9b9b;
+}
+.confirmItem .setbottom .setends .endbutton {
+  height: 110rpx;
+  line-height: 110rpx;
+  width: 180rpx;
+  color: #fff;
+  background-color: #F86500;
+  text-align: center;
+}
+

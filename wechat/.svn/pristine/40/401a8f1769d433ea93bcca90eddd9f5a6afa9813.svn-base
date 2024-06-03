@@ -1,0 +1,17 @@
+import req from "../../common/req.js"
+
+export const getAllRule = () => {
+	return req.get(
+		"/rule/getAllRule", {
+			
+		}
+	)
+}
+
+export const createCardRecord = () => {
+	return req.get(
+		"/vip/createCardRecord", {
+			
+		}
+	)
+}

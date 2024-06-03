@@ -1,0 +1,7 @@
+import req from "../../common/req.js"
+
+export const lunlist = (type) =>req.post(
+	'/banner/list', {
+		type
+	}
+)

@@ -1,0 +1,26 @@
+<template>
+	<view>
+		<view class="noOrderItem">
+			<image class="noOrderImg" src="../../../static/orderImg/whole.png" mode="widthFix"></image>
+			<view class="noOrderText">您还没填写过评价</view>
+			<button class="buttonColor">去评价</button>
+		</view> 
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+
+</style>

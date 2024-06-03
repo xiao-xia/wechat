@@ -1,0 +1,19 @@
+import req from "../../common/req.js"
+
+export const getOldData = (token) =>req.get(
+	'/ThirdPartyCall/physicalExaminationParameters', {
+		 token
+	}
+)
+
+export const getNewData = (token) =>req.get(
+	'/ThirdPartyCall/newestPhysicalExaminationParameters', {
+		 token
+	}
+)
+
+export const getAdvice = (token) =>req.post(
+	'/adviceHealth/list', {
+		token
+	}
+)

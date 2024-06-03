@@ -1,0 +1,477 @@
+<template>
+	<view class="pageWidth">
+		<view class="inputItem">
+			<view class="inputBlock">
+				<text class="cuIcon-search"></text>
+				<input v-model="keywords" @confirm="searchEvent()" @focus="inputFocus()" :focus="inputFocusType" class="inputFrame" type="text" placeholder="请输入商品/服务等关键词" />
+				<text class="cuIcon-roundclosefill closeIcon" @tap="clearInput()"></text>
+			</view>
+			<button class="searchButton" @tap="searchEvent()">搜索</button>
+		</view>
+		<view class="menu" v-if="goodShow">
+			<view class="" :class="current==0?'titleActive':''" @click="change(0)"> 
+				综合
+			</view>
+			<view class="" :class="current==1?'titleActive':''" @click="change(1)">
+				销量
+			</view>
+			<view class="" style="display: flex;align-items: center;" @click="range(2)">
+				<text :class="current==2?'titleActive':''">价格</text>
+				<view class="">
+					<view class="cuIcon-triangleupfill" style="line-height: 20rpx;font-size: 30rpx;" :class="clickTimes%2!=0?'titleActive':''">
+					</view>
+					<view class="cuIcon-triangledownfill" style="line-height: 8rpx;font-size: 30rpx;margin-bottom: 6rpx;" :class="clickTimes!=0&&clickTimes%2==0?'titleActive':''">
+					</view>
+				</view>
+			</view>
+			<view class="noSearch" v-if="goodList.length==0">
+				<image src="../../static/home/nosearchpng.png" mode="widthFix"></image>
+				<view class="" style="color: #aaa;">
+					搜索无结果
+				</view>
+			</view>
+		</view>
+		<view class="goodItem" v-if="goodShow">
+			<view class="goodBlock" v-for="(good,index) in goodList" :key="index" @click="goDetail(good.goodsTypeId,good.orderCount)">
+				<image class="goodImg" :src="good.goodsSmallImage" mode=""></image>
+				<view class="goodInfo">
+					<view class="goodName"  style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">{{good.goodsName}}</view>
+					<view class="goodPrice">
+						<view class="goodBox">
+							<view class="goodssugges"><text style="font-size: 26rpx;color: red;">￥</text>{{good.goodsSuggestedRetailPrice}}</view>
+							<view class="goodsize">￥{{good.goodsOriginalPrice}}</view>
+						</view>
+						<!-- <image src="../../static/mine/jia.png" mode="" @click.stop="toCart(good.id,good.orderCount)"></image> -->
+						<view class="registerButton" >立即抢购</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="historyItem" v-else>
+			<view class="historyTop">
+				<text class="cuIcon-titles"></text>
+				<view class="historyTitle">搜索历史</view>
+				<view class="cuIcon-delete deleteIcon" @tap="delKeywordsEvent"></view>
+			</view>
+			<view class="historyBlock">
+				<view class="historyText" @tap="historyTap(history)" v-for="(history,index) in searchHistory" :key="index">
+					{{history}}
+				</view>
+			</view>
+		</view>
+		
+		<view class="historyItem" v-if="!goodShow">
+			<view class="historyTops">
+				<text class="cuIcon-titles"></text>
+				<view class="historyTitle">热门搜索</view>
+			</view>
+			<view class="historyBlock" >
+				<!-- <view class="historyText" @tap="historyTap(history)" v-for="(history,index) in searchHistory" :key="index">
+					{{history}}
+				</view> -->
+			</view>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		getKeywords,
+		findList,
+		delKeywords,
+		queryGoodsByName
+	} from '../../API/classificationArr/index.js';
+    import {
+    	addNum
+    } from '../../API/classificationArr/index.js';
+	export default {
+		data() {
+			return {
+				historyArr:[],
+				clickTimes:0,
+				searchHistory: [],
+				keywords: '',
+				goodShow: false,
+				goodList: [{
+					goodsSmallImage:'http://47.93.61.34:8081/banner.png',
+					goodsName:'商品',
+					goodsSuggestedRetailPrice:'200'
+				},{
+					
+				}],
+				inputFocusType: false,
+				current:0
+			}
+		},
+		computed: {
+			...mapState(['token']),
+		},
+		onLoad() {
+		},
+		onShow() {
+			this.getSearchHistory();
+			//uni.removeStorageSync('history')
+			console.log(uni.getStorageSync('history'))
+			if(uni.getStorageSync('history')==''){
+				let historyArr=[]
+				uni.setStorageSync('history', historyArr);
+			}
+		},
+		onHide() {
+		},
+		methods: {
+			...mapMutations(['unfoins']),
+			delKeywordsEvent() {
+				var that = this;
+				uni.showModal({
+				    title: '提示',
+				    content: '删除所有搜索历史记录',
+					confirmText: '确定',
+					cancelText: '取消',
+				    success: function (res) {
+				        if (res.confirm) {
+							that.delKeywords();
+				        } else if (res.cancel) {
+							
+				        }
+				    }
+				});
+			},
+			//搜索
+			async searchEvent() {
+				uni.showLoading({
+					title:'加载中'
+				})
+				this.goodShow = true;
+				var data = this.keywords;//input的数据双向绑定
+				console.log(data)
+				console.log(uni.getStorageSync('history'))
+				var historyArr=uni.getStorageSync('history')
+				historyArr.push(data)
+				uni.setStorageSync('history',historyArr)
+				console.log(uni.getStorageSync('history'))
+				
+				const res = await queryGoodsByName(data);
+				console.log(res)
+				if(res){
+					uni.hideLoading()
+					this.goodList = res.data;
+				}
+			},
+			async delKeywords() {
+				/*const res = await delKeywords(this.token);
+				console.log(res)
+				if(res) {
+					uni.showToast({
+						title:'删除成功',
+						icon:'none'
+					})
+					this.getSearchHistory();
+				}else {
+					uni.showToast({
+						title:'服务器错误',
+						icon:'none'
+					})
+				}*/
+				uni.removeStorageSync('history');//清除缓存
+				this.searchHistory.splice(0,this.searchHistory.length);
+				console.log(this.searchHistory)
+			},
+			async getSearchHistory() {
+				var historys=uni.getStorageSync('history')
+				for (var i = 0; i < historys.length; i++) {
+					if (this.searchHistory.indexOf(historys[i])===-1) {
+						this.searchHistory.push(historys[i])
+					}
+				}
+				/*const res = await getKeywords(this.token);
+				console.log(res)
+				if(res) {
+					this.searchHistory = res.data;
+				}else {
+					uni.showToast({
+						title:'服务器错误',
+						icon:'none'
+					})
+				}*/
+			},
+			historyTap(item) {
+				console.log(item)
+				this.keywords = item;
+				this.searchEvent();
+			},
+			
+			inputFocus() {
+				this.goodShow = false;
+			},
+			clearInput() {
+				this.getSearchHistory();
+				this.goodShow = false;
+				this.keywords = '';
+				this.inputFocusType = true;
+			},
+			goDetail(id,count){
+				uni.navigateTo({
+					url:'../seckill/seckdeil?goodsTypeId='+id+'&count='+count
+				})
+			},
+			async toCart(id,count){
+				    uni.showToast({
+				    	title:'添加成功',
+						icon:'none',
+						mask:true
+				    })
+					count++;
+					const res=await addNum(this.token,id,count);
+					console.log(res)
+				},
+			change(index){
+				this.current=index
+				if(index!=2){
+					this.clickTimes=0
+				}
+				//this.searchEvent()
+			},
+			range(index){
+				this.clickTimes++
+				console.log(this.clickTimes%2!=0)
+				console.log(this.clickTimes!=0&&this.clickTimes%2==0)
+				this.current=index
+				if(this.clickTimes!=0&&this.clickTimes%2==0){
+					this.goodList=this.goodList.sort((a,b)=>a.goodsSuggestedRetailPrice-b.goodsSuggestedRetailPrice).reverse()
+				}else if(this.clickTimes%2!=0){
+					this.goodList=this.goodList.sort((a,b)=>a.goodsSuggestedRetailPrice-b.goodsSuggestedRetailPrice)
+				}
+				
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		height: 100%;
+		background-color: #fff;
+		.inputItem {
+			width: 100%;
+			height: 100rpx;
+			padding: 20rpx 40rpx;
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			
+			.inputBlock {
+				width: calc(100% - 160rpx);
+				height: 60rpx;
+				background-color: #F6F6F6;
+				border-radius: 50rpx;
+				display: flex;
+				padding: 0 20rpx;
+				font-size: 36rpx;
+				line-height: 60rpx;
+				color: #b0b0b0;
+				position: relative;
+				
+				.inputFrame {
+					margin-left: 10rpx;
+					width: 80%;
+					height: 60rpx;
+					font-size: 26rpx;
+					color: #626262;
+				}
+				
+				.closeIcon {
+					color: #cfcfcf;
+					font-size: 30rpx;
+					position: absolute;
+					right: 20rpx;
+				}
+			}
+			
+			.searchButton {
+				width: 130rpx;
+				height: 60rpx;
+				border-radius: 50rpx;
+				// background-color: var(--button);
+				background-color: #008CFF;
+				color: #fff;
+				font-size: 28rpx;
+				line-height: 60rpx;
+				margin: 0;
+			}
+		}
+		
+		.historyItem {
+			width: 100%;
+			height: calc(100% - 100rpx);
+			background-color: #fff;
+			padding: 0 40rpx;
+			
+			.historyTop {
+				display: flex;
+				justify-content: space-between;
+				.cuIcon-titles{
+					line-height: 70rpx;
+					color: #008CFF;
+				}
+				.historyTitle {
+					font-size: 28rpx;
+					color: #000000;
+					line-height: 70rpx;
+					margin-right: 480rpx;
+				}
+				
+				.deleteIcon {
+					font-size: 36rpx;
+					color: #b0b0b0;
+					line-height: 70rpx;
+				}
+			}
+			.historyTops{
+				display: flex;
+				.cuIcon-titles{
+					line-height: 70rpx;
+					color: #008CFF;
+				}
+				.historyTitle {
+					font-size: 28rpx;
+					color: #000000;
+					line-height: 70rpx;
+					margin-right: 480rpx;
+				}
+				.deleteIcon {
+					font-size: 36rpx;
+					color: #b0b0b0;
+					line-height: 70rpx;
+				}
+			}
+			.historyBlock {
+				display: flex;
+				flex-wrap: wrap;
+				margin-top: 16rpx;
+				
+				.historyText {
+					height: 56rpx;
+					border-radius: 50rpx;
+					padding: 0 20rpx;
+					line-height: 56rpx;
+					background-color: #F6F6F6;
+					color: #656565;
+					font-size: 26rpx;
+					margin: 0 30rpx 30rpx 0;
+					white-space: nowrap;
+					overflow: hidden;
+				}
+			}
+		}
+		
+		.noSearch{
+			position: absolute;
+			width: 100%;
+			top:50%;
+			transform: translateY(-50%);
+			text-align: center;
+			image{
+				width: 300rpx;
+			}
+		}
+		
+		.goodItem {
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			padding: 20rpx;
+			background-color: #f1f1f1;
+			.goodBlock {
+				width: 340rpx;
+				height: 480rpx;
+				background-color: #fff;
+				border-radius: 15rpx;
+				padding: 20rpx 20rpx;
+				display: flex;
+				flex-wrap: wrap;
+				align-content: space-between;
+				margin-bottom: 20rpx;
+				.goodImg {
+					width: 300rpx;
+					height: 300rpx;
+					border-radius: 15rpx;
+				}
+				
+				.goodInfo {
+					width: 100%;
+					height: 35%;
+					
+					.goodName {
+						font-size: 30rpx;
+						line-height: 40rpx;
+						color: #101010;
+						padding: 20rpx 0;
+					}
+					.goodPrice {
+						font-size: 28rpx;
+						line-height: 40rpx;
+						height: 40rpx;
+						color: #F86500;
+						display: flex;
+						justify-content: space-between;
+						image{
+							width: 40rpx;
+							height: 40rpx;
+						}
+						.goodBox{
+							width: 100rpx;
+						}
+						.goodssugges{
+							font-size: 36rpx;
+						}
+						.goodsize{
+							font-size: 12px;
+							color: #bbb;
+							text-decoration: line-through;
+							margin-top: -20rpx;
+						}
+						.registerButton{
+							border-radius: 10rpx;
+							color: #fff;
+							background-color: #f5542a;
+							text-align: center;
+							height: 50rpx;
+							width: 130rpx;
+							line-height: 50rpx;
+							margin-left: 70rpx;
+							margin-top: 10rpx;
+							font-size: 13px;
+						}
+						/* .money{
+							font-size: 26rpx;
+						}
+						.originalPrice2 {
+							color: #BCBCBC;
+							text-decoration: line-through;
+							font-size: 24rpx;
+							margin-right: 10rpx;
+						} */
+					}
+				}
+			}
+		}
+	}
+
+    .menu{
+		display: flex;
+		background-color: #fff;
+		justify-content: space-around;
+	}	
+	.titleActive{
+		// color:var(--button);
+		color:#008CFF;
+	}
+</style>

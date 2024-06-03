@@ -1,0 +1,1 @@
+<view class="paltItem"><block wx:for="{{PlatData}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view class="userItem"><view class="textContent">{{item.content}}</view></view></block></view>

@@ -1,0 +1,232 @@
+<template>
+		<view class="container">
+			<view class="welcome">
+				欢迎来到企瑞宝
+			</view>
+			<view class="containerBack">
+				<image src="http://47.93.61.34:8081/homeBack.jpg"></image>
+			</view>
+			<!-- <view class="logo">
+				<image class="logoImg" src="../../static/login.png" mode="widthFix"></image>
+			</view> -->
+			<view class="contentItem" v-if="loginType==0">
+				<view class="title">该程序将获取以下授权：</view>
+				<view class="text">获得您的公开信息（昵称、头像等）</view>
+			</view>
+			<view class="buttonItem" v-if="loginType==0">
+				<button class="button button-green" open-type="getUserInfo" @getuserinfo="getuserinfo">允许</button>
+				<view @tap="gethome()" style="text-align: center;color: #aaa;font-size: 32rpx;">拒绝</view>
+				<!-- <button class="button button-green" open-type="getPhoneNumber" @getphonenumber="getphonenumber">获取手机号</button> -->
+			</view>
+			<view class="buttonPhoneItem" v-if="loginType==1">
+				<button class="getPhoneButton" open-type="getPhoneNumber" @getphonenumber="getphonenumber">
+					  微信用户一键登录
+				</button>
+			</view>
+		</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapGetters,
+		mapMutations,
+		mapActions
+	} from 'vuex';
+	import {
+		showToast,
+	} from '../../common/util.js';
+	import {
+		login,
+		getPhone,
+		savePhone
+	} from '../../API/login';
+	export default {
+		data() {
+			return {
+				userInfoData: {},
+				loginType: 0,  // 0获取用户信息，1获取手机号
+				createtoken:''
+			}
+		},
+		computed: {
+			...mapState(['token','phoneNumber','userInfo']),
+		},
+		onLoad() {
+			this.deleteToken();
+		},
+		methods: {
+			...mapMutations(['setToken','setPhoneNumber','setuserInfo','deleteToken']),
+			gethome(){
+				uni.switchTab({
+					url: '../personal/personal'
+				})
+			},
+			async getphonenumber(e) {
+				console.log(e)
+				console.log(this.createtoken);
+				let encryptedData = e.detail.encryptedData;
+				let iv = e.detail.iv;
+				const res = await savePhone(this.createtoken, encryptedData, iv);
+				console.log(res)
+				if(res) {
+					this.setPhoneNumber(res.data) //存储到vuex
+					uni.setStorageSync('phoneNumber',res.data);//存储到缓存
+					// this.getPhoneHandler(this.token)
+					console.log(res)
+					uni.switchTab({
+						url: '../home/home'
+					})
+					uni.hideLoading()
+				}else {
+					uni.hideLoading()
+					showToast('服务器错误')
+				}
+				// if(res){
+				// this.setPhoneNumber(res.data) //存储到vuex
+				// uni.setStorageSync('phoneNumber',res.data);//存储到缓存
+				// uni.showModal({
+				// 	title: '提示',
+				// 	content: '请您完善个人信息',
+				// 	cancelText: '取消',
+				// 	confirmText: '确定',
+				// 	success: function (res) {
+				// 	    if (res.confirm) {
+				// 	       uni.navigateTo({
+				// 	       	 url:'../personal/mymessage/mymessage'
+				// 	       })
+				// 	    } else if (res.cancel) {
+				// 	        uni.switchTab({
+				// 	        	url:'../home/home'
+				// 	        })
+				// 	    }
+				// 	}
+				// })
+				
+				// }
+				
+				// this.getPhoneHandler(this.createtoken)
+			},
+			
+			
+			
+			getuserinfo(e) {
+				console.log(e)
+				this.userInfoData = e.detail.userInfo;
+				this.loginType=1
+				this.loginEvent();
+			},
+			loginEvent() {
+				var that = this;
+					uni.login({//获取code
+					  provider: 'weixin',
+					  success: function (loginRes) {
+						that.loginPost(loginRes.code)
+					  }
+					});
+				},
+			async loginPost(code) {//获取token
+				let res = await login(code, JSON.stringify(this.userInfoData))
+				console.log(res)
+				this.createtoken = res.data.token;
+				this.setToken(this.createtoken);
+				this.setuserInfo(this.userInfoData)
+				uni.setStorageSync("userInfo", this.userInfoData);
+				uni.setStorageSync('token', this.createtoken);
+				console.log(this.createtoken)
+				//this.getPhoneHandler(token)
+			},
+			
+			async getPhoneHandler(token) {
+				const res = await getPhone(token);//获取到手机号
+				console.log(res)
+				
+			},
+			
+		},
+	
+	}
+</script>
+ 
+<style lang="scss">
+	.welcome{
+		background-color: #fff;
+    text-align: center;
+		font-size: 40rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+	}
+	.containerBack{
+		width: 100%;
+		height: 1100rpx;
+		z-index: -1;
+		flex-shrink: 0;
+		image{
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+		}
+	}
+	.logo {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 200rpx;
+		height: 200rpx;
+	  border-radius: 50%;
+		border: 1px solid var(--button);
+		margin: 50rpx auto;
+		.logoImg {
+			width: 150rpx;
+		}
+	}
+	.contentItem {
+		width: 100%;
+		padding: 0 100rpx;
+		text-align: center;
+		margin-top: -420rpx;
+		.title {
+			color: #101010;
+		}
+		
+		.text {
+			color: #888888;
+		}
+	}
+	.buttonItem {
+		margin-top: 60rpx;
+		width: 100%;
+		padding: 0 70rpx;
+		.button {
+			width: 250rpx;
+			height: 70rpx;
+			border-radius: 60rpx;
+			color: #fff;
+			line-height: 70rpx;
+			margin: 20rpx auto;
+			font-size: 32rpx;
+		}
+		.button-green {
+			// background-color: var(--button);
+			background-color: #1093FE;
+		}
+	}
+	
+	.buttonPhoneItem {
+		margin-top: 80rpx;
+		display: flex;
+		justify-content: center;
+		margin-top: -420rpx;
+		.getPhoneButton {
+			width: 60%;
+			height: 90rpx;
+			border-radius: 10rpx;
+			color: #fff;
+			// background-color: var(--button);
+			background-color: #1093FE;
+			line-height: 90rpx;
+			text-align: center;
+		}
+	}
+</style>
+

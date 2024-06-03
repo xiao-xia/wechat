@@ -1,0 +1,1421 @@
+<template>
+	<view class="">
+		<view class="noInternet" v-if="imgUrls.length==0">
+			 <image src="../../static/home/noNetwork.png" mode=""></image>
+			 <view style="color: #999999;margin-bottom: 20rpx;">
+			 	网络走丢了~
+			 </view>
+			 <view class="Internetnew">刷新</view>
+		</view>
+	
+		<!--头部搜索-->
+	<view class="content" v-else>
+		<view class="TreasureItem" :style="{'paddingTop': (menuButtonInfo.top) + 'px'}">
+			<view style="font-size: 40rpx;font-weight: bold;">企瑞宝</view>
+			<view style="font-size: 26rpx;margin-left: 30rpx;">企业一体化服务平台</view>
+		</view>	
+		<!-- <view style="width: 100%;height: 100rpx;"></view> -->
+		<view class="contentTop" :style="{'marginTop': (menuButtonInfo.top +44) + 'px'}">
+			<view class="search" @tap="searchPage()">
+				<image class="searchimg" src="../../static/homeimg/server.png"></image>
+				<view class="searchinp">请输入商品/服务等关键词</view>
+			</view>
+		</view>
+		
+		<!--轮播-->
+		<view class="contentbanner">
+			<swiper class="swipers" indicator-dots="true" autoplay="true" interval="3000" duration="1000" :circular="true">
+			  <block v-for="(order,index) in imgUrls" :key="index">
+			   <swiper-item>
+			      <image class="bannerimg" :src="order.banner" mode="" width="355" height="135"/>
+			    </swiper-item>
+			  </block> 
+			</swiper>
+		</view>
+		
+		<!--菜单栏-->
+		<view class="contentItem" >
+			<view class="contentState">
+				<view class="contentBlock" v-for="(order,index) in contentState" :key="index" @tap="productfiation(order.state,index)">
+					<view class="contentWidth">
+						<view  class="contentImg">
+							<image class="img" :src="order.url" mode=""></image>
+						</view>
+						<view  class="text">
+							{{order.state}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!--秒杀栏-->
+		<view class="contentTimes">
+			<view class="contentkill">
+				会员秒杀
+			</view>
+			<view class="contentRush">
+				<view class="contentRushent">
+					<view  :class="index==barCur?'seckilltent':'barBlockStyle'"  v-for="(item,index) in seckillList" :key="index" @tap="selectBar(item,index)">
+							{{item.seckillrush}}
+					</view>
+				</view>
+				<view class="seckTrademark">
+					<view class="registration" v-if="index<4" v-for="(item,index) in seckillData" :key="index" @click="rushPurchase(item)">
+						<image class="registimg" :src="item.list[0].goodsMainImage"></image>
+						<view class="registiimgs">
+							<view class="text">
+								<view class="num">惊爆</view>
+								<view class="zhe">价</view>
+							</view>
+							<!-- <image class="img" src="../../static/home/purchase.png"></image>	 -->
+						</view>
+						<!-- <view class="Countmark">
+							<view class="Countimg">
+								<view class="end">秒杀倒计时:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+								<view class="symbol">:</view>
+								<view class="num">03</view>
+							</view>
+						</view> -->
+						<view class="register">
+							<view class="registerBrand">{{item.list[0].goodsName}}</view>
+							<view class="registerCase">
+								<view class="registerBox">
+									<view class="registerSize"><text style="font-size: 24rpx;color: red;">￥</text>{{item.list[0].goodsPriceVip}}</view>
+									<view class="registerSizes"><text style="font-size: 24rpx;">￥</text>{{item.list[0].goodsOriginalPrice}}</view>
+								</view>
+								<view class="registerButton" v-if="seckillrushing=='即将开抢'">
+									即将开抢
+								</view>
+								<view class="registerButton" v-else>
+									立即抢购
+								</view>
+								
+							</view>
+						</view>
+					</view>				
+				</view>
+			</view>
+		</view>
+		<!-- 代理记账 -->
+		<view class="aaccountsement"  @tap="pulicewei()">
+			<image class="aaccountmentimg" src="http://47.93.61.34:8081/agent.png" mode=""></image>
+		</view>
+		<view class="kuan">
+			<view class="Business" @click="Business">
+				<view class="services">
+					工商服务
+				</view>	
+				<view class="servicesAll">
+					<text class="cuIcon-right lg text-gray "></text>
+				</view>	
+			</view>	
+			<view class="serviceMore">
+				<view class="serviceItem" v-if="index<3" v-for="(item,index) in goodsTypedata" :key="index"  @tap="goSeckeil(item)">
+					<view class="serviceBack">
+						<view class="serviceBox">
+							<view class="serviceCompany">
+								{{item.categoryName}}
+							</view>
+							<view class="serviceWold">
+								为您企业提供全方位的工商注册服务，为您企业提供全方位的工商注册服务
+							</view>
+							<view class="priceItem">
+								<view class="priceLeft">
+									<view class="priceColor">现价:<text style="font-size: 24rpx;color: red;">￥</text><text style="font-size: 38rpx;font-weight: 600;">800</text></view>
+									<view class="priceoRiginal">原价:￥1500</view>
+								</view>
+								<view class="immediately">
+									<image src="../../static/home/button.png" class="butImg"></image>
+									<view class="text">
+										立即办理
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>	
+		</view>
+		<view class="kuang">
+			<view class="Financial" @click="finance">
+				<view class="FinanAudit">
+					财务审计
+				</view>	
+				<view class="FinanAll">
+					<text class="cuIcon-right lg text-gray "></text>
+				</view>	
+			</view>
+			<view class="SpecialItem">
+				<view class="SpecialReview">
+					<view class="SpecialBack" v-for="(item,index) in Financialdata" :key="index" @click="handleFinance(item)">
+						<view class="SpecialBox">
+							<view class="Specialreport">
+								{{item.categoryName}}
+							</view>
+							<view class="SpecialWold">
+								一站式的服务流程
+							</view>
+							<view class="reviewBox">
+								<view class="reportWord">
+									<view class="wordColor">
+										<text style="font-size: 24rpx;color: red;">￥</text><text style="font-size: 38rpx;font-weight: 600;">800</text>
+									</view>
+									<view class="sizeColor">
+										￥1500
+									</view>
+								</view>
+								<view class="reportCircular">
+									抢
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="realTime">
+			<view style="display: flex;align-items: center;">
+				<view class="title">
+					<view class="left">资讯</view><view class="kuai">快读</view>
+				</view>
+				<text class="cuIcon-right lg text-gray" @click="realTime"></text>
+			</view>
+			<view class="realItem" v-if="index<4" v-for="(item,index) in ArticleData" :key="index" @click="articleDetail(item.id)">
+				<view class="up">
+					<view class="left">
+						{{item.platformType}}
+					</view>
+					<view class="right">
+						{{item.platformName}}
+					</view>
+				</view>
+				<view class="down">
+					<!-- <view style="margin-right: 20rpx;">
+						来源：{{item.createId}}
+					</view> -->
+					<view class="time">
+						{{item.createTime}}
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view v-if='memberData.membershipStatus==0&&isShow==true' class="" style="width: 100%;height: 80rpx;background-color: #fff;"></view>
+		<view v-if='memberData.membershipStatus==0&&isShow==true'>
+			<view class="memberItem" >
+				<view class="Opening">
+					<text class="cuIcon-close guanbi" @click="close"></text>
+				</view>
+				<view class="memberOpen">
+					<view class="openBox">
+						<image class="memberImg" src="../../static/home/crown.png"></image>
+						<view class="memberWold">开通企瑞宝会员</view>
+						<view class="memberButton" @click="openMember">立即开通</view>
+					</view>
+				</view>
+				<view>
+				</view>
+			</view>
+		</view>
+		
+		<view class="informSide">
+			<button open-type="contact" class="botttomLeft">
+				<view class="informtact">
+					<image class="informImg" src="../../static/home/information.png"></image>
+				</view>
+			</button>
+			<view class="" style="width: 100%;height: 20rpx;" ></view>
+			<!-- <view class="informtact" @tap="phoneEvent">
+				<image class="informImg" src="../../static/home/Telephone.png" ></image>
+			</view>
+			<view class="" style="width: 100%;height: 20rpx;"></view>
+			<view class="informtact" @click="ToTop">
+				<image class="informImg" src="../../static/home/rocket.png" ></image>
+			</view> -->
+		</view>		
+	</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState,
+		mapMutations,
+	} from 'vuex';
+	import {
+		getClassifi,
+	} from '../../API/classificationArr/index';
+	import{
+		lunlist
+	} from '../../API/lunbo/index.js'
+	import{
+		queryAll
+	} from '../../API/seckill/seckill.js'
+	import{
+		getAllInformation
+	}from '../../API/healthy/index.js'
+	import {
+		getListTile,
+		getListGoods
+	} from '../../API/skeillArr/index.js';
+	import {getMessage,getTime} from '../../API/home/index.js'
+	import {
+		totalNum
+	} from '../../API/classificationArr/index';
+	import {defaultAddress} from '../../API/defaultAddresss/index.js'
+	import {
+		getMemberMsg
+	}from '../../API/personArr';
+	export default {
+		data() {
+			return {
+				//noInternet:false,
+				seckillrushing:'正在抢购',
+				memberData:{},
+				barCur:0,
+				strings:'',
+				phoneNumber:"0591-1234 5678",
+				noticeList:[],
+				menuArr:[],
+				detailAddress:{},
+				finalTime:'',
+				seckillMsg:'',
+				showModal:false,
+				msg:'',
+				addressObj:{},
+				isShow:true,
+				la:'',
+				lo:'',
+				location:'',
+				address:'',
+				url: 'https://wwayi2.axshare.com/',
+				wridid:'',
+				wridetail:[],
+				coupons:false,
+				couclose:true,
+				timeHour: '00',
+				timeMinute: '00',
+				timeSecond: '00',
+				timer:'',
+				timerEndTime: '',
+				startsup:false,
+				loadstart:true,
+				typeName:'',
+				imgUrls:['http://47.93.61.34:8081/banner.png'],
+				contentState:[
+					{state:'工商服务',url:'../../static/homeimg/tag1.png'},
+					{state:'代理记账',url:'../../static/homeimg/tag2.png'},
+					{state:'财务审计',url:'../../static/homeimg/tag3.png'},
+					{state:'金融咨询',url:'../../static/homeimg/tag4.png'},
+					{state:'法律服务',url:'../../static/homeimg/tag5.png'},
+					{state:'知识产权',url:'../../static/homeimg/tag6.png'},
+					{state:'科技服务',url:'../../static/homeimg/tag7.png'},
+					{state:'资质办理',url:'../../static/homeimg/tag8.png'},
+					{state:'外贸进出',url:'../../static/homeimg/tag9.png'},
+					{state:'惠企补贴',url:'../../static/homeimg/aaa.png'},
+				],
+				menuButtonInfo: {}, //页面右上角胶囊位置
+				contentTime:[],
+				getthecouponList:[
+					{coumoney:'50',fullmoney:'200'},
+					{coumoney:'50',fullmoney:'200'},
+					{coumoney:'50',fullmoney:'200'},
+				],
+				seckillList:[
+					{seckillrush:'正在抢购',FlashStatus:'0'},
+					{seckillrush:'即将开抢',FlashStatus:'2'},
+				],
+				goodscontList:[],
+				seckillData:[],
+				miaoShaObj:{},
+				goodsEndTime:'',
+				number:0,
+				seckillId:'',
+				barList:[],
+				productlist:[],
+				goodsTypedata:[{
+					categoryName:'公司注册',
+				},{
+					categoryName:'公司注册',
+				}],
+				Financialdata:[],
+				ArticleData:[
+					{
+						platformType:'资讯类型1',
+						platformName:'关于开展仓山区促进互联网发展办法',
+						createId:'企瑞宝',
+						createTime:'2020/11/10'
+					},
+					{
+						platformType:'资讯类型1',
+						platformName:'关于开展仓山区促进互联网发展办法',
+						createId:'企瑞宝',
+						createTime:'2020/11/10'
+					},
+					{
+						platformType:'资讯类型1',
+						platformName:'关于开展仓山区促进互联网发展办法',
+						createId:'企瑞宝',
+						createTime:'2020/11/10'
+					}
+				],
+				timeId:'',
+				
+			}
+		},
+		computed: {
+			...mapState(['token'])
+		},
+		onLoad(options) {
+			this.menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.getClassifi()
+			this.getseckill(0)
+		},
+		onShow() {
+			this.getlist()
+			this.getAdviceList()
+			this.getMember()
+		},
+		onHide() {
+		},
+		methods: {
+			//首页列表数据
+			async getClassifi(){
+				const res=await getClassifi();
+				var Arr = res.data
+				var BusinessName='工商服务'
+				Arr.forEach((item,index)=>{
+					if(item.categoryName ==BusinessName){
+						this.goodsTypedata=res.data[index].goodsTypeVos;
+					}
+				})
+				Arr.forEach((item,index)=>{
+					var accountName='财务审计'
+					if(item.categoryName ==accountName){
+						this.Financialdata=res.data[index].goodsTypeVos;
+					}
+				})
+				console.log(this.goodsTypedata);
+				console.log(this.Financialdata);
+			},
+			//是否会员
+			async getMember(){
+				const res=await getMemberMsg(this.token);
+				this.memberData = res.data
+				console.log(this.memberData)
+			},
+			async getseckill(seckillFlashStatus){
+				this.seckillFlashStatus = seckillFlashStatus
+				const res = await queryAll(this.token,this.seckillFlashStatus)
+				this.seckillData = res.data
+			},
+			articleDetail(id){
+				uni.navigateTo({
+					url:'../realTime/realDetail?id=' + id
+				})
+			},
+			realTime(){
+				uni.navigateTo({
+					url:'../realTime/realTime'
+				})
+			},
+			openMember(){
+				uni.navigateTo({
+					url:'../membership/membership'
+				})
+			},
+			Business(){
+				uni.navigateTo({
+					url:'../Business/Business'
+				})
+			},
+			finance(){
+				uni.navigateTo({
+					url:'../Business/Finance'
+				})
+			},
+			rushPurchase(item){
+				console.log(item)
+				if(!this.token){
+					this.unLoadEvent()
+				}else{
+					uni.navigateTo({
+						url:'../rushPurchase/rushPurchase?goodsTypeId=' +item.list[0].goodsTypeId + '&seckillGoodsId=' + item.seckillGoodsId + '&seckillrushing=' + this.seckillrushing + '&seckillEndTime=' +item.seckillEndTime +'&seckillBeginTime=' +item.seckillBeginTime
+					})
+				}
+			},
+			// ...mapMutations(['setClassCur']),//缓存类型名字
+			//轮播图
+			async getlist() {
+				const res = await lunlist();
+				console.log(res)
+				this.imgUrls = res.data;
+				console.log(this.imgUrls)
+			},
+			ToTop(){
+				uni.pageScrollTo({
+					scrollTop: 0,
+					duration: 300
+				})
+			},
+			phoneEvent() {
+				uni.makePhoneCall({
+				    phoneNumber: this.phoneNumber
+				});
+			},
+			goSeckeil(item){
+				console.log(item)
+				if(!this.token){
+					this.unLoadEvent()
+				}else{
+					uni.navigateTo({
+						url:'../seckill/seckdeil?goodsTypeId=' +item.goodsTypeId
+					})
+				}
+			},
+			handleFinance(item){
+				if(!this.token){
+					this.unLoadEvent()
+				}else{
+					uni.navigateTo({
+						url:'../seckill/seckdeil?goodsTypeId=' +item.goodsTypeId
+					})
+				}
+			},
+			unLoadEvent() {
+				uni.showModal({
+				    title: '提示',
+				    content: '您还未登录哦，请先登录~',
+					showCancel: false,
+					confirmText: '立即登录',
+				    success: function (res) {
+				        if (res.confirm) {
+							uni.reLaunch({
+								url: '../login/login'
+							})
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			selectBar(item,index) {
+				console.log(item)
+				console.log(index)
+				console.log(this.seckillrushing)
+				if(!this.token){
+					this.unLoadEvent()
+				}else{
+					this.barCur = index;
+					console.log(this.barCur)
+					this.seckillrushing = item.seckillrush
+					this.getseckill(item.FlashStatus)
+				}
+			},
+			setTimer() {
+				clearInterval(this.timeId)
+				this.timeId= setInterval(this.countDown,1000)
+			},
+			handleHour(time){
+				if(time) {
+					var timeArr = time.replace(" ", ":").replace(/\:/g, "-").split("-");
+					if(timeArr[3]=='00'){
+						timeArr[3]='24'
+					}
+					return parseFloat(timeArr[3])
+				}
+			},	
+			close(){
+				this.isShow = false;
+			},		
+			pulicewei(){
+				uni.switchTab({
+					url:'../classification/goodsClassify'
+				})
+			},
+			searchPage(){
+				uni.navigateTo({
+					url:'../searchs/searchs'
+				})
+			},
+			showNotice(detail){
+				this.showModal=true
+				this.strings=detail
+			},
+			hideModal(){
+				this.showModal=false
+			},
+			//资讯
+			async getAdviceList() {
+				const res = await getAllInformation();
+				console.log(res)
+				this.ArticleData = res.data;
+				console.log(this.ArticleData)
+			},
+			productfiation(type,typeIndex){
+				console.log(type);
+				this.typeName = type
+				console.log(typeIndex);
+					uni.navigateTo({
+						url:'../classification/Categorys?typeName=' + this.typeName
+					})
+			}
+			//跳转分类
+			/* productfiation(type,typeIndex){
+				console.log(type);
+				console.log(typeIndex);
+				this.setClassCur(type)//缓存类型名字
+				if(type=='领劵'){
+					uni.navigateTo({
+						url:'../personal/coupon/rollCenter'
+					})
+				}
+				else{
+					uni.switchTab({
+						url:'../classification/goodsClassify'
+					})
+				}
+			} */
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+		position: relative;
+		height: 100%;
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 15rpx 20rpx;
+		overflow: hidden;
+		background-color: #fff;
+	}
+	
+	.rightjian{
+		width: 34rpx;
+		height: 48rpx;
+	}
+	
+	.TreasureItem{
+		display: flex;
+		background-color: #FFFFFF;
+		width: 100%;
+		left: 19rpx;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		align-items: center;
+	}
+	
+	.contentTop{
+		width: 100%;
+		height: 90rpx;
+		display: flex;
+		// margin-top: 172rpx;
+		justify-content: space-between;
+		.posit{
+				display: flex;
+				height: 60rpx;
+				line-height: 60rpx;
+				width: 300rpx;
+				position:relative;
+				.out{
+					position: absolute;
+					background-color: rgba(0,0,0,0.5);
+					color: #fff;
+					font-size: 20rpx;
+					top: 60rpx;
+					left: 10rpx;
+					width: 300rpx;
+					padding: 5rpx;
+					z-index: 999;
+					border-radius: 20rpx;
+				}
+				.positimg{
+					width: 40rpx;
+					height: 40rpx;
+					margin-top: 12rpx;
+				}
+				.city-text{
+					height: 60rpx;
+					font-size: 28rpx;
+					width: 250rpx;
+				}
+			}
+			.search{
+				// width: calc(100% - 10rpx);
+				width: 100%;
+			    height: 60rpx;
+				line-height: 60rpx;
+			    display: flex;
+			    flex-direction: row;
+				background:#EDEDF0;
+				
+				border-radius: 50rpx;
+				position: relative;
+				
+				.searchimg{
+					width: 40rpx;
+					height: 40rpx;
+					position: absolute;
+					left:20rpx;
+					top:10rpx;
+				}
+				
+				.searchinp{
+					width: 100%;
+					height: 60rpx;
+					line-height: 60rpx;
+					font-size: 28rpx;
+					color: #aaa; 
+					padding-left: 30rpx;
+					margin-left:40rpx;
+				} 
+		}
+	}
+	
+	.contentbanner{
+		width: 100%;
+		height: 270rpx;
+		
+		.swipers{
+			width: 100%;
+			height: 100%;
+		}
+		.bannerimg{
+			width: 100%;
+			height: 270rpx;
+			background: no-repeat;
+			background-size:cover ;
+			border-radius: 20rpx;
+		}
+		.uni-swiper .uni-swiper-dots-horizontal {
+			bottom: 20rpx;
+		}
+	}
+	
+	
+	//轮播和限时秒杀
+	.contentItem{
+		width: 100%;
+		margin-top: 10rpx;
+		display: flex;
+		flex-wrap: wrap;
+		.contentTime{
+			padding: 20rpx 0;
+			width: 200rpx;
+		}
+	}	
+		.contentState{
+			width: 100%;
+			display: flex;
+			padding: 20rpx 0 20rpx 20rpx;
+			flex-wrap: wrap;
+			.contentBlock {
+				flex: 1;
+				display: flex;
+				// justify-content: center;
+				align-items: center;
+				margin:10rpx;
+				.contentWidth{
+					width: 100rpx;
+					.contentImg{
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						margin-bottom: 15rpx;
+						width: 100rpx;
+						height: 100rpx;
+						border-radius: 50%;
+						background-color: #EAF7FF;
+						.img{
+							width: 50rpx;
+							height: 50rpx;
+						}	
+					}
+					.text{
+						font-size: 24rpx;
+						text-align: center;
+					}
+				}
+			}
+			/* .contentBlock:last-child {
+				color: #EFCA5C;
+				.img{
+					width: 70rpx;
+					height: 70rpx;
+				}	
+			} */
+		}
+	.contentTimes{
+		width: 100%;
+		height: auto;
+		margin-bottom: 20rpx;
+		border: 1rpx solid #f2f2f2;
+		border-radius: 10rpx;
+		box-shadow: 0 5rpx 5rpx #e6e6e6;
+		.contentkill{
+			width: 100%;
+			height: 80rpx;
+			line-height: 80rpx;
+			background-image: linear-gradient(to right, #A0CAFD, #D5E5F8);
+			justify-content: center;
+			display: flex;
+			align-items: center;
+			color: #008afd;
+			font-size: 32rpx;
+			border-radius: 10rpx;
+		}
+		.contentRush{
+			width: 100%;
+			height: auto;
+			background-color: #fff;
+			.contentRushent{
+				display: flex;
+				.seckilltent{
+					width: 50%;
+					height: 70rpx;
+					line-height: 70rpx;
+					text-align: center;
+				}
+				.barBlockStyle {
+					width: 50%;
+					height: 70rpx;
+					line-height: 70rpx;
+					text-align: center;
+					background-color: #FAFAFA;
+				}
+			}
+			
+			.seckTrademark{
+				width: 100%;
+				height: auto;
+				display: flex;
+				// justify-content: space-around;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				.registration{
+					width: 320rpx;
+					margin-bottom: 20rpx;
+					padding: 20rpx 0 0 0;
+					position: relative;
+					margin-left: 14rpx;
+					margin-right: 14rpx;
+					.registimg{
+						width: 100%;
+						height: 310rpx;
+					}
+					.registiimgs{
+						position: absolute;
+						right: -20rpx;
+						top: -20rpx;
+						width: 100rpx;
+						height: 100rpx;
+						background-image: url(../../static/home/purchase.png);
+						background-size: 100rpx 100rpx;
+						.text{
+							width: 100rpx;
+							height: 100rpx;
+							text-align: center;
+							padding: 28rpx 25rpx 25rpx 25rpx;
+							.num{
+								font-size: 26rpx;
+								font-weight: 600;
+								color: #fff;
+								line-height: 1;
+							}
+							.zhe{
+								color: #fff;
+								line-height: 1;
+								font-size: 26rpx;
+							}
+						}
+						// .img{
+						// 	width: 100rpx;
+						// 	height: 100rpx;
+						// }
+					}
+				}
+				.Countmark{
+					position: relative;
+					background-color: #13506c;
+					top: -30px;
+					.Countimg{
+						text-align: center;
+						margin-left: 4rpx;
+						display: flex;
+						height: 60rpx;
+						justify-content: center;
+						align-content: center;
+						align-items: center;
+						.end{
+							font-weight: 400;
+							// margin-right: 20rpx;
+							color: #fff;
+							font-size: 12px;
+						}
+						.num{
+							width: 35rpx;
+							height: 35rpx;
+							line-height: 35rpx;
+							border-radius: 10%;
+							background-color: #fff;
+						}
+						.symbol{
+							color: #fff;
+							margin: 0 5rpx;
+						}
+					}
+				}
+				.register{
+					width: 100%;
+					margin-top: -17rpx;
+					background-color: #eff4fa;
+					.registerBrand{
+						padding: 10rpx;
+						font-size: 14px;
+						overflow: hidden;
+						text-overflow:ellipsis;
+						white-space: nowrap;
+					}
+					.registerCase{
+						display: flex;
+						align-items: center;
+						padding: 0 10rpx;
+						.registerBox{
+							.registerSize{
+								color: #f5595a;
+								font-size: 38rpx;
+								font-weight: 600;
+							}
+							.registerSizes{
+								font-size: 22rpx;
+								color: #bbb;
+								text-decoration: line-through;
+								margin-top: -20rpx;
+							}
+						}
+						.registerButton{
+							border-radius: 10rpx;
+							color: #fff;
+							background-image: linear-gradient(to right, #F63737, #F3741C);
+							text-align: center;
+							height: 50rpx;
+							width: 130rpx;
+							line-height: 50rpx;
+							margin-left: 90rpx;
+							margin-top: 10rpx;
+							font-size: 24rpx;
+						}
+					}
+					
+				}
+			}
+		}
+	}
+	
+	.aaccountsement{
+		width: 100%;
+		height: 180rpx;
+		margin: 0;
+		.aaccountmentimg{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.kuan{
+		width: 100%;
+		height: auto;
+		margin-top: 20rpx;
+		border: 1rpx solid #f2f2f2;
+		box-shadow: 0 5rpx 5rpx #e6e6e6;
+		border-radius: 10rpx;
+	}
+	.Business{
+		width: 100%;
+		height: 80rpx;
+		background-image: linear-gradient(to right, #FDEFD2, #F5E4BA);
+		display: flex;
+		align-items: center;
+		margin: 0 0 20rpx 0;
+		border-radius: 10rpx;
+		.services{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			color: #b97c46;
+		}
+		.servicesAll{
+			width: 50rpx;
+			.text-gray{
+				width: 50rpx;
+				height: 50rpx;
+				border-radius: 50%;
+				background-color: #fff;
+				color: #b97c46;
+			}
+		}
+	}
+	
+	.serviceMore{
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
+		margin: -18rpx 0 20rpx 0;
+		.serviceItem{	
+			display: flex;
+			justify-content: center;
+			.serviceBack{
+				width: 640rpx;
+				background-color: #fff8f5;
+				border-radius: 20rpx;
+				margin: 10rpx 0 10rpx 0;
+				box-shadow: 0 5rpx 5rpx #e6e6e6;
+				.serviceBox{
+					margin: 20rpx 20rpx 20rpx 20rpx;
+					.serviceCompany{
+						font-size: 14px;
+					}
+					.serviceWold{
+						font: 12px;
+						color: #dbd6d3;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					.priceItem{
+						width: 100%;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						.priceLeft{
+							display: flex;
+							align-items: center;
+							.priceColor{
+								color: #f77a76;
+								font-size: 28rpx;
+							}
+							.priceoRiginal{
+								color: #CCCCCC;
+								font-size: 22rpx;
+								text-decoration: line-through;
+								margin-top: 10rpx;
+								margin-left: 20rpx;
+							}
+						}
+						
+						.immediately{
+							position: relative;
+							top: 10rpx;
+							.butImg{
+								width: 150rpx;
+								height: 50rpx;
+							}
+							.text{
+								position: absolute;
+								top: 6rpx;
+								left: 15rpx;
+								color: #fff;
+								font-size: 24rpx;
+							}
+							
+						}
+					}
+				}
+			}
+			
+		}
+	}
+	.kuang{
+		width: 100%;
+		height: auto;
+		margin-top: 20rpx;
+		border: 1rpx solid #f2f2f2;
+		box-shadow: 0 5rpx 5rpx #e6e6e6;
+		border-radius: 10rpx;
+	}
+	.Financial{
+		width: 100%;
+		height: 80rpx;
+		background-image: linear-gradient(to right, #DAEFE3, #BEEFD1);
+		display: flex;
+		align-items: center;
+		.FinanAudit{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			color: #20b76a;
+		}
+		.FinanAll{
+			width: 50rpx;
+			.text-gray{
+				width: 50rpx;
+				height: 50rpx;
+				border-radius: 50%;
+				background-color: #fff;
+				color: #41C180;
+			}
+		}
+	}
+	
+	.SpecialItem{
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
+		padding-bottom: 50rpx;
+		.SpecialReview{
+			display: flex;
+			 flex-wrap:wrap;
+			.SpecialBack{
+				width: 210rpx;
+				background-color: #f6fdf5;
+				border-radius: 20rpx;
+				margin: 20rpx 0 0 20rpx;
+				box-shadow: 0 5rpx 5rpx #e6e6e6;
+				.SpecialBox{
+					margin: 20rpx 20rpx 20rpx 20rpx;
+					.Specialreport{
+						font-size: 14px;
+					}
+					.SpecialWold{
+						font-size: 10px;
+						color: #dbd6d3;
+					}
+					.reviewBox{
+						margin-top: 50rpx;
+						width: 100%;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						.reportWord{
+							.wordColor{
+								color: #f77a76;
+								font-size: 32rpx;
+								line-height: 1;
+							}
+							.sizeColor{
+								color: #CCCCCC;
+								font-size: 24rpx;
+								text-decoration: line-through;
+								line-height: 1;
+							}
+						}
+						.reportCircular{
+							height: 50rpx;
+							width: 50rpx;
+							border-radius: 50%;
+							color: #fff;
+							// background-color: #f47a25;
+							background-image: linear-gradient(to bottom, #F66933, #F7AF22);
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
+	}
+	.realTime{
+		width: 100%;
+		padding:20rpx;
+		.title{
+			padding: 10rpx 0;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			height: 80rpx;
+			.left{
+				height: 60rpx;
+				line-height: 60rpx;
+				font-size: 32rpx;
+				font-weight: 600;
+				color: #333;
+			}
+			.kuai{
+				width: 100rpx;
+				height: 60rpx;
+				margin-left: 10rpx;
+				background-image: linear-gradient(to right, #018DFF, #5BB1F7);
+				border-radius: 20rpx 0 20rpx 0;
+				font-style: oblique;
+				color: #fff;
+				line-height: 60rpx;
+				text-align: center;
+				font-size: 32rpx;
+			}
+		}
+		.realItem{
+			width: 100%;
+			border-bottom: 1rpx solid #f2f2f2;
+			.up{
+				padding: 20rpx 0 0 0;
+				display: flex;
+				.left{
+					width: 160rpx;
+					height: 50rpx;
+					line-height: 50rpx;
+					background-color: #C4E3FD;
+					color: #088EFE;
+					text-align: center;
+					border-radius: 10rpx;
+					
+				}
+				.right{
+					// width: calc(100%-280rpx);
+					width: 75%;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
+					margin-left: 10rpx;
+				}
+			}
+			.down{
+				padding: 10rpx 0;
+				display: flex;
+				justify-content: flex-end;
+				color: #ccc;
+			}
+		}
+	}
+	.memberItem{
+		position: fixed;
+		width: 100%;
+		background-size:cover;
+		height: 95rpx;
+		padding: 0 20rpx;
+		// margin-top: 20rpx;
+		bottom: 0rpx;
+		left: 0;
+		background-image: url(../../static/home/bottom.png);
+		// display: flex;
+		// justify-content: space-between;
+		.Opening{
+			color: #fff;
+			margin-left: 20rpx;
+			line-height: 1.5;
+			position: absolute;
+			top: 5rpx;
+		}
+		.memberOpen{
+			.openBox{
+				display: flex;
+				margin-left: 100rpx;
+				padding: 25rpx 0  20rpx 0;
+				.memberImg{
+					width: 50rpx;
+					height: 40rpx;
+				}
+				.memberWold{
+					color: #F0DCB9;
+					margin-left: 20rpx;
+				}
+				.memberButton{
+					height: 50rpx;
+					width: 130rpx;
+					line-height: 50rpx;
+					font-size: 13px;
+					text-align: center;
+					margin-left: 150rpx;
+					background-color: #F0DCB9;
+					border-radius: 30rpx;
+					color: #3E414F;
+				}
+			}
+		}
+	}
+	
+	.informSide{
+		position: fixed;
+		right:10rpx;
+		top:82%;
+		.botttomLeft{
+			background-image: linear-gradient(to right, #F9F9F9, #DFDFDF);
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
+			// top: -20rpx;
+			padding: 0;
+		}
+		.botttomLeft::after{ border: none; }
+		.informtact{
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
+			background-image: linear-gradient(to right, #F9F9F9, #DFDFDF);
+			padding: 10rpx;
+			.informImg{
+				width: 60rpx;
+				height: 60rpx;
+			}
+		}
+	}
+
+	
+	.advertisement{
+		width: 100%;
+		height: 200rpx;
+		margin: -20rpx 0;
+		.advertisementimg{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	
+	.tonggong{
+		width: 100%;
+		.notice{
+			width: 100%;
+			height: 60rpx;
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			padding: 6rpx 22rpx;
+			border-radius: 16rpx;
+			.noticecont{
+				
+				display: flex;
+				.noticeimg{
+					width: 44rpx;
+					height: 44rpx;
+					vertical-align:middle;  
+				}
+				.noticetext{
+					//font-size: 22rpx;
+					margin-left:15rpx;
+				}
+			}
+		}
+	}
+	
+	
+	.goodarticles{
+		width: 100%;
+		
+		.articlescont{
+			width: 100%;
+			margin:10rpx 0 10rpx 0;
+			font-weight: bold;
+			display: flex;
+			justify-content: space-between;
+			.checkAll{
+				margin-right: 20rpx;
+			}
+		}
+		
+		.goodscont{
+			width: 100%;
+			border-radius: 16rpx;
+			display: flex;
+			background: #fff;
+			padding: 34rpx 34rpx;
+			margin-bottom: 20rpx;
+			
+			.goodscontleft{
+				width: calc(100% - 200rpx);
+				//font-weight: bolder;
+				padding: 0 16rpx 0 0;
+				display: flex;
+				flex-wrap: wrap;
+				align-content: space-between;
+				.leftcont{
+					width: 100%;
+					font-size:30rpx ;
+					color: #666666;
+					// letter-spacing:2px
+				}
+				.leftbottom{
+					width: 100%;
+					margin-top:15rpx;
+					display: flex;
+					justify-content: space-between;
+					
+					.bottomtext{
+						font-size: 26rpx;
+						color: rgb(187,191,192);
+					}
+				}
+			}
+			
+			.goodscontright{
+				
+				.rightimg{
+					width: 200rpx;
+					height: 180rpx;
+					border-radius: 15rpx;
+				}
+			}
+		}
+		
+	}
+	
+	.logo {
+		height: 200rpx;
+		width: 200rpx;
+		margin-top: 200rpx;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 50rpx;
+	}
+
+	.text-area {
+		display: flex;
+		justify-content: center;
+	}
+
+	.title {
+		font-size: 36rpx;
+		color: #8f8f94;
+	}
+	.xuanfu button{
+		// background-image: url('../../static/homeimg/service.png');
+		background-size: 100% 100%;
+		background-color: transparent;
+	}
+	button::after{
+	    border: none;  
+	}
+	.noInternet{
+		position: absolute;
+		width: 100%;
+		top:50%;
+		transform: translateY(-50%);
+		text-align: center;
+		flex-direction: column;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		image{
+			width: 500rpx;
+		}
+		.Internetnew{
+			width: 180rpx;
+			height: 60rpx;
+			line-height: 60rpx;
+			border-radius: 50rpx;
+			color: #FFFFFF;
+			background-color:#2D9FFC ;
+		}
+	}
+	//  @keyframes wordScroll{
+	// 	0% {
+	// 		-webkit-transform: translate3d(0, 0, 0);
+	// 		transform: translate3d(0, 0, 0);
+	// 	}
+	// 	100% {
+	// 		-webkit-transform: translate3d(0, -100rpx, 0);
+	// 		transform: translate3d(0, -100rpx, 0);
+	// 	}
+	// }
+</style>

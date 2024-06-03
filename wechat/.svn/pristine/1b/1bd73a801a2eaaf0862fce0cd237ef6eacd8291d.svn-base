@@ -1,0 +1,65 @@
+import req from "../../common/req.js"
+//分类页面
+export const listByType = () => {//  右侧数据
+	return req.get(
+		"/goods/goodsList", {
+		}
+	)
+}
+
+export const getClassifi = () => {
+	return req.get(  //  左侧数据
+		"/goodsType/goodsTypeList", {
+			
+		}
+	)
+}
+
+export const  addNum= (token,goodsId,orderCount) => {
+	return req.post(// 添加到购物车
+		"/shoppingCart/add", {
+			token,goodsId,orderCount
+		}
+	)
+}
+
+
+export const findGoods = (token,keywords) => {//搜索框
+	return req.post(
+		"/goods/findList", {
+			token,keywords
+		}
+	)
+}
+
+export const totalNum = (token) => {//搜索框
+	return req.post(
+		"/shoppingCart/sum", {
+			token
+		}
+	)
+}
+
+export const getKeywords = (token) => {
+	return req.post(
+		"/goods/keywords", {
+			token
+		}
+	)
+}
+
+export const delKeywords = (token) => {
+	return req.post(
+		"/goods/delKeywords", {
+			token
+		}
+	)
+}
+
+export const gooddetail = (token,id) => {
+	return req.post(
+		"/goods/detail", {
+			token,id
+		}
+	)
+}

@@ -1,0 +1,132 @@
+<template>
+	<view class="container">
+		<view class="improvement">
+			<text style="color:#0A90FE;margin: 0 20rpx;" class="cuIcon-infofill"></text>
+			<text style="color:#fff; font-size: 12px;">添加的企业信息将不能修改和删除。请谨慎添加!</text>
+		</view>
+		
+		<uni-swipe-action>
+		<view class="companyBack" v-for="(item,index) in 4" :key="index">
+			<uni-swipe-action-item :right-options="options"  @click="bindClick(item.id,$event)" >
+			<view class="companyBox">
+				<view class="companySize">企业名称有限公司</view>
+				<view class="companyMove">
+					<view style="width:90%">
+						<view style="color:#999999;">许小姐</view>
+						<view style="color:#999999;">13959888888</view>
+					</view>
+					<text class="cuIcon-right lg text-gray" @click="Modify"></text>
+				</view>
+			</view>
+			 </uni-swipe-action-item>
+		</view>
+		</uni-swipe-action>
+		
+		<view class="noestabItem" style="display: none;">
+			<image class="noestabImg" src="../../../static/personal/establishment.png" mode="widthFix"></image>
+			<view class="noestabText">新增相关企业信息</view>
+		</view>
+		
+		
+		<view class="buttonBack">
+			<view class="buttonSpan">
+				<button @click="newEnterprise" class="buttonColor">新增企业信息</button>
+			</view>
+		</view>
+		
+	</view>
+	
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				options:[
+					{
+						text: '编辑',
+						style: {
+							backgroundColor: '#CCCCCC'
+						}
+					},
+				  {
+						text: '删除',
+						style: {
+							backgroundColor: '#dd524d'
+							}
+				   }
+				]
+			}
+		},
+		methods: {
+			newEnterprise(){
+				uni.navigateTo({
+					url:'./newEnterprise'
+				})
+			},
+			Modify(){
+				uni.navigateTo({
+					url:'./modify'
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.improvement{
+		width: 100%;
+		background-color:#B1D9FB ;
+	}
+	.companyBack{
+		background-color: #fff;
+		margin: 20rpx;
+		width: 100%;
+		.companyBox{
+			margin: 20rpx;
+			width: 100%;
+			.companySize{
+				font-size: 30rpx;
+			}
+			.companyMove{
+				display: flex;
+			}
+		}
+	}
+	.noestabItem{
+		position: absolute;
+		top: 40%;
+		width: 100%;
+		transform: translateY(-50%);
+		text-align: center;
+		.noestabImg{
+			width: 300rpx;
+		}
+		.noestabText{
+			font-size: 28rpx;
+			color: #aaa;
+		}
+	}
+	.buttonBack{
+		width: 100%;
+		background-color: #FFFFFF;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		height: 140rpx;
+		display: flex;
+		justify-content: center;
+		.buttonSpan{
+			width: 80%;
+			margin-top: 20rpx;
+			.buttonColor{
+				width: 92%;
+				height: 100rpx;
+				background-color:#008CFF;
+				color: white;
+				line-height: 100rpx;
+				border-radius: 50rpx;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,1 @@
+<view class="userwhite"><view class="content">{{''+articleContent+''}}</view></view>

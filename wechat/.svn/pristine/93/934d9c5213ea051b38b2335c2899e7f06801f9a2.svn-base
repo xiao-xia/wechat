@@ -1,0 +1,54 @@
+<template>
+	<view>
+		<view class="noOrderItem">
+			<image class="noOrderImg" src="../../../static/personal/evaluate.png" mode="widthFix"></image>
+			<view class="noOrderText">您还没填写过评价呢~</view>
+			<button class="buttonColor" @click="comments">去评价</button>
+		</view> 
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			comments(){
+				uni.navigateTo({
+					url:'./publish'
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.noOrderItem{
+		position: absolute;
+		top:50%;
+		width: 100%;
+		transform: translateY(-50%);//元素垂直居中效果
+		text-align: center;
+		.noOrderImg{
+			width: 300rpx;
+		}
+		.noOrderText{
+			font-size: 30rpx;
+			color: #999999;
+			margin: 0 0 20rpx 0;
+		}
+		.buttonColor{
+			height: 60rpx;
+			width: 190rpx;
+			border-radius: 30rpx;
+			text-align: center;
+			line-height: 60rpx;
+			color: #FFFFFF;
+			font-size: 26rpx;
+			background-image: linear-gradient(to right, #1093FE, #55AFF9);
+		}
+	}
+</style>

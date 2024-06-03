@@ -1,0 +1,51 @@
+import req from "../../common/req.js"
+
+export const getAddress = (token) => {
+	return req.post(
+		"/shoppingAddress/list", {
+			token
+		}
+	)
+}
+
+export const add = (token,receiverName,receiverTel,receiverSex,receiverProvince,receiverCity,receiverRegion,receiverCell,receiverDetail,longitude,latitude,addressTag) => {
+	return req.post(
+		"/shoppingAddress/add", {
+			token,receiverName,receiverTel,receiverSex,receiverProvince,receiverCity,receiverRegion,receiverCell,receiverDetail,longitude,latitude,addressTag
+		}
+	)
+}
+
+export const getTags = (token) => {
+	return req.post(
+		"/shoppingAddress/getTags", {
+			token
+		}
+	)
+}
+
+export const getDefaultAddress = (token) => {
+	return req.post(
+		"/shoppingAddress/getDefaultAddress", {
+			token
+		}
+	)
+}
+
+
+export const update = (token,id,receiverName,receiverTel,receiverSex,receiverCell,receiverDetail,longitude,latitude,addressTag) => {
+	return req.post(
+		"/shoppingAddress/update", {
+			token,id,receiverName,receiverTel,receiverSex,receiverCell,receiverDetail,longitude,latitude,addressTag
+		}
+	)
+}
+
+export const getdelete = (token,id) => {
+	return req.post(
+		"/shoppingAddress/delete", {
+			token,id
+		}
+	)
+}
+

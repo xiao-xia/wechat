@@ -1,0 +1,31 @@
+import req from "../../common/req.js"
+
+export const getlist = (token,useStatus,pageNumber,pageSize) =>req.post(
+	'/coupon/list', {
+		token,useStatus,pageNumber,pageSize
+	}
+)
+
+export const exchangeCoupon = (token) =>req.post(
+	'/coupon/exchangeCoupon', {
+		token
+	}
+)
+
+export const getCoupon = (token,id) =>req.post(
+	'/coupon/getCoupon', {
+		token,id
+	}
+)
+
+export const enableList = (token,regionName,couponType,pageNumber,pageSize) =>req.post(
+	'/coupon/enableList', {
+		token,regionName,couponType,pageNumber,pageSize
+	}
+)
+
+export const showCoupon = (token,goodsJson,orderPrice) =>req.post(
+	'/coupon/couponList', {
+		token,goodsJson,orderPrice
+	}
+)
